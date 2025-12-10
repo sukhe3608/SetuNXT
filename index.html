@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SetuNXT - RCS Messaging Platform</title>
+    <meta name="description" content="Professional RCS Messaging Dashboard for Broadcast Communication">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap-custom.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+
+<body>
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Sidebar Component -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="container-fluid">
+            <!-- Welcome Section -->
+            <div class="row mb-4 text-center">
+                <div class="col-12">
+                    <div class="welcome-section">
+                        <h1 class="display-6 fw-bold">Send RCS Broadcast</h1>
+                        <p class="text-muted">Create and send rich media messages to your contacts with our powerful RCS
+                            platform</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="row g-4">
+                <!-- Left Column: Message Form & Recipients -->
+                <div class="col-lg-8">
+                    <!-- Message Details Card -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white border-bottom-0 pt-3 pb-3">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-edit text-primary me-2"></i>
+                                Message Details
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="campaignName" class="form-label fw-semibold">Campaign Name</label>
+                                    <input type="text" class="form-control" id="campaignName"
+                                        placeholder="Enter campaign name" value="Summer Sale" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="senderId" class="form-label fw-semibold">Sender ID</label>
+                                    <select class="form-select" id="senderId">
+                                        <option selected>SetuNXT</option>
+                                        <option>SetuNXT_MKT</option>
+                                        <option>SetuNXT_Support</option>
+                                        <option>SetuNXT_Alert</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="messageContent" class="form-label fw-semibold">Message</label>
+                                    <textarea class="form-control" id="messageContent" rows="4"
+                                        placeholder="Type your message here...">Summer Sale Alert! Get 30% off on all premium products. Limited time offer. Visit our store now to grab amazing deals!</textarea>
+                                    <div class="text-muted text-end mt-1 small" id="charCounter">120 characters</div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Add Image (Optional)</label>
+                                    <div class="file-upload border border-dashed rounded p-4 text-center"
+                                        id="imageUpload">
+                                        <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
+                                        <p class="mb-1 fw-medium">Drag & drop or click to upload image</p>
+                                        <p class="small text-muted mb-0">Supported formats: JPG, PNG, GIF • Max size:
+                                            5MB</p>
+                                        <input type="file" class="d-none" accept="image/*" id="imageInput">
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="d-flex gap-2 mt-3">
+                                        <button class="btn btn-outline-secondary flex-fill" id="saveDraftBtn">
+                                            <i class="fas fa-save me-2"></i>
+                                            Save Draft
+                                        </button>
+                                        <button class="btn btn-primary flex-fill" id="sendMessageBtn">
+                                            <i class="fas fa-paper-plane me-2"></i>
+                                            Send Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recipients Card -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-bottom-0 pt-3 pb-3">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-users text-primary me-2"></i>
+                                Recipients
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Tabs -->
+                            <ul class="nav nav-tabs nav-fill mb-3" id="recipientTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="numbers-tab" data-bs-toggle="tab"
+                                        data-bs-target="#numbersTab" type="button" role="tab">
+                                        Enter Numbers
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="file-tab" data-bs-toggle="tab"
+                                        data-bs-target="#fileTab" type="button" role="tab">
+                                        Upload File
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="contacts-tab" data-bs-toggle="tab"
+                                        data-bs-target="#contactsTab" type="button" role="tab">
+                                        Select Contacts
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <!-- Tab Content -->
+                            <div class="tab-content" id="recipientTabsContent">
+                                <!-- Numbers Tab -->
+                                <div class="tab-pane fade show active" id="numbersTab" role="tabpanel">
+                                    <textarea class="form-control font-monospace" id="phoneNumbers" rows="6"
+                                        placeholder="Enter phone numbers (one per line with country code)">+919952634253
++917896532168
++919056869473
++918745632109
++917412563098</textarea>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <span class="text-muted small" id="recipientCount">5 numbers</span>
+                                        <button class="btn btn-sm btn-outline-danger" id="clearNumbersBtn">
+                                            <i class="fas fa-trash me-1"></i>
+                                            Clear All
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- File Tab -->
+                                <div class="tab-pane fade" id="fileTab" role="tabpanel">
+                                    <div class="file-upload border border-dashed rounded p-4 text-center"
+                                        id="contactFileUpload">
+                                        <i class="fas fa-file-upload fs-3 text-primary mb-3"></i>
+                                        <h6 class="fw-semibold">Drop your contacts file here</h6>
+                                        <p class="text-muted mb-2">or click to browse</p>
+                                        <p class="small text-muted">Supports CSV, TXT, XLSX files up to 10MB</p>
+                                        <input type="file" class="d-none" accept=".csv,.txt,.xlsx,.xls"
+                                            id="contactFileInput">
+                                    </div>
+                                </div>
+
+                                <!-- Contacts Tab -->
+                                <div class="tab-pane fade" id="contactsTab" role="tabpanel">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" placeholder="Search contacts..."
+                                            id="contactSearch">
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-sm" id="contactsTable">
+                                            <thead>
+                                                <tr>
+                                                    <th width="50">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="selectAllContacts">
+                                                        </div>
+                                                    </th>
+                                                    <th>Name</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Group</th>
+                                                    <th>Last Contact</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="contactsTableBody">
+                                                <!-- Contacts will be loaded dynamically -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div class="text-muted small" id="contactsSelectedCount">0 contacts selected</div>
+                                        <div>
+                                            <button class="btn btn-sm btn-outline-primary" id="importContactsBtn">
+                                                <i class="fas fa-plus me-1"></i>
+                                                Import More
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary ms-2" id="refreshContactsBtn">
+                                                <i class="fas fa-sync-alt me-1"></i>
+                                                Refresh
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Preview & Stats -->
+                <div class="col-lg-4">
+                    <!-- Phone Preview Card -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white border-bottom-0 pt-3 pb-3">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-mobile-alt text-primary me-2"></i>
+                                Preview
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="phone-preview mx-auto">
+                                <div class="phone-frame">
+                                    <div class="phone-notch"></div>
+                                    <div class="phone-screen">
+                                        <div class="phone-status-bar">
+                                            <span class="phone-time" id="previewTime">14:30</span>
+                                            <div class="phone-status-icons">
+                                                <i class="fas fa-signal me-1"></i>
+                                                <i class="fas fa-wifi me-1"></i>
+                                                <i class="fas fa-battery-three-quarters"></i>
+                                            </div>
+                                        </div>
+                                        <div class="phone-header">
+                                            <div class="phone-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <span class="phone-brand fw-semibold">SetuNXT</span>
+                                        </div>
+                                        <div class="phone-content">
+                                            <div class="message-card">
+                                                <div class="card-image">
+                                                    <div class="gift-boxes">
+                                                        <div class="gift-box red"></div>
+                                                        <div class="gift-box green"></div>
+                                                    </div>
+                                                    <div class="sparkle">✦</div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h6 class="card-title" id="previewTitle">Summer Sale Alert!</h6>
+                                                    <p class="card-text small" id="previewMessage">Get 30% off on all
+                                                        premium products. Limited time offer.</p>
+                                                </div>
+                                                <div class="card-footer bg-white border-0">
+                                                    <div class="d-grid gap-2">
+                                                        <button class="btn btn-sm btn-outline-primary">
+                                                            <i class="fas fa-external-link-alt me-1"></i>
+                                                            Visit Store
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-success">
+                                                            <i class="fas fa-phone me-1"></i>
+                                                            Call Support
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Stats -->
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <div class="fs-4 fw-bold" id="previewRecipientCount">5</div>
+                                        <div class="small text-muted">Recipients</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <div class="fs-4 fw-bold" id="previewEstimatedCost">₹1.50</div>
+                                        <div class="small text-muted">Estimated Cost</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Platform Stats Card -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-bottom-0 pt-3 pb-3">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-chart-line text-primary me-2"></i>
+                                Quick Stats
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center p-3 border rounded">
+                                        <div class="bg-primary bg-opacity-10 text-primary p-2 rounded me-3">
+                                            <i class="fas fa-paper-plane fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fs-4 fw-bold" id="sentToday">1,245</div>
+                                            <div class="small text-muted">Sent Today</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center p-3 border rounded">
+                                        <div class="bg-success bg-opacity-10 text-success p-2 rounded me-3">
+                                            <i class="fas fa-check-circle fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fs-4 fw-bold" id="successRate">98%</div>
+                                            <div class="small text-muted">Success Rate</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="assets/js/loadComponents.js"></script>
+    <script src="assets/js/initComponents.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+<aside class="sidebar" id="simpleSidebar">
+    <div class="sidebar-content">
+        <div class="sidebar-header">
+            <div class="user-profile-sidebar d-flex align-items-center gap-3">
+                <div class="user-avatar-sidebar">AJ</div>
+                <div class="user-info-sidebar">
+                    <h6 class="fw-semibold mb-1">Alex Johnson</h6>
+                    <p class="text-muted small mb-0">Admin Account</p>
+                </div>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section mb-4">
+                <h6 class="section-title mb-2">MAIN</h6>
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-broadcast-tower"></i>
+                    <span>Broadcast</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Contacts</span>
+                    <span class="nav-badge">24</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </div>
+
+            <div class="nav-section mb-4">
+                <h6 class="section-title mb-2">CAMPAIGNS</h6>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Send Message</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Scheduled</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </a>
+            </div>
+
+            <div class="nav-section mb-4">
+                <h6 class="section-title mb-2">SETTINGS</h6>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Account</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Billing</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="balance-card-sidebar mb-3">
+                <div>
+                    <small class="text-muted">Account Balance</small>
+                    <h6 class="fw-bold text-success mb-0">₹10.84</h6>
+                </div>
+                <button class="btn-add-funds">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            <button class="btn-logout-sidebar">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</aside>
+
+<script>
+    // Sidebar-specific JavaScript
+    (function() {
+        'use strict';
+        
+        // Initialize sidebar when component loads
+        function initSidebar() {
+            // Add funds button
+            const addFundsBtn = document.querySelector('.btn-add-funds');
+            if (addFundsBtn) {
+                addFundsBtn.addEventListener('click', function() {
+                    if (typeof window.showNotification === 'function') {
+                        window.showNotification('Add funds feature coming soon!', 'info');
+                    }
+                });
+            }
+            
+            // Sidebar logout button
+            const logoutBtn = document.querySelector('.btn-logout-sidebar');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    const confirmed = confirm('Are you sure you want to logout?');
+                    if (confirmed) {
+                        if (typeof window.showNotification === 'function') {
+                            window.showNotification('Logged out successfully!', 'success');
+                        }
+                        // In a real app, this would redirect to login
+                        // window.location.href = '/login';
+                    }
+                });
+            }
+            
+            // Sidebar navigation items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Remove active class from all items
+                    navItems.forEach(i => i.classList.remove('active'));
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Close sidebar on mobile after clicking
+                    if (window.innerWidth < 768) {
+                        const sidebar = document.getElementById('simpleSidebar');
+                        const overlay = document.getElementById('overlay');
+                        if (sidebar) sidebar.classList.remove('active');
+                        if (overlay) overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+        }
+        
+        // Initialize sidebar
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSidebar);
+        } else {
+            initSidebar();
+        }
+    })();
+</script>

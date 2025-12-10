@@ -1,0 +1,274 @@
+<header class="app-header d-flex align-items-center px-4 shadow-sm">
+    <div class="container-fluid">
+        <div class="d-flex align-items-center justify-content-between py-2">
+            <!-- Left Section: Menu & Brand -->
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-primary menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center gap-2 me-3">
+                        <div class="logo-icon bg-primary text-white rounded d-flex align-items-center justify-content-center" 
+                             style="width: 32px; height: 32px;">P</div>
+                        <div class="logo-text">
+                            <img src="assets/images/Logo.png" alt="SetuNXT Logo" class="logo-img">
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="breadcrumb d-none d-md-flex align-items-center text-muted">
+                        <span class="breadcrumb-item">Dashboard</span>
+                        <i class="fas fa-chevron-right mx-2"></i>
+                        <span class="breadcrumb-item active fw-semibold">Broadcast</span>
+                    </div> -->
+                </div>
+            </div>
+
+            <!-- Center Section: Search -->
+            <div class="header-center d-none d-lg-flex flex-grow-1 mx-4" style="max-width: 400px;">
+                <div class="position-relative w-100">
+                    <div class="position-absolute start-0 top-50 translate-middle-y ps-3">
+                        <i class="fas fa-search text-muted"></i>
+                    </div>
+                    <input type="search" class="form-control ps-5" 
+                           placeholder="Search campaigns, contacts, or messages..."
+                           aria-label="Search">
+                    <button class="btn position-absolute end-0 top-50 translate-middle-y pe-3 search-clear d-none">
+                        <i class="fas fa-times text-muted"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Section: Tools & User -->
+            <div class="d-flex align-items-center gap-3">
+                <!-- Country Selector -->
+                <div class="country-selector d-none d-lg-flex align-items-center gap-2">
+                    <img src="https://flagcdn.com/w40/in.png" alt="India Flag" class="country-flag">
+                    <span class="country-name fw-medium">India</span>
+                    <i class="fas fa-chevron-down small"></i>
+                </div>
+
+                <!-- Balance -->
+                <div class="balance-card d-none d-md-flex align-items-center gap-2">
+                    <div class="balance-info">
+                        <span class="balance-label small">Balance</span>
+                        <span class="balance-amount fw-bold">₹10.84</span>
+                    </div>
+                    <button class="btn-add-balance btn btn-sm text-white">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+
+                <!-- Notifications -->
+                <div class="position-relative">
+                    <button class="btn btn-outline-secondary notifications-btn" id="notificationsBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notifications-badge">3</span>
+                    </button>
+                    <div class="notifications-dropdown" id="notificationsDropdown">
+                        <div class="p-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-semibold">Notifications</h6>
+                                <button class="btn btn-sm btn-outline-primary btn-mark-all-read">
+                                    Mark all as read
+                                </button>
+                            </div>
+                        </div>
+                        <div class="notifications-list p-2" style="max-height: 300px; overflow-y: auto;">
+                            <!-- Notifications will be loaded dynamically -->
+                        </div>
+                        <div class="p-3 border-top text-center">
+                            <a href="#" class="text-decoration-none">View all notifications</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Profile -->
+                <div class="position-relative">
+                    <div class="user-profile" id="userProfile">
+                        <div class="user-info d-none d-md-block text-end me-2">
+                            <div class="user-name fw-semibold">Alex Johnson</div>
+                            <div class="user-role small text-muted">Admin</div>
+                        </div>
+                        <div class="user-avatar" role="button" tabindex="0" aria-label="User menu">
+                            AJ
+                        </div>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="#" class="dropdown-item d-flex align-items-center gap-3 p-3 text-decoration-none">
+                            <i class="fas fa-user text-muted"></i>
+                            <span>My Profile</span>
+                        </a>
+                        <a href="#" class="dropdown-item d-flex align-items-center gap-3 p-3 text-decoration-none">
+                            <i class="fas fa-cog text-muted"></i>
+                            <span>Settings</span>
+                        </a>
+                        <a href="#" class="dropdown-item d-flex align-items-center gap-3 p-3 text-decoration-none">
+                            <i class="fas fa-credit-card text-muted"></i>
+                            <span>Billing</span>
+                        </a>
+                        <div class="dropdown-divider my-1"></div>
+                        <button class="dropdown-item d-flex align-items-center gap-3 p-3 text-decoration-none border-0 w-100 btn-logout">
+                            <i class="fas fa-sign-out-alt text-muted"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    // Header-specific JavaScript
+    (function() {
+        'use strict';
+        
+        // Initialize header when component loads
+        function initHeader() {
+            // Country selector functionality
+            const countrySelector = document.querySelector('.country-selector');
+            if (countrySelector) {
+                countrySelector.addEventListener('click', showCountrySelector);
+            }
+            
+            // Add balance button
+            const addBalanceBtn = document.querySelector('.btn-add-balance');
+            if (addBalanceBtn) {
+                addBalanceBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (typeof window.showNotification === 'function') {
+                        window.showNotification('Add funds feature coming soon!', 'info');
+                    }
+                });
+            }
+            
+            // Mark all as read button
+            const markAllReadBtn = document.querySelector('.btn-mark-all-read');
+            if (markAllReadBtn) {
+                markAllReadBtn.addEventListener('click', markAllNotificationsAsRead);
+            }
+            
+            // Logout button
+            const logoutBtn = document.querySelector('.btn-logout');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showLogoutConfirmation();
+                });
+            }
+            
+            // Load notifications
+            loadNotifications();
+        }
+        
+        function showCountrySelector() {
+            if (typeof window.showNotification === 'function') {
+                window.showNotification('Country selector would open here', 'info');
+            }
+        }
+        
+        function loadNotifications() {
+            const notifications = [
+                {
+                    id: 1,
+                    type: 'success',
+                    title: 'Campaign Sent Successfully',
+                    message: 'Your "Summer Sale" campaign has been delivered to 1,245 recipients.',
+                    time: '2 hours ago',
+                    read: false
+                },
+                {
+                    id: 2,
+                    type: 'warning',
+                    title: 'Low Balance Alert',
+                    message: 'Your account balance is ₹10.84. Add funds to continue sending messages.',
+                    time: '5 hours ago',
+                    read: false
+                },
+                {
+                    id: 3,
+                    type: 'info',
+                    title: 'New Feature Available',
+                    message: 'Try our new message scheduling feature for better campaign management.',
+                    time: '1 day ago',
+                    read: true
+                }
+            ];
+            
+            const notificationsList = document.querySelector('.notifications-list');
+            if (!notificationsList) return;
+            
+            notificationsList.innerHTML = notifications.map(notification => `
+                <div class="notification-item ${notification.read ? '' : 'unread'}" 
+                     data-id="${notification.id}">
+                    <div class="notification-icon ${notification.type}">
+                        <i class="fas fa-${getNotificationIcon(notification.type)}"></i>
+                    </div>
+                    <div class="notification-content flex-grow-1">
+                        <div class="notification-title fw-semibold">${notification.title}</div>
+                        <div class="notification-message text-muted small">${notification.message}</div>
+                        <div class="notification-time text-muted smaller">${notification.time}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update badge
+            updateNotificationBadge();
+        }
+        
+        function getNotificationIcon(type) {
+            const icons = {
+                success: 'check-circle',
+                warning: 'exclamation-triangle',
+                info: 'info-circle'
+            };
+            return icons[type] || 'info-circle';
+        }
+        
+        function markAllNotificationsAsRead() {
+            const unreadItems = document.querySelectorAll('.notification-item.unread');
+            unreadItems.forEach(item => {
+                item.classList.remove('unread');
+            });
+            
+            updateNotificationBadge();
+            
+            if (typeof window.showNotification === 'function') {
+                window.showNotification('All notifications marked as read', 'success');
+            }
+        }
+        
+        function updateNotificationBadge() {
+            const badge = document.querySelector('.notifications-badge');
+            if (!badge) return;
+            
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            badge.textContent = unreadCount;
+            
+            if (unreadCount === 0) {
+                badge.style.display = 'none';
+            } else {
+                badge.style.display = 'flex';
+            }
+        }
+        
+        function showLogoutConfirmation() {
+            const confirmed = confirm('Are you sure you want to logout?');
+            if (confirmed) {
+                if (typeof window.showNotification === 'function') {
+                    window.showNotification('Logged out successfully!', 'success');
+                }
+                // In a real app, this would redirect to login
+                // window.location.href = '/login';
+            }
+        }
+        
+        // Initialize header
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHeader);
+        } else {
+            initHeader();
+        }
+    })();
+</script>

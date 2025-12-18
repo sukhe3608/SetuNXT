@@ -1,6 +1,6 @@
-// assets/js/initComponents.js
+
 function initComponents() {
-    console.log('Initializing components...');
+   
     
     // Initialize Bootstrap tabs
     const tabTriggers = document.querySelectorAll('[data-bs-toggle="tab"]');
@@ -216,7 +216,6 @@ function initComponents() {
     handleResponsive();
     window.addEventListener('resize', handleResponsive);
     
-    console.log('Components initialized successfully');
 }
 
 // Initialize app components

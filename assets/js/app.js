@@ -1,4 +1,4 @@
-// assets/js/app.js
+
 class RCSApp {
     constructor() {
         this.contactsData = []; // Store contacts data
@@ -6,7 +6,6 @@ class RCSApp {
     }
 
     init() {
-        console.log('SetuNXT RCS App initialized');
         
         // Initialize all components
         this.initCharacterCounter();
@@ -17,7 +16,7 @@ class RCSApp {
         this.initPreviewUpdates();
         this.initKeyboardShortcuts();
         this.initResponsive();
-        this.initContactsTable(); // Initialize contacts table
+        this.initContactsTable(); 
         
         this.loadDraft();
         this.updatePreviewTime();

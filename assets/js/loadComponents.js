@@ -1,4 +1,4 @@
-// assets/js/loadComponents.js
+
 document.addEventListener('DOMContentLoaded', function() {
     // Function to load component from file
     function loadComponent(elementId, filePath) {
@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 document.getElementById(elementId).innerHTML = data;
-                console.log(`Loaded ${filePath} into #${elementId}`);
+
                 return true;
             })
             .catch(error => {
-                console.error(`Error loading ${filePath}:`, error);
+               
                 // Fallback content
                 const fallbackContent = elementId === 'sidebar-placeholder' ? `
                     <div class="alert alert-warning m-3">
@@ -36,8 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadComponent('sidebar-placeholder', 'components/sidebar.html'),
         loadComponent('header-placeholder', 'components/header.html')
     ]).then((results) => {
-        console.log('All components loaded');
-        
+       
         // Wait for DOM to update with new content
         setTimeout(() => {
             // Initialize components

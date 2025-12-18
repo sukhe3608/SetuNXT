@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initAgentsManagement();
     
     function initAgentsManagement() {
-        console.log('Initializing agents management...');
         
         // DOM Elements
         const addAgentBtn = document.getElementById('addAgentBtn');
@@ -50,8 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Load initial agents data
         loadAgentsData();
-        
-        console.log('Agents management initialized');
+  
     }
     
     function loadAgentsData() {

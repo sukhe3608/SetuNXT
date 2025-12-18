@@ -350,6 +350,9 @@ textarea.form-control {
 
 /* Tablet - Large (768px - 991px) */
 @media (min-width: 768px) and (max-width: 991px) {
+    .sidebar-close{
+        display: flex;
+    }
     .main-content {
         margin-left: 0;
     }
@@ -382,6 +385,9 @@ textarea.form-control {
 
 /* Tablet - Medium (711px - 767px) */
 @media (min-width: 711px) and (max-width: 767px) {
+    .sidebar-close{
+        display: flex !important;
+    }
     .main-content {
         margin-left: 0;
     }
@@ -424,6 +430,9 @@ textarea.form-control {
 
 /* Tablet - Small (576px - 710px) */
 @media (min-width: 576px) and (max-width: 710px) {
+    .sidebar-close{
+        display: flex !important;
+    }
     .main-content {
         margin-left: 0;
     }
@@ -482,6 +491,10 @@ textarea.form-control {
         border-radius: 0;
         overflow: visible;
     }
+
+    .sidebar-close{
+        display: flex !important;
+    }
     
     .table {
         display: block;
@@ -498,7 +511,7 @@ textarea.form-control {
     }
     
     .table tbody tr {
-        display: block;
+        display: flex;
         margin-bottom: 1rem;
         background: white;
         border-radius: 0.75rem;
@@ -576,6 +589,7 @@ textarea.form-control {
     .table tbody tr {
         padding: 0.875rem;
         margin-bottom: 0.75rem;
+        overflow: auto;
     }
     
     .table tbody td {
@@ -643,4 +657,24 @@ textarea.form-control {
     .table td {
         border: 1px solid #000;
     }
+}
+
+label.form-label{
+    font-size: 0.9rem;
+}
+
+textarea {
+    font-size: 0.9rem !important;
+}
+
+input {
+    font-size: 0.9rem !important;
+}
+
+select {
+    font-size: 0.9rem !important;
+}
+
+ul#recipientTabs {
+    font-size: 1rem;
 }

@@ -34,10 +34,11 @@
 
     <!-- Main Content -->
     <main class="main-content" id="mainContent">
-        <div class="container-fluid px-3 px-md-4 px-lg-5">
+        <div class="container-fluid px-3 px-md-4 px-lg-3">
             <!-- Page Header -->
             <div class="page-header py-3">
-                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
+                <div
+                    class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
                     <h1 class="page-title fw-bold text-dark mb-0">MANAGE USER AGENT</h1>
                 </div>
             </div>
@@ -49,8 +50,8 @@
                         <div class="col-12 col-md-3">
                             <div class="form-group">
                                 <label for="userName" class="form-label fw-semibold">User Name*</label>
-                                <input type="text" class="form-control" id="userName" 
-                                       placeholder="Enter username" value="podeqiuseppe@gmail.com">
+                                <input type="text" class="form-control" id="userName" placeholder="Enter username"
+                                    value="podeqiuseppe@gmail.com">
                             </div>
                         </div>
                         <div class="col-12 col-md-2 d-flex align-items-end">
@@ -67,16 +68,19 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-3 p-md-4">
                     <!-- Card Header -->
-                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-3">
+                    <div
+                        class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-3">
                         <h5 class="card-title mb-0">Agent List</h5>
                         <button class="btn btn-primary d-flex align-items-center w-10 w-sm-auto" id="addAgentBtn">
-                        <i class="fas fa-plus me-2"></i>
-                        Add Agent
-                    </button>
+                            <i class="fas fa-plus me-2"></i>
+                            Add Agent
+                        </button>
                     </div>
 
-                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-3">
-                        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between w-100 w-md-auto">
+                    <div
+                        class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-3">
+                        <div
+                            class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between w-100 w-md-auto">
                             <div class="form-group mb-0 d-flex align-items-center">
                                 <label for="entriesSelect" class="form-label small mb-0 me-2">Show</label>
                                 <select class="form-select form-select-sm" id="entriesSelect" style="width: auto;">
@@ -92,8 +96,8 @@
                                     <span class="input-group-text bg-transparent border-end-0">
                                         <i class="fas fa-search text-muted"></i>
                                     </span>
-                                    <input type="search" class="form-control border-start-0" 
-                                           placeholder="Search..." id="agentSearch">
+                                    <input type="search" class="form-control border-start-0" placeholder="Search..."
+                                        id="agentSearch">
                                 </div>
                             </div>
                         </div>
@@ -117,7 +121,8 @@
                     </div>
 
                     <!-- Table Footer -->
-                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mt-3 pt-3 border-top gap-3">
+                    <div
+                        class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mt-3 pt-3 border-top gap-3">
                         <div class="text-muted small" id="tableInfo">
                             Showing 1 to 3 of 3 entries
                         </div>
@@ -149,74 +154,83 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+
                     <div class="container-fluid">
                         <div class="row">
-                            <!-- Left Column -->
-                            <div class="col-12 col-md-6">
-                                <div class="row g-3">
-                                    <!-- OTP Checkbox -->
-                                    <div class="col-12 mb-3">
+                            <div class="col-12">
+
+                                <!-- FORM GRID -->
+                                <div class="row row-cols-1 row-cols-md-3 g-3">
+
+                                    <!-- Message Type -->
+                                    <div class="col-md-12 col-12">
                                         <div class="d-flex flex-wrap gap-3">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="otpCheckbox" name="messageType" checked>
-                                                <label class="form-check-label fw-semibold" for="otpCheckbox">OTP</label>
+                                                <input class="form-check-input" type="radio" name="messageType" checked>
+                                                <label class="form-check-label fw-semibold">OTP</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="transactionalCheckbox" name="messageType">
-                                                <label class="form-check-label fw-semibold" for="transactionalCheckbox">Transactional</label>
+                                                <input class="form-check-input" type="radio" name="messageType">
+                                                <label class="form-check-label fw-semibold">Transactional</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="promotionalCheckbox" name="messageType">
-                                                <label class="form-check-label fw-semibold" for="promotionalCheckbox">Promotional</label>
+                                                <input class="form-check-input" type="radio" name="messageType">
+                                                <label class="form-check-label fw-semibold">Promotional</label>
                                             </div>
                                         </div>
                                     </div>
+
                                     <!-- User Name -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <label for="modalUserName" class="form-label fw-semibold">User Name*</label>
-                                            <input type="text" class="form-control" id="modalUserName" required>
+                                            <input type="text" class="form-control" id="modalUserName" required="">
                                         </div>
                                     </div>
 
                                     <!-- Agent Name -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalAgentName" class="form-label fw-semibold">Agent Name*</label>
-                                            <input type="text" class="form-control" id="modalAgentName" required>
+                                            <label for="modalAgentName" class="form-label fw-semibold">Agent
+                                                Name*</label>
+                                            <input type="text" class="form-control" id="modalAgentName" required="">
                                         </div>
                                     </div>
 
                                     <!-- Brand Name -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalBrandName" class="form-label fw-semibold">Brand Name*</label>
-                                            <input type="text" class="form-control" id="modalBrandName" required>
+                                            <label for="modalBrandName" class="form-label fw-semibold">Brand
+                                                Name*</label>
+                                            <input type="text" class="form-control" id="modalBrandName" required="">
                                         </div>
                                     </div>
 
                                     <!-- Description -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalDescription" class="form-label fw-semibold">Description*</label>
+                                            <label for="modalDescription"
+                                                class="form-label fw-semibold">Description*</label>
                                             <textarea class="form-control" id="modalDescription" rows="2"></textarea>
                                         </div>
                                     </div>
 
                                     <!-- Primary Phone Number -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalPrimaryPhone" class="form-label fw-semibold">Primary Phone Number*</label>
-                                            <input type="tel" class="form-control" id="modalPrimaryPhone" required>
+                                            <label for="modalPrimaryPhone" class="form-label fw-semibold">Primary Phone
+                                                Number*</label>
+                                            <input type="tel" class="form-control" id="modalPrimaryPhone" required="">
                                         </div>
                                     </div>
 
                                     <!-- Phone Number Label -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalPhoneLabel" class="form-label fw-semibold">Phone Number Label*</label>
+                                            <label for="modalPhoneLabel" class="form-label fw-semibold">Phone Number
+                                                Label*</label>
                                             <select class="form-select" id="modalPhoneLabel">
-                                                <option selected>Phone</option>
+                                                <option selected="">Phone</option>
                                                 <option>Mobile</option>
                                                 <option>Office</option>
                                                 <option>Home</option>
@@ -225,19 +239,21 @@
                                     </div>
 
                                     <!-- Primary Email Id -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalPrimaryEmail" class="form-label fw-semibold">Primary Email Id*</label>
-                                            <input type="email" class="form-control" id="modalPrimaryEmail" required>
+                                            <label for="modalPrimaryEmail" class="form-label fw-semibold">Primary Email
+                                                Id*</label>
+                                            <input type="email" class="form-control" id="modalPrimaryEmail" required="">
                                         </div>
                                     </div>
 
                                     <!-- Email Id Label -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalEmailLabel" class="form-label fw-semibold">Email Id Label*</label>
+                                            <label for="modalEmailLabel" class="form-label fw-semibold">Email Id
+                                                Label*</label>
                                             <select class="form-select" id="modalEmailLabel">
-                                                <option selected>Email</option>
+                                                <option selected="">Email</option>
                                                 <option>Personal</option>
                                                 <option>Work</option>
                                                 <option>Support</option>
@@ -246,66 +262,66 @@
                                     </div>
 
                                     <!-- SPOC Name -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <label for="modalSpocName" class="form-label fw-semibold">SPOC Name*</label>
-                                            <input type="text" class="form-control" id="modalSpocName" required>
+                                            <input type="text" class="form-control" id="modalSpocName" required="">
                                         </div>
                                     </div>
 
                                     <!-- SPOC Email Id -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalSpocEmail" class="form-label fw-semibold">SPOC Email Id*</label>
-                                            <input type="email" class="form-control" id="modalSpocEmail" required>
+                                            <label for="modalSpocEmail" class="form-label fw-semibold">SPOC Email
+                                                Id*</label>
+                                            <input type="email" class="form-control" id="modalSpocEmail" required="">
                                         </div>
                                     </div>
 
                                     <!-- Upload Logo -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <label for="modalLogo" class="form-label fw-semibold">Upload Logo*</label>
                                             <div class="input-group">
-                                                <input type="file" class="form-control d-none" id="modalLogo" accept="image/*">
-                                                <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('modalLogo').click()">
+                                                <input type="file" class="form-control d-none" id="modalLogo"
+                                                    accept="image/*">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    onclick="document.getElementById('modalLogo').click()">
                                                     Browse
                                                 </button>
-                                                <input type="text" class="form-control" placeholder="No file chosen" readonly id="modalLogoText">
+                                                <input type="text" class="form-control" placeholder="No file chosen"
+                                                    readonly="" id="modalLogoText">
                                             </div>
                                             <small class="text-muted">Max size: 5MB (JPEG, PNG, GIF)</small>
                                         </div>
                                     </div>
 
                                     <!-- Terms of Use URL -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalTermsUrl" class="form-label fw-semibold">Terms of Use URL*</label>
-                                            <input type="url" class="form-control" id="modalTermsUrl" required>
+                                            <label for="modalTermsUrl" class="form-label fw-semibold">Terms of Use
+                                                URL*</label>
+                                            <input type="url" class="form-control" id="modalTermsUrl" required="">
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- Right Column -->
-                            <div class="col-12 col-md-6">
-                                <div class="row g-3">
                                     <!-- Color -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <label for="modalColor" class="form-label fw-semibold">Color*</label>
                                             <div class="input-group">
-                                                <input type="color" class="form-control-color" id="modalColor" value="#4f46e5">
+                                                <input type="color" class="form-control-color" id="modalColor"
+                                                    value="#4f46e5">
                                                 <span class="input-group-text color-value">#4f46e5</span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Country -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <label for="modalCountry" class="form-label fw-semibold">Country*</label>
-                                            <select class="form-select" id="modalCountry" required>
-                                                <option value="IN" selected>INDIA</option>
+                                            <select class="form-select" id="modalCountry" required="">
+                                                <option value="IN" selected="">INDIA</option>
                                                 <option value="US">United States</option>
                                                 <option value="UK">United Kingdom</option>
                                                 <option value="AU">Australia</option>
@@ -314,19 +330,21 @@
                                     </div>
 
                                     <!-- Primary Website -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalPrimaryWebsite" class="form-label fw-semibold">Primary Website*</label>
-                                            <input type="url" class="form-control" id="modalPrimaryWebsite" required>
+                                            <label for="modalPrimaryWebsite" class="form-label fw-semibold">Primary
+                                                Website*</label>
+                                            <input type="url" class="form-control" id="modalPrimaryWebsite" required="">
                                         </div>
                                     </div>
 
                                     <!-- Primary Website Label -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalWebsiteLabel" class="form-label fw-semibold">Primary Website Label*</label>
+                                            <label for="modalWebsiteLabel" class="form-label fw-semibold">Primary
+                                                Website Label*</label>
                                             <select class="form-select" id="modalWebsiteLabel">
-                                                <option selected>Website</option>
+                                                <option selected="">Website</option>
                                                 <option>Main Website</option>
                                                 <option>Support Site</option>
                                                 <option>Blog</option>
@@ -335,59 +353,69 @@
                                     </div>
 
                                     <!-- SPOC Phone Number -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalSpocPhone" class="form-label fw-semibold">SPOC Phone Number*</label>
-                                            <input type="tel" class="form-control" id="modalSpocPhone" required>
+                                            <label for="modalSpocPhone" class="form-label fw-semibold">SPOC Phone
+                                                Number*</label>
+                                            <input type="tel" class="form-control" id="modalSpocPhone" required="">
                                         </div>
                                     </div>
 
                                     <!-- Banner Image -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalBanner" class="form-label fw-semibold">Banner Image*</label>
+                                            <label for="modalBanner" class="form-label fw-semibold">Banner
+                                                Image*</label>
                                             <div class="input-group">
-                                                <input type="file" class="form-control d-none" id="modalBanner" accept="image/*">
-                                                <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('modalBanner').click()">
+                                                <input type="file" class="form-control d-none" id="modalBanner"
+                                                    accept="image/*">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    onclick="document.getElementById('modalBanner').click()">
                                                     Browse
                                                 </button>
-                                                <input type="text" class="form-control" placeholder="No file chosen" readonly id="modalBannerText">
+                                                <input type="text" class="form-control" placeholder="No file chosen"
+                                                    readonly="" id="modalBannerText">
                                             </div>
                                             <small class="text-muted">Max size: 5MB (JPEG, PNG, GIF)</small>
                                         </div>
                                     </div>
 
                                     <!-- Opt-In URL -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalOptinUrl" class="form-label fw-semibold">Opt-In URL*</label>
-                                            <input type="url" class="form-control" id="modalOptinUrl" required>
+                                            <label for="modalOptinUrl" class="form-label fw-semibold">Opt-In
+                                                URL*</label>
+                                            <input type="url" class="form-control" id="modalOptinUrl" required="">
                                         </div>
                                     </div>
 
                                     <!-- Privacy Policy URL -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="modalPrivacyUrl" class="form-label fw-semibold">Privacy Policy URL*</label>
-                                            <input type="url" class="form-control" id="modalPrivacyUrl" required>
+                                            <label for="modalPrivacyUrl" class="form-label fw-semibold">Privacy Policy
+                                                URL*</label>
+                                            <input type="url" class="form-control" id="modalPrivacyUrl" required="">
                                         </div>
                                     </div>
 
                                     <!-- Status -->
-                                    <div class="col-12 col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <label for="modalStatus" class="form-label fw-semibold">Status*</label>
-                                            <select class="form-select" id="modalStatus" required>
-                                                <option value="active" selected>Active</option>
+                                            <select class="form-select" id="modalStatus" required="">
+                                                <option value="active" selected="">Active</option>
                                                 <option value="inactive">Inactive</option>
                                                 <option value="pending">Pending</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
+
                         </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -405,4 +433,5 @@
     <script src="assets/js/initComponents.js"></script>
     <script src="assets/js/agents.js"></script>
 </body>
+
 </html>

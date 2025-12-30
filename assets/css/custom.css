@@ -427,10 +427,10 @@
 }
 
 /* Table header sticky on scroll */
-.table-responsive {
+/* .table-responsive {
     max-height: 400px;
     overflow-y: auto;
-}
+} */
 
 .table-responsive thead th {
     position: sticky;

@@ -27,13 +27,14 @@
 
 .mobile-preview-container {
     background: #1f2937;
-    padding: 0.50rem;
+    padding: 0rem 0.5rem 0.50rem 0.50rem;
     border-radius: 1.80rem;
     /* height: 100%; */
     min-height: 500px;
     display: flex;
-    width: 85%;
+    width: 75%;
     flex-direction: column;
+    margin-left:6rem
 }
 
 .mobile-preview-title {
@@ -261,15 +262,14 @@
 
 .mobile-notch {
     width: 100px;
-    height: 20px;
+    height: 12px;
     background: #1f2937;
     border-radius: 0 0 0.75rem 0.75rem;
-    position: absolute;
-    top: 9.5%;
-    left: 79%;
+    position: relative;
+    top: 11px;
+    left: 50%;
     transform: translateX(-50%);
     z-index: 10;
-    bottom: 21%;
 }
 
 

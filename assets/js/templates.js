@@ -1,29 +1,35 @@
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
     
-    // Initialize templates management
-    initTemplatesManagement();
+    // Determine which page we're on based on URL or elements present
+    const isTemplateFormPage = window.location.pathname.includes('template-form.html') || 
+                               document.getElementById('templateForm') !== null;
     
-    function initTemplatesManagement() {
-        // DOM Elements
+    if (isTemplateFormPage) {
+        initTemplateForm();
+    } else {
+        initTemplatesList();
+    }
+    
+    // ============================================
+    // TEMPLATE LIST PAGE FUNCTIONS
+    // ============================================
+    
+    function initTemplatesList() {
+        // DOM Elements for template list page
         const addTemplateBtn = document.getElementById('addTemplateBtn');
         const templateSearch = document.getElementById('templateSearch');
         const entriesSelect = document.getElementById('entriesSelect');
-        const saveTemplateBtn = document.getElementById('saveTemplateBtn');
-        const addSuggestionBtn = document.getElementById('addSuggestionBtn');
-        const browseFileBtn = document.getElementById('browseFileBtn');
-        const fileUpload = document.getElementById('fileUpload');
-        const fileName = document.getElementById('fileName');
-        const cardDescription = document.getElementById('cardDescription');
-        const charCount = document.getElementById('charCount');
-        const templatesTableBody = document.getElementById('templatesTableBody');
         
         // Initialize data
         loadTemplatesData();
         
         // Initialize event listeners
         if (addTemplateBtn) {
-            addTemplateBtn.addEventListener('click', showAddTemplateModal);
+            addTemplateBtn.addEventListener('click', function() {
+                // Redirect to template form page for adding new template
+                window.location.href = 'template-form.html';
+            });
         }
         
         if (templateSearch) {
@@ -33,29 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (entriesSelect) {
             entriesSelect.addEventListener('change', updateTableEntries);
         }
-        
-        if (saveTemplateBtn) {
-            saveTemplateBtn.addEventListener('click', saveTemplate);
-        }
-        
-        if (addSuggestionBtn) {
-            addSuggestionBtn.addEventListener('click', addSuggestion);
-        }
-        
-        if (browseFileBtn && fileUpload) {
-            browseFileBtn.addEventListener('click', () => fileUpload.click());
-        }
-        
-        if (fileUpload && fileName) {
-            fileUpload.addEventListener('change', handleFileSelect);
-        }
-        
-        if (cardDescription && charCount) {
-            cardDescription.addEventListener('input', updateCharacterCounter);
-        }
-        
-        // Initialize real-time preview updates
-        initPreviewUpdates();
     }
     
     function loadTemplatesData() {
@@ -114,11 +97,14 @@ document.addEventListener('DOMContentLoaded', function() {
             <tr data-template-id="${template.id}">
                 <td class="ps-3">
                     <div class="d-flex gap-1">
-                        <button class="btn btn-sm btn-outline-secondary border-0 agent-action-btn edit-template-btn" 
-                                data-template-id="${template.id}">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger border-0 agent-action-btn delete-template-btn">
+                        <a href="template-form.html?id=${template.id}" 
+                           class="btn btn-sm btn-outline-primary border-0 agent-action-btn edit-template-btn" 
+                           data-template-id="${template.id}"
+                           title="Edit Template">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-danger border-0 agent-action-btn delete-template-btn"
+                                title="Delete Template">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
@@ -151,137 +137,196 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
-        
-        // Initialize edit buttons
-        const editBtns = document.querySelectorAll('.edit-template-btn');
-        editBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const templateId = this.getAttribute('data-template-id');
-                if (templateId) {
-                    editTemplate(parseInt(templateId));
-                }
-            });
-        });
     }
     
-    function showAddTemplateModal() {
-        const modalTitle = document.getElementById('modalTitle');
-        const modalElement = document.getElementById('templateModal');
+    function searchTemplates() {
+        const searchTerm = this.value.toLowerCase().trim();
+        const tableRows = document.querySelectorAll('#templatesTable tbody tr');
+        let visibleCount = 0;
         
-        // Set modal title
-        if (modalTitle) modalTitle.textContent = 'Add Template';
-        
-        // Reset form fields
-        const form = document.querySelector('#templateModal form');
-        if (form) {
-            const formElements = form.querySelectorAll('input, select, textarea');
-            formElements.forEach(element => {
-                if (element.type !== 'radio' && element.type !== 'file') {
-                    element.value = '';
+        tableRows.forEach(row => {
+            const cells = row.cells;
+            let shouldShow = false;
+            
+            // Skip action column (index 0)
+            for (let i = 1; i < cells.length; i++) {
+                const cellText = cells[i].textContent.toLowerCase();
+                if (cellText.includes(searchTerm)) {
+                    shouldShow = true;
+                    break;
                 }
-            });
-        }
+            }
+            
+            if (shouldShow) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
         
-        // Reset file input
-        const fileName = document.getElementById('fileName');
+        updateTableInfo(visibleCount);
+    }
+    
+    function updateTableEntries() {
+        const entries = parseInt(this.value);
+        showNotification(`Showing ${entries} entries per page`, 'info');
+        // In a real app, this would fetch new data from the server
+    }
+    
+    function deleteTemplate(row) {
+        const templateName = row.cells[3]?.querySelector('strong')?.textContent.trim() || 'this template';
+        
+        if (confirm(`Are you sure you want to delete template "${templateName}"?`)) {
+            // Show loading
+            row.style.opacity = '0.5';
+            row.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+                showNotification(`Template "${templateName}" deleted successfully`, 'success');
+                row.remove();
+                updateTableInfo();
+            }, 1000);
+        }
+    }
+    
+    function updateTableInfo(visibleCount = null) {
+        const visibleRows = visibleCount || document.querySelectorAll('#templatesTable tbody tr:not([style*="display: none"])').length;
+        const totalRows = document.querySelectorAll('#templatesTable tbody tr').length;
+        const infoElement = document.getElementById('tableInfo');
+        
+        if (infoElement) {
+            if (visibleRows === totalRows) {
+                infoElement.textContent = `Showing 1 to ${totalRows} of ${totalRows} entries`;
+            } else {
+                infoElement.textContent = `Showing 1 to ${visibleRows} of ${totalRows} entries (filtered)`;
+            }
+        }
+    }
+    
+    // ============================================
+    // TEMPLATE FORM PAGE FUNCTIONS
+    // ============================================
+    
+    function initTemplateForm() {
+        // DOM Elements for template form page
+        const saveTemplateBtn = document.getElementById('saveTemplateBtn');
+        const addSuggestionBtn = document.getElementById('addSuggestionBtn');
+        const browseFileBtn = document.getElementById('browseFileBtn');
         const fileUpload = document.getElementById('fileUpload');
-        if (fileName) {
-            fileName.textContent = 'No file chosen';
-            fileName.classList.remove('has-file');
-        }
-        if (fileUpload) fileUpload.value = '';
-        
-        // Reset character counter
-        const charCount = document.getElementById('charCount');
+        const fileName = document.getElementById('fileName');
         const cardDescription = document.getElementById('cardDescription');
-        if (charCount) charCount.textContent = '0';
-        if (cardDescription) cardDescription.value = '';
+        const charCount = document.getElementById('charCount');
+        const templateForm = document.getElementById('templateForm');
+        const pageTitle = document.getElementById('pageTitle');
         
-        // Reset suggestions
-        const suggestionsContainer = document.getElementById('suggestionsContainer');
-        if (suggestionsContainer) {
-            suggestionsContainer.innerHTML = '';
+        // Check if we're in edit mode
+        const urlParams = new URLSearchParams(window.location.search);
+        const templateId = urlParams.get('id');
+        const isEditMode = templateId !== null;
+        
+        // Initialize form based on mode
+        if (isEditMode) {
+            // Set page title for edit mode
+            if (pageTitle) pageTitle.textContent = 'EDIT TEMPLATE';
+            
+            // Load template data for editing
+            loadTemplateData(templateId);
+        } else {
+            // Add initial suggestion for new template
             addInitialSuggestion();
         }
         
-        // Reset preview
-        updatePreview();
-        
-        // Reset select values to default
-        const templateType = document.getElementById('templateType');
-        const agentCategory = document.getElementById('agentCategory');
-        if (templateType) templateType.value = 'Standalone';
-        if (agentCategory) agentCategory.value = 'General';
-        
-        // Show modal
-        if (modalElement) {
-            const modal = new bootstrap.Modal(modalElement);
-            modal.show();
+        // Initialize event listeners
+        if (saveTemplateBtn) {
+            saveTemplateBtn.addEventListener('click', handleSaveTemplate);
         }
-    }
-    
-    function addInitialSuggestion() {
-        const container = document.getElementById('suggestionsContainer');
-        if (!container) return;
         
-        const suggestionHTML = `
-            <div class="suggestion-item">
-                <div class="suggestion-header">
-                    <span class="suggestion-label">Suggestion 1</span>
-                    <button type="button" class="btn btn-sm btn-outline-danger remove-suggestion-btn">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                <div class="row g-2">
-                    <div class="col-md-4">
-                        <select class="form-select form-select-sm suggestion-action">
-                            <option value="Reply" selected>Reply</option>
-                            <option value="URL">URL</option>
-                            <option value="Dial">Dial</option>
-                            <option value="Postback">Postback</option>
-                        </select>
-                    </div>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control form-control-sm suggestion-text" placeholder="Enter Text or URL">
-                    </div>
-                </div>
-            </div>
-        `;
+        if (addSuggestionBtn) {
+            addSuggestionBtn.addEventListener('click', addSuggestion);
+        }
         
-        container.innerHTML = suggestionHTML;
+        if (browseFileBtn && fileUpload) {
+            browseFileBtn.addEventListener('click', () => fileUpload.click());
+        }
         
-        // Add event listener to remove button
-        const removeBtn = container.querySelector('.remove-suggestion-btn');
-        if (removeBtn) {
-            removeBtn.addEventListener('click', function() {
-                removeSuggestion(this);
+        if (fileUpload && fileName) {
+            fileUpload.addEventListener('change', handleFileSelect);
+        }
+        
+        if (cardDescription && charCount) {
+            cardDescription.addEventListener('input', updateCharacterCounter);
+        }
+        
+        if (templateForm) {
+            templateForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleSaveTemplate();
             });
         }
         
-        // Add event listeners to inputs
-        const suggestionText = container.querySelector('.suggestion-text');
-        const suggestionAction = container.querySelector('.suggestion-action');
+        // Initialize real-time preview updates
+        initPreviewUpdates();
         
-        if (suggestionText) {
-            suggestionText.addEventListener('input', updatePreview);
-        }
+        // Initialize character counter
+        updateCharacterCounter();
         
-        if (suggestionAction) {
-            suggestionAction.addEventListener('change', updatePreview);
-        }
+        // Update preview
+        updatePreview();
     }
     
-    function addSuggestion() {
+    function loadTemplateData(templateId) {
+        // Sample template data - in real app, fetch from API
+        const templateData = {
+            id: parseInt(templateId),
+            name: "Dec_Full2025",
+            agent: "https://www.facebook.com/google/",
+            description: "This is a sample template description with {#variable#}",
+            type: "Standalone",
+            category: "General",
+            title: "Card Title",
+            suggestions: [
+                { action: "Reply", text: "Yes, I'm interested" },
+                { action: "URL", text: "Visit Website" },
+                { action: "Dial", text: "Call Support" }
+            ]
+        };
+        
+        // Populate form fields
+        document.getElementById('templateName').value = templateData.name;
+        document.getElementById('agentName').value = templateData.agent;
+        document.getElementById('cardDescription').value = templateData.description;
+        document.getElementById('templateType').value = templateData.type;
+        document.getElementById('agentCategory').value = templateData.category;
+        document.getElementById('cardTitle').value = templateData.title;
+        
+        // Populate suggestions
+        const suggestionsContainer = document.getElementById('suggestionsContainer');
+        if (suggestionsContainer) {
+            suggestionsContainer.innerHTML = '';
+            
+            templateData.suggestions.forEach((suggestion, index) => {
+                addSuggestionToForm(suggestion.action, suggestion.text, index + 1);
+            });
+        }
+        
+        // Update character counter and preview
+        updateCharacterCounter();
+        updatePreview();
+    }
+    
+    function addInitialSuggestion() {
+        addSuggestionToForm('Reply', 'Sample Reply', 1);
+    }
+    
+    function addSuggestionToForm(action, text, index) {
         const container = document.getElementById('suggestionsContainer');
         if (!container) return;
-        
-        const suggestionCount = container.children.length + 1;
         
         const suggestionHTML = `
             <div class="suggestion-item">
                 <div class="suggestion-header">
-                    <span class="suggestion-label">Suggestion ${suggestionCount}</span>
+                    <span class="suggestion-label">Suggestion ${index}</span>
                     <button type="button" class="btn btn-sm btn-outline-danger remove-suggestion-btn">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -289,14 +334,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="row g-2">
                     <div class="col-md-4">
                         <select class="form-select form-select-sm suggestion-action">
-                            <option value="Reply" selected>Reply</option>
-                            <option value="URL">URL</option>
-                            <option value="Dial">Dial</option>
-                            <option value="Postback">Postback</option>
+                            <option value="Reply" ${action === 'Reply' ? 'selected' : ''}>Reply</option>
+                            <option value="URL" ${action === 'URL' ? 'selected' : ''}>URL</option>
+                            <option value="Dial" ${action === 'Dial' ? 'selected' : ''}>Dial</option>
+                            <option value="Postback" ${action === 'Postback' ? 'selected' : ''}>Postback</option>
                         </select>
                     </div>
                     <div class="col-md-8">
-                        <input type="text" class="form-control form-control-sm suggestion-text" placeholder="Enter Text or URL">
+                        <input type="text" class="form-control form-control-sm suggestion-text" 
+                               placeholder="Enter Text or URL" value="${text || ''}">
                     </div>
                 </div>
             </div>
@@ -324,6 +370,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (suggestionAction) {
             suggestionAction.addEventListener('change', updatePreview);
         }
+    }
+    
+    function addSuggestion() {
+        const container = document.getElementById('suggestionsContainer');
+        if (!container) return;
+        
+        const suggestionCount = container.children.length + 1;
+        addSuggestionToForm('Reply', '', suggestionCount);
     }
     
     function removeSuggestion(button) {
@@ -408,7 +462,11 @@ document.addEventListener('DOMContentLoaded', function() {
             templateName.addEventListener('input', updatePreview);
         }
         
-        // Update preview when card description changes (already handled by character counter)
+        // Update preview when card description changes
+        const cardDescription = document.getElementById('cardDescription');
+        if (cardDescription) {
+            cardDescription.addEventListener('input', updatePreview);
+        }
         
         // Update preview when template type changes
         const templateType = document.getElementById('templateType');
@@ -479,83 +537,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function searchTemplates() {
-        const searchTerm = this.value.toLowerCase().trim();
-        const tableRows = document.querySelectorAll('#templatesTable tbody tr');
-        let visibleCount = 0;
-        
-        tableRows.forEach(row => {
-            const cells = row.cells;
-            let shouldShow = false;
-            
-            // Skip action column (index 0)
-            for (let i = 1; i < cells.length; i++) {
-                const cellText = cells[i].textContent.toLowerCase();
-                if (cellText.includes(searchTerm)) {
-                    shouldShow = true;
-                    break;
-                }
-            }
-            
-            if (shouldShow) {
-                row.style.display = '';
-                visibleCount++;
-            } else {
-                row.style.display = 'none';
-            }
-        });
-        
-        updateTableInfo(visibleCount);
-    }
-    
-    function updateTableEntries() {
-        const entries = parseInt(this.value);
-        showNotification(`Showing ${entries} entries per page`, 'info');
-        // In a real app, this would fetch new data from the server
-    }
-    
-    function deleteTemplate(row) {
-        const templateName = row.cells[3]?.querySelector('strong')?.textContent.trim() || 'this template';
-        
-        if (confirm(`Are you sure you want to delete template "${templateName}"?`)) {
-            // Show loading
-            row.style.opacity = '0.5';
-            row.style.pointerEvents = 'none';
-            
-            setTimeout(() => {
-                showNotification(`Template "${templateName}" deleted successfully`, 'success');
-                row.remove();
-                updateTableInfo();
-            }, 1000);
-        }
-    }
-    
-    function editTemplate(templateId) {
-        // For now, just show the add modal with edit title
-        const modalTitle = document.getElementById('modalTitle');
-        const modalElement = document.getElementById('templateModal');
-        
-        if (modalTitle) modalTitle.textContent = 'Edit Template';
-        
-        // In a real app, you would load the template data here
-        // For this example, we'll just show an empty form
-        
-        // Show modal
-        if (modalElement) {
-            const modal = new bootstrap.Modal(modalElement);
-            modal.show();
-        }
-    }
-    
-    function saveTemplate() {
+    function handleSaveTemplate() {
         const saveTemplateBtn = document.getElementById('saveTemplateBtn');
         const templateName = document.getElementById('templateName').value.trim();
-        const modalTitle = document.getElementById('modalTitle');
-        const isEditMode = modalTitle?.textContent === 'Edit Template';
         
         if (!templateName) {
             showNotification('Please enter a template name', 'warning');
             document.getElementById('templateName').focus();
+            return;
+        }
+        
+        // Validate required fields
+        const requiredFields = document.querySelectorAll('#templateForm [required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+        
+        if (!isValid) {
+            showNotification('Please fill in all required fields', 'warning');
             return;
         }
         
@@ -598,44 +604,34 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Simulate API call
         setTimeout(() => {
-            const modalElement = document.getElementById('templateModal');
-            if (modalElement) {
-                const modal = bootstrap.Modal.getInstance(modalElement);
-                if (modal) modal.hide();
-            }
+            // Reset button
+            saveTemplateBtn.innerHTML = originalText;
+            saveTemplateBtn.disabled = false;
+            
+            // Check if we're in edit mode
+            const urlParams = new URLSearchParams(window.location.search);
+            const templateId = urlParams.get('id');
+            const isEditMode = templateId !== null;
             
             if (isEditMode) {
                 showNotification(`Template "${templateName}" updated successfully!`, 'success');
             } else {
                 showNotification(`Template "${templateName}" added successfully!`, 'success');
-                
-                // In a real app, this would refresh the table with new data
-                setTimeout(() => {
-                    showNotification('Refresh the page to see the new template in the list', 'info');
-                }, 500);
             }
             
-            // Reset button
-            saveTemplateBtn.innerHTML = originalText;
-            saveTemplateBtn.disabled = false;
+            // Redirect back to template list after 1.5 seconds
+            setTimeout(() => {
+                window.location.href = 'template.html';
+            }, 1500);
+            
         }, 1500);
     }
     
-    function updateTableInfo(visibleCount = null) {
-        const visibleRows = visibleCount || document.querySelectorAll('#templatesTable tbody tr:not([style*="display: none"])').length;
-        const totalRows = document.querySelectorAll('#templatesTable tbody tr').length;
-        const infoElement = document.getElementById('tableInfo');
-        
-        if (infoElement) {
-            if (visibleRows === totalRows) {
-                infoElement.textContent = `Showing 1 to ${totalRows} of ${totalRows} entries`;
-            } else {
-                infoElement.textContent = `Showing 1 to ${visibleRows} of ${totalRows} entries (filtered)`;
-            }
-        }
-    }
+    // ============================================
+    // SHARED FUNCTIONS
+    // ============================================
     
-    // Show notification function
+    // Show notification function (shared between both pages)
     function showNotification(message, type = 'info') {
         // Use existing notification system if available
         if (typeof window.showNotification === 'function') {

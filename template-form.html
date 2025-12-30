@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SetuNXT - Template Form</title>
+    <meta name="description" content="Template Form - SetuNXT Platform">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap-custom.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/agents.css">
+    <link rel="stylesheet" href="assets/css/templates.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+
+<body>
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Sidebar Component -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="container-fluid px-3 px-md-4 px-lg-3">
+            <!-- Page Header -->
+            <div class="page-header py-3">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
+                    <div class="d-flex align-items-center gap-3">
+                        <h4 class="fw-bold text-dark mb-0" id="pageTitle">ADD TEMPLATE</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template Form Card -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <a href="template.html" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Back
+                        </a>
+                    <form id="templateForm">
+                        <div class="container-fluid p-4">
+                            <div class="row">
+                                <!-- Left Column - Form -->
+                                <div class="col-lg-8">
+                                    <!-- Form Grid -->
+                                    <div class="form-grid">
+                                        <div>
+                                            <label class="form-label">Template Name*</label>
+                                            <input type="text" class="form-control" placeholder="Enter template name" 
+                                                   id="templateName" required>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">Agent Name*</label>
+                                            <input type="text" class="form-control" placeholder="Enter agent name" 
+                                                   id="agentName" required>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">Upload Image/Video</label>
+                                            <div class="file-upload">
+                                                <button type="button" class="btn btn-outline-secondary" id="browseFileBtn">
+                                                    Browse
+                                                </button>
+                                                <input type="file" id="fileUpload" style="display: none;" 
+                                                       accept="image/*,video/*">
+                                                <div class="file-name" id="fileName">No file chosen</div>
+                                            </div>
+                                            <small class="text-muted">Max size: 10MB (Images: JPG, PNG, GIF, WebP | Videos: MP4, MOV, AVI)</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card Description -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Card Description*</label>
+                                        <textarea class="form-control" rows="3" placeholder="Type Your message" 
+                                                  id="cardDescription" maxlength="1024" required></textarea>
+                                        <div class="char-counter">
+                                            Character count: <span id="charCount">0</span> / 1024
+                                        </div>
+                                        <small class="text-muted mt-1">
+                                            NOTE: Use {#var#} to insert a variable into the template
+                                        </small>
+                                    </div>
+
+                                    <!-- Template Settings -->
+                                    <div class="form-grid mb-4">
+                                        <div>
+                                            <label class="form-label">Template Type*</label>
+                                            <select class="form-select" id="templateType" required>
+                                                <option value="Standalone" selected>Standalone</option>
+                                                <option value="Category">Category</option>
+                                                <option value="Product">Product</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">Agent Category*</label>
+                                            <select class="form-select" id="agentCategory" required>
+                                                <option value="General" selected>General</option>
+                                                <option value="E-commerce">E-commerce</option>
+                                                <option value="Banking">Banking</option>
+                                                <option value="Healthcare">Healthcare</option>
+                                                <option value="Education">Education</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">Card Title</label>
+                                            <input type="text" class="form-control" placeholder="Enter card title" 
+                                                   id="cardTitle">
+                                        </div>
+                                    </div>
+
+                                    <!-- Suggestions Section -->
+                                    <div class="suggestion-section">
+                                        <h6 class="mb-3">Add Suggestion</h6>
+                                        
+                                        <!-- Suggestions Container -->
+                                        <div id="suggestionsContainer">
+                                            <!-- Suggestions will be added dynamically -->
+                                        </div>
+
+                                        <!-- Add Suggestion Button -->
+                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addSuggestionBtn">
+                                            <i class="fas fa-plus me-1"></i> Add Suggestion
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column - Mobile Preview -->
+                                <div class="col-lg-4 mobile-container">
+                                    <div class="mobile-preview-container">
+                                        <div class="mobile-notch"></div>
+                                        <div class="phone-screen">
+                                            <div class="whatsapp-chat">
+                                                <!-- Chat Header -->
+                                                <div class="chat-header">
+                                                    <div class="chat-info">
+                                                        <h6>Mobile Preview</h6>
+                                                        <div></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Chat Body -->
+                                                <div class="chat-body">
+                                                    <!-- Template Message -->
+                                                    <div class="template-message">
+                                                        <div id="previewMessage">Template message preview will appear here...</div>
+                                                        
+                                                        <!-- Quick Reply Buttons -->
+                                                        <div class="quick-replies" id="quickReplies">
+                                                            <div class="quick-reply-btn">
+                                                                <i class="fas fa-reply"></i>
+                                                                <span>Sample Reply</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="border-top p-4">
+                            <div class="d-flex justify-content-end gap-3">
+                                <a href="template.html" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary" id="saveTemplateBtn">
+                                    <i class="fas fa-check me-2"></i>
+                                    Submit Template
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div class="footer text-center py-3 border-top bg-white">
+        © 2021. PRP-Tech. All Rights Reserved
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="assets/js/loadComponents.js"></script>
+    <script src="assets/js/initComponents.js"></script>
+    <script src="assets/js/templates.js"></script>
+</body>
+</html>

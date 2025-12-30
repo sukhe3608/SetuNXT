@@ -327,7 +327,7 @@ textarea.form-control {
 /* Desktop - Large (≥1200px) */
 @media (min-width: 1200px) {
     .table {
-        font-size: 0.9375rem;
+        font-size: 0.875rem;
     }
     
     .table th,
@@ -511,7 +511,7 @@ textarea.form-control {
     }
     
     .table tbody tr {
-        display: flex;
+        display: block;
         margin-bottom: 1rem;
         background: white;
         border-radius: 0.75rem;
@@ -521,7 +521,7 @@ textarea.form-control {
     }
     
     .table tbody td {
-        display: flex;
+        display: block;
         justify-content: space-between;
         align-items: center;
         padding: 0.5rem 0;

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SetuNXT - Dashboard</title>
+    <meta name="description" content="Marketing Dashboard Analytics for SetuNXT">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap-custom.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <!-- Dark Mode CSS -->
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    
+    <style>
+        /* Initial theme loading to prevent flash */
+        body:not(.dark-mode):not(.light-mode) {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        
+        /* Smooth transitions */
+        body, body *:not(.fa-solid, .fa-regular, .fa-light, .fa-thin, .fa-duotone, .fa-brands) {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Sidebar Component -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="container-fluid px-3 px-md-4 py-3">
+            <!-- Dashboard Header with Tabs -->
+            <div class="dashboard-header mb-4">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
+                    <div>
+                        <h1 class="h3 fw-bold mb-1">Dashboard</h1>
+                        <p class="text-muted mb-0">Monitor your campaign performance and analytics</p>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <div class="input-group input-group-sm" style="min-width: 180px;">
+                            <span class="input-group-text">
+                                <i class="fas fa-calendar"></i>
+                            </span>
+                            <select class="form-select" id="dateRange">
+                                <option value="7">Last 7 days</option>
+                                <option value="30" selected>Last 30 days</option>
+                                <option value="90">Last 90 days</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary" id="exportBtn">
+                            <i class="fas fa-download me-1"></i>
+                            <span class="d-none d-sm-inline">Export</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Dashboard Tabs -->
+                <nav class="dashboard-tabs-container">
+                    <ul class="nav dashboard-tabs" id="dashboardTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#overview-tab" type="button" role="tab">
+                                <i class="fas fa-chart-pie me-1 d-none d-md-inline"></i>
+                                Overview
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#campaigns-tab" type="button" role="tab">
+                                <i class="fas fa-bullhorn me-1 d-none d-md-inline"></i>
+                                Campaigns
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#analytics-tab" type="button" role="tab">
+                                <i class="fas fa-chart-line me-1 d-none d-md-inline"></i>
+                                Analytics
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="dashboardTabContent">
+                <!-- Overview Tab -->
+                <div class="tab-pane fade show active" id="overview-tab" role="tabpanel">
+                    <!-- Key Metrics Grid -->
+                    <div class="row g-3 mb-4">
+                        <!-- Total Sent -->
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="metric-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="metric-title">Total Sent</div>
+                                        <div class="metric-value">2.4M</div>
+                                        <div class="metric-change positive">
+                                            <i class="fas fa-arrow-up me-1"></i>+12.5% vs last period
+                                        </div>
+                                    </div>
+                                    <div class="metric-icon bg-primary">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivered -->
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="metric-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="metric-title">Delivered</div>
+                                        <div class="metric-value">2.28M</div>
+                                        <div class="metric-change positive">
+                                            <i class="fas fa-arrow-up me-1"></i>+10.2% vs last period
+                                        </div>
+                                    </div>
+                                    <div class="metric-icon bg-success">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Read -->
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="metric-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="metric-title">Read</div>
+                                        <div class="metric-value">1.82M</div>
+                                        <div class="metric-change positive">
+                                            <i class="fas fa-arrow-up me-1"></i>+8.7% vs last period
+                                        </div>
+                                    </div>
+                                    <div class="metric-icon bg-info">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Failed -->
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="metric-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="metric-title">Failed</div>
+                                        <div class="metric-value">12.4K</div>
+                                        <div class="metric-change negative">
+                                            <i class="fas fa-arrow-down me-1"></i>-23.1% vs last period
+                                        </div>
+                                    </div>
+                                    <div class="metric-icon bg-danger">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Read Rate -->
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="metric-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="metric-title">Read Rate</div>
+                                        <div class="metric-value">79.8%</div>
+                                        <div class="metric-change positive">
+                                            <i class="fas fa-arrow-up me-1"></i>+3.2% vs last period
+                                        </div>
+                                    </div>
+                                    <div class="metric-icon bg-warning">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Replies -->
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="metric-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="metric-title">Replies</div>
+                                        <div class="metric-value">284K</div>
+                                        <div class="metric-change positive">
+                                            <i class="fas fa-arrow-up me-1"></i>+15.6% vs last period
+                                        </div>
+                                    </div>
+                                    <div class="metric-icon bg-purple">
+                                        <i class="fas fa-reply"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Spend -->
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="metric-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="metric-title">Total Spend</div>
+                                        <div class="metric-value">$48.2K</div>
+                                        <div class="metric-change positive">
+                                            <i class="fas fa-arrow-up me-1"></i>+5.4% vs last period
+                                        </div>
+                                    </div>
+                                    <div class="metric-icon bg-teal">
+                                        <i class="fas fa-credit-card"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Rate -->
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="metric-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="metric-title">Delivery Rate</div>
+                                        <div class="metric-value">95.2%</div>
+                                        <div class="metric-change positive">
+                                            <i class="fas fa-arrow-up me-1"></i>+1.8% vs last period
+                                        </div>
+                                    </div>
+                                    <div class="metric-icon bg-indigo">
+                                        <i class="fas fa-truck"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Credits Left -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="credits-left">
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                                    <div>
+                                        <div class="credits-label">Credits Left</div>
+                                        <div class="credits-value">156K</div>
+                                        <div class="metric-change negative">
+                                            <i class="fas fa-arrow-down me-1"></i>-8.2% vs last period
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-warning btn-sm">
+                                        <i class="fas fa-plus me-1"></i>
+                                        Add Credits
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row 1 -->
+                    <div class="row g-4 mb-4">
+                        <!-- Hourly Engagement -->
+                        <div class="col-xxl-6 col-lg-6">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Hourly Engagement</h5>
+                                    <div class="chart-actions">
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="hourlyChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Performance Trend -->
+                        <div class="col-xxl-6 col-lg-6">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Weekly Performance Trend</h5>
+                                    <div class="chart-actions">
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="weeklyChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row 2 -->
+                    <div class="row g-4 mb-4">
+                        <!-- Delivery Funnel -->
+                        <div class="col-xxl-6 col-lg-6">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Delivery Funnel</h5>
+                                </div>
+                                <div class="funnel-container">
+                                    <div class="funnel-step">
+                                        <div class="step-name">Sent</div>
+                                        <div class="step-value">2.40M</div>
+                                        <div class="step-percentage">100%</div>
+                                    </div>
+                                    <div class="funnel-step">
+                                        <div class="step-name">Delivered</div>
+                                        <div class="step-value">2.28M</div>
+                                        <div class="step-percentage">95%</div>
+                                    </div>
+                                    <div class="funnel-step">
+                                        <div class="step-name">Read</div>
+                                        <div class="step-value">1.82M</div>
+                                        <div class="step-percentage">76%</div>
+                                    </div>
+                                    <div class="funnel-step">
+                                        <div class="step-name">Clicked</div>
+                                        <div class="step-value">456.0K</div>
+                                        <div class="step-percentage">19%</div>
+                                    </div>
+                                    <div class="funnel-step">
+                                        <div class="step-name">Replied</div>
+                                        <div class="step-value">284.0K</div>
+                                        <div class="step-percentage">11.8%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Performing Campaigns -->
+                        <div class="col-xxl-6 col-lg-6">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Top Performing Campaigns</h5>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="campaignsChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Row -->
+                    <div class="row g-4">
+                        <!-- Region Performance -->
+                        <div class="col-xxl-4 col-lg-6">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Region Performance</h5>
+                                </div>
+                                <div class="donut-chart-container">
+                                    <div class="donut-chart-wrapper">
+                                        <canvas id="regionChart"></canvas>
+                                    </div>
+                                    <div class="region-list">
+                                        <div class="region-item">
+                                            <div class="region-color" style="background-color: #4361ee;"></div>
+                                            <span class="region-name">North America</span>
+                                            <span class="region-percentage">45%</span>
+                                        </div>
+                                        <div class="region-item">
+                                            <div class="region-color" style="background-color: #10b981;"></div>
+                                            <span class="region-name">Asia Pacific</span>
+                                            <span class="region-percentage">18%</span>
+                                        </div>
+                                        <div class="region-item">
+                                            <div class="region-color" style="background-color: #8b5cf6;"></div>
+                                            <span class="region-name">Europe</span>
+                                            <span class="region-percentage">28%</span>
+                                        </div>
+                                        <div class="region-item">
+                                            <div class="region-color" style="background-color: #f59e0b;"></div>
+                                            <span class="region-name">Latin America</span>
+                                            <span class="region-percentage">9%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Device & OS Distribution -->
+                        <div class="col-xxl-4 col-lg-6">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Device & OS Distribution</h5>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="deviceChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Engagement Metrics -->
+                        <div class="col-xxl-4 col-lg-12">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Engagement Metrics</h5>
+                                </div>
+                                <div class="engagement-metrics">
+                                    <div class="engagement-card">
+                                        <div class="engagement-icon">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div>
+                                            <div class="engagement-title">Avg. Read Time</div>
+                                            <div class="engagement-value">12.4s</div>
+                                        </div>
+                                    </div>
+                                    <div class="engagement-card">
+                                        <div class="engagement-icon">
+                                            <i class="fas fa-reply"></i>
+                                        </div>
+                                        <div>
+                                            <div class="engagement-title">Response Rate</div>
+                                            <div class="engagement-value">11.8%</div>
+                                        </div>
+                                    </div>
+                                    <div class="engagement-card">
+                                        <div class="engagement-icon">
+                                            <i class="fas fa-chart-bar"></i>
+                                        </div>
+                                        <div>
+                                            <div class="engagement-title">Peak Hour</div>
+                                            <div class="engagement-value">8PM</div>
+                                        </div>
+                                    </div>
+                                    <div class="engagement-card">
+                                        <div class="engagement-icon">
+                                            <i class="fas fa-mouse-pointer"></i>
+                                        </div>
+                                        <div>
+                                            <div class="engagement-title">Avg. CTR</div>
+                                            <div class="engagement-value">19.8%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <h6 class="mb-3">Interaction Types</h6>
+                                    <div class="interaction-list">
+                                        <div class="interaction-item">
+                                            <span>Button Clicks</span>
+                                            <span>45%</span>
+                                        </div>
+                                        <div class="interaction-item">
+                                            <span>Quick Replies</span>
+                                            <span>30%</span>
+                                        </div>
+                                        <div class="interaction-item">
+                                            <span>Rich Card Taps</span>
+                                            <span>15%</span>
+                                        </div>
+                                        <div class="interaction-item">
+                                            <span>Link Opens</span>
+                                            <span>10%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campaigns Tab -->
+                <div class="tab-pane fade" id="campaigns-tab" role="tabpanel">
+                    <div class="campaigns-header mb-4">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
+                            <h2 class="h4 fw-bold mb-0">Campaign Performance</h2>
+                            <div class="campaign-filters d-flex flex-wrap gap-2">
+                                <button class="btn btn-sm btn-outline-primary active" data-filter="all">All</button>
+                                <button class="btn btn-sm btn-outline-primary" data-filter="active">Active</button>
+                                <button class="btn btn-sm btn-outline-primary" data-filter="completed">Completed</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Campaign Stats -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="campaign-stat-card">
+                                    <div class="d-flex align-items-center">
+                                        <div class="stat-icon bg-primary">
+                                            <i class="fas fa-broadcast-tower"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <div class="stat-title">Active Campaigns</div>
+                                            <div class="stat-value">3</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="campaign-stat-card">
+                                    <div class="d-flex align-items-center">
+                                        <div class="stat-icon bg-success">
+                                            <i class="fas fa-mouse-pointer"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <div class="stat-title">Total CTR</div>
+                                            <div class="stat-value">19.8%</div>
+                                            <div class="stat-change positive">
+                                                <i class="fas fa-arrow-up me-1"></i>+2.4%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="campaign-stat-card">
+                                    <div class="d-flex align-items-center">
+                                        <div class="stat-icon bg-info">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <div class="stat-title">Avg. Read Time</div>
+                                            <div class="stat-value">12.4s</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="campaign-stat-card">
+                                    <div class="d-flex align-items-center">
+                                        <div class="stat-icon bg-warning">
+                                            <i class="fas fa-reply"></i>
+                                        </div>
+                                        <div class="ms-3">
+                                            <div class="stat-title">Total Replies</div>
+                                            <div class="stat-value">284K</div>
+                                            <div class="stat-change positive">
+                                                <i class="fas fa-arrow-up me-1"></i>+15.6%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campaign Performance Table -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="chart-container">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="campaignTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Campaign</th>
+                                                <th>Status</th>
+                                                <th>Sent</th>
+                                                <th>Delivered</th>
+                                                <th>Read</th>
+                                                <th>Clicked</th>
+                                                <th>CTR</th>
+                                                <th>Region</th>
+                                                <th>Timeline</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-status="active">
+                                                <td>Holiday Flash Sale</td>
+                                                <td><span class="badge bg-success">active</span></td>
+                                                <td>485.0K</td>
+                                                <td>461.8K</td>
+                                                <td>369.4K</td>
+                                                <td>92.3K</td>
+                                                <td>19.0%</td>
+                                                <td>North America</td>
+                                                <td>Dec 15 – Dec 25</td>
+                                            </tr>
+                                            <tr data-status="active">
+                                                <td>New Year Promo</td>
+                                                <td><span class="badge bg-success">active</span></td>
+                                                <td>320.0K</td>
+                                                <td>304.0K</td>
+                                                <td>243.2K</td>
+                                                <td>60.8K</td>
+                                                <td>20.0%</td>
+                                                <td>Europe</td>
+                                                <td>Dec 28 – Jan 5</td>
+                                            </tr>
+                                            <tr data-status="completed">
+                                                <td>Product Launch</td>
+                                                <td><span class="badge bg-primary">completed</span></td>
+                                                <td>650.0K</td>
+                                                <td>617.5K</td>
+                                                <td>494.0K</td>
+                                                <td>123.5K</td>
+                                                <td>20.0%</td>
+                                                <td>Global</td>
+                                                <td>Nov 20 – Dec 1</td>
+                                            </tr>
+                                            <tr data-status="completed">
+                                                <td>Black Friday</td>
+                                                <td><span class="badge bg-primary">completed</span></td>
+                                                <td>892.0K</td>
+                                                <td>847.4K</td>
+                                                <td>677.9K</td>
+                                                <td>169.5K</td>
+                                                <td>20.0%</td>
+                                                <td>North America</td>
+                                                <td>Nov 24 – Nov 27</td>
+                                            </tr>
+                                            <tr data-status="active">
+                                                <td>Loyalty Rewards</td>
+                                                <td><span class="badge bg-success">active</span></td>
+                                                <td>125.0K</td>
+                                                <td>118.8K</td>
+                                                <td>95.0K</td>
+                                                <td>23.8K</td>
+                                                <td>20.0%</td>
+                                                <td>Asia Pacific</td>
+                                                <td>Dec 1 – Ongoing</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campaign Charts -->
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Campaign ROI Performance</h5>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="campaignRoiChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Campaign CTR Comparison</h5>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="campaignCtrChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div class="tab-pane fade" id="analytics-tab" role="tabpanel">
+                    <div class="row g-4 mb-4">
+                        <!-- Region Performance -->
+                        <div class="col-lg-6">
+                            <div class="chart-container">
+                                <h5 class="chart-title mb-3">Region Performance</h5>
+                                <div class="donut-chart-container">
+                                    <div class="donut-chart-wrapper">
+                                        <canvas id="analyticsRegionChart"></canvas>
+                                    </div>
+                                    <div class="region-list">
+                                        <div class="region-item">
+                                            <div class="region-color" style="background-color: #4361ee;"></div>
+                                            <span class="region-name">North America</span>
+                                            <span class="region-percentage">45%</span>
+                                        </div>
+                                        <div class="region-item">
+                                            <div class="region-color" style="background-color: #10b981;"></div>
+                                            <span class="region-name">Asia Pacific</span>
+                                            <span class="region-percentage">18%</span>
+                                        </div>
+                                        <div class="region-item">
+                                            <div class="region-color" style="background-color: #8b5cf6;"></div>
+                                            <span class="region-name">Europe</span>
+                                            <span class="region-percentage">28%</span>
+                                        </div>
+                                        <div class="region-item">
+                                            <div class="region-color" style="background-color: #f59e0b;"></div>
+                                            <span class="region-name">Latin America</span>
+                                            <span class="region-percentage">9%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interaction Types -->
+                        <div class="col-lg-6">
+                            <div class="chart-container">
+                                <h5 class="chart-title mb-3">Interaction Types</h5>
+                                <div class="interaction-list">
+                                    <div class="interaction-item">
+                                        <span>Button Clicks</span>
+                                        <span>45%</span>
+                                    </div>
+                                    <div class="interaction-item">
+                                        <span>Quick Replies</span>
+                                        <span>30%</span>
+                                    </div>
+                                    <div class="interaction-item">
+                                        <span>Rich Card Taps</span>
+                                        <span>15%</span>
+                                    </div>
+                                    <div class="interaction-item">
+                                        <span>Link Opens</span>
+                                        <span>10%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <!-- Device & OS Distribution -->
+                        <div class="col-lg-6">
+                            <div class="chart-container">
+                                <h5 class="chart-title mb-3">Device & OS Distribution</h5>
+                                <div class="chart-wrapper">
+                                    <canvas id="analyticsDeviceChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Engagement Metrics -->
+                        <div class="col-lg-6">
+                            <div class="chart-container">
+                                <h5 class="chart-title mb-3">Engagement Metrics</h5>
+                                <div class="engagement-metrics">
+                                    <div class="engagement-card">
+                                        <div class="engagement-icon">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div>
+                                            <div class="engagement-title">Avg. Read Time</div>
+                                            <div class="engagement-value">12.4s</div>
+                                        </div>
+                                    </div>
+                                    <div class="engagement-card">
+                                        <div class="engagement-icon">
+                                            <i class="fas fa-reply"></i>
+                                        </div>
+                                        <div>
+                                            <div class="engagement-title">Response Rate</div>
+                                            <div class="engagement-value">11.8%</div>
+                                        </div>
+                                    </div>
+                                    <div class="engagement-card">
+                                        <div class="engagement-icon">
+                                            <i class="fas fa-chart-bar"></i>
+                                        </div>
+                                        <div>
+                                            <div class="engagement-title">Peak Hour</div>
+                                            <div class="engagement-value">8PM</div>
+                                        </div>
+                                    </div>
+                                    <div class="engagement-card">
+                                        <div class="engagement-icon">
+                                            <i class="fas fa-mouse-pointer"></i>
+                                        </div>
+                                        <div>
+                                            <div class="engagement-title">Avg. CTR</div>
+                                            <div class="engagement-value">19.8%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Performance Chart -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Weekly Performance Trend</h5>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="analyticsWeeklyChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/initComponents.js"></script>
+    <script src="assets/js/loadComponents.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+
+    <script>
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load theme first
+            if (typeof window.ThemeManager === 'function' && !window.themeManager) {
+                window.themeManager = new ThemeManager();
+            }
+            
+            // Initialize dashboard
+            if (typeof window.Dashboard === 'function' && !window.dashboard) {
+                window.dashboard = new Dashboard();
+                window.dashboard.init();
+            }
+        });
+    </script>
+</body>
+
+</html>

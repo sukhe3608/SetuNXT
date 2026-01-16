@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SetuNXT - Login</title>
+    <meta name="description" content="Login to SetuNXT RCS Messaging Platform">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap-custom.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <!-- Left Panel with App Info -->
+        <div class="auth-left-panel">
+            <div class="auth-logo-container">
+                <div class="auth-logo-icon">R</div>
+                <div class="auth-logo-text">SetuNXT</div>
+            </div>
+            
+            <div class="auth-tagline">Welcome back to RCS messaging</div>
+            <p class="auth-app-desc">Rich Communication Services (RCS) brings you enhanced messaging with read receipts, typing indicators, high-quality media sharing, and more — all within your default messaging app.</p>
+            
+            <ul class="auth-feature-list">
+                <li class="auth-feature-item">
+                    <div class="auth-feature-icon">✓</div>
+                    <div class="auth-feature-content">
+                        <div class="auth-feature-title">Rich Chat Experience</div>
+                        <div class="auth-feature-desc">Send high-resolution photos, videos, and files</div>
+                    </div>
+                </li>
+                <li class="auth-feature-item">
+                    <div class="auth-feature-icon">✓</div>
+                    <div class="auth-feature-content">
+                        <div class="auth-feature-title">Group Messaging</div>
+                        <div class="auth-feature-desc">Create groups with up to 100 participants</div>
+                    </div>
+                </li>
+                <li class="auth-feature-item">
+                    <div class="auth-feature-icon">✓</div>
+                    <div class="auth-feature-content">
+                        <div class="auth-feature-title">Business Chat</div>
+                        <div class="auth-feature-desc">Interactive chats with verified businesses</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Right Panel with Form -->
+        <div class="auth-right-panel">
+            <div class="auth-right-header">
+                <h1 class="auth-title">Log In</h1>
+                <p class="auth-subtitle">Welcome back! Please enter your details to access your account</p>
+            </div>
+            
+            <form id="loginForm" class="auth-form">
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email">Email Address or Phone</label>
+                    <input type="text" id="email" placeholder="Enter your email or phone number">
+                    <div class="auth-error-message" id="emailError">Please enter a valid email or phone number</div>
+                </div>
+                
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                    <div class="auth-error-message" id="passwordError">Please enter your password</div>
+                </div>
+                
+                <!-- Remember Me & Forgot Password -->
+                <div class="auth-remember-forgot">
+                    <div class="auth-remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember" class="auth-checkbox-label">Remember me</label>
+                    </div>
+                    <a href="#" class="auth-forgot-password" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="auth-submit-btn">Log In</button>
+                
+                <!-- Divider -->
+                <div class="auth-divider">
+                    <span class="auth-divider-text">Or continue with</span>
+                </div>
+                
+                <!-- Social Login Buttons -->
+                <div class="auth-social-login">
+                    <button type="button" class="auth-social-btn auth-google-btn">
+                        <span class="auth-social-icon">G</span>
+                        <span>Google</span>
+                    </button>
+                    <button type="button" class="auth-social-btn auth-apple-btn">
+                        <span class="auth-social-icon"></span>
+                        <span>Apple</span>
+                    </button>
+                </div>
+                
+                <!-- Signup Link -->
+                <div class="auth-link-container">
+                    Don't have an account? <a href="signup.html">Sign up</a>
+                </div>
+            </form>
+            
+            <!-- Terms & Privacy -->
+            <div class="auth-footer text-center mt-2">
+                <p class="small text-muted mb-2">
+                    By continuing, you agree to our
+                    <a href="#" class="text-decoration-none">Terms of Service</a> and
+                    <a href="#" class="text-decoration-none">Privacy Policy</a>
+                </p>
+                <p class="small text-muted">
+                    © 2024 SetuNXT. All rights reserved. Powered by PRP-Tech
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-key me-2"></i>Reset Password
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted mb-4">
+                        Enter your email address and we'll send you a link to reset your password.
+                    </p>
+                    <form id="forgotPasswordForm">
+                        <div class="mb-3">
+                            <label for="resetEmail" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="resetEmail" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" id="sendResetLinkBtn">
+                            Send Reset Link
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>

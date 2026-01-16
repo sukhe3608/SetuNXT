@@ -1,4 +1,3 @@
-
 class RCSApp {
     constructor() {
         this.contactsData = []; // Store contacts data
@@ -6,7 +5,6 @@ class RCSApp {
     }
 
     init() {
-        
         // Initialize all components
         this.initCharacterCounter();
         this.initFileUpload();
@@ -16,7 +14,10 @@ class RCSApp {
         this.initPreviewUpdates();
         this.initKeyboardShortcuts();
         this.initResponsive();
-        this.initContactsTable(); 
+        this.initContactsTable();
+        
+        // Theme is now handled by theme.js, just ensure it's loaded
+        this.ensureThemeLoaded();
         
         this.loadDraft();
         this.updatePreviewTime();
@@ -25,6 +26,13 @@ class RCSApp {
         setTimeout(() => {
             this.showNotification('Welcome to SetuNXT RCS Messaging!', 'info');
         }, 1000);
+    }
+
+    ensureThemeLoaded() {
+        // Check if theme manager is loaded, if not, load it
+        if (!window.themeManager && typeof window.ThemeManager === 'function') {
+            window.themeManager = new ThemeManager();
+        }
     }
 
     initCharacterCounter() {

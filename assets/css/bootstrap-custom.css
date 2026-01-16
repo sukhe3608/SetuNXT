@@ -127,6 +127,11 @@
     position: relative;
 }
 
+.message-card .card-body {
+    max-height: 101px;
+    overflow-y: auto;
+}
+
 .gift-boxes {
     display: flex;
     gap: 1rem;

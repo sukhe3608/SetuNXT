@@ -21,6 +21,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-left: 90px;
 }
 
 .preview-title {
@@ -565,5 +566,11 @@
     
     .suggestion-label {
         font-size: 0.8rem;
+    }
+}
+@media (max-width: 768px) {
+    .page-header .btn {
+        width: 20%;
+        /* min-width: 20px; */
     }
 }

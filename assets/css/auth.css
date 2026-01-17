@@ -1,4 +1,4 @@
-/* SetuNXT RCS Messaging Authentication Styles - Enhanced Animations */
+
 :root {
     --primary: #2D5BFF;
     --primary-light: #5A85FF;
@@ -36,8 +36,8 @@
     display: flex;
     max-width: 1000px;
     width: 100%;
-    max-height: 700px;
-    height: 700px;
+    max-height: 670px;
+    height: 670px;
     background: var(--light);
     border-radius: 24px;
     overflow: hidden;

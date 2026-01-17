@@ -1,14 +1,30 @@
+// SetuNXT Templates Management
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
     
-    // Determine which page we're on based on URL or elements present
-    const isTemplateFormPage = window.location.pathname.includes('template-form.html') || 
-                               document.getElementById('templateForm') !== null;
+    // Global variable to track suggestion count
+    let suggestionCounter = 0;
     
-    if (isTemplateFormPage) {
-        initTemplateForm();
+    // Load SweetAlert2 if not already loaded
+    if (typeof Swal === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+        script.onload = initializeTemplates;
+        document.head.appendChild(script);
     } else {
-        initTemplatesList();
+        initializeTemplates();
+    }
+    
+    function initializeTemplates() {
+        // Determine which page we're on based on URL or elements present
+        const isTemplateFormPage = window.location.pathname.includes('template-form.html') || 
+                                   document.getElementById('templateForm') !== null;
+        
+        if (isTemplateFormPage) {
+            initTemplateForm();
+        } else {
+            initTemplatesList();
+        }
     }
     
     // ============================================
@@ -104,6 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             <i class="fas fa-edit"></i>
                         </a>
                         <button class="btn btn-sm btn-outline-danger border-0 agent-action-btn delete-template-btn"
+                                data-template-id="${template.id}"
+                                data-template-name="${template.templateName}"
                                 title="Delete Template">
                             <i class="fas fa-trash-alt"></i>
                         </button>
@@ -126,17 +144,18 @@ document.addEventListener('DOMContentLoaded', function() {
             </tr>
         `).join('');
         
-        // Initialize delete buttons
+        // Initialize delete buttons with SweetAlert2
         const deleteBtns = document.querySelectorAll('.delete-template-btn');
         deleteBtns.forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
-                const row = this.closest('tr');
-                if (row) {
-                    deleteTemplate(row);
-                }
+                const templateId = this.getAttribute('data-template-id');
+                const templateName = this.getAttribute('data-template-name');
+                deleteTemplate(templateId, templateName, this);
             });
         });
+        
+        updateTableInfo();
     }
     
     function searchTemplates() {
@@ -174,17 +193,67 @@ document.addEventListener('DOMContentLoaded', function() {
         // In a real app, this would fetch new data from the server
     }
     
-    function deleteTemplate(row) {
-        const templateName = row.cells[3]?.querySelector('strong')?.textContent.trim() || 'this template';
+    async function deleteTemplate(templateId, templateName, button) {
+        const row = button.closest('tr');
         
-        if (confirm(`Are you sure you want to delete template "${templateName}"?`)) {
-            // Show loading
-            row.style.opacity = '0.5';
-            row.style.pointerEvents = 'none';
+        // Get current theme for SweetAlert2 styling
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        
+        const result = await Swal.fire({
+            title: 'Delete Template',
+            html: `Are you sure you want to delete template <strong>"${templateName}"</strong>?<br><br>
+                  <small class="text-muted">This action cannot be undone.</small>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            customClass: {
+                popup: isDarkMode ? 'dark-swal' : '',
+                title: isDarkMode ? 'text-light' : '',
+                htmlContainer: isDarkMode ? 'text-light' : ''
+            },
+            buttonsStyling: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve(true);
+                    }, 1000);
+                });
+            }
+        });
+        
+        if (result.isConfirmed) {
+            // Show loading state
+            if (row) {
+                row.style.opacity = '0.5';
+                row.style.pointerEvents = 'none';
+            }
             
+            // Simulate API call
             setTimeout(() => {
-                showNotification(`Template "${templateName}" deleted successfully`, 'success');
-                row.remove();
+                if (row) {
+                    row.remove();
+                }
+                
+                // Show success message
+                Swal.fire({
+                    title: 'Deleted!',
+                    html: `Template <strong>"${templateName}"</strong> has been deleted successfully.`,
+                    icon: 'success',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    customClass: {
+                        popup: isDarkMode ? 'dark-swal' : '',
+                        title: isDarkMode ? 'text-light' : '',
+                        htmlContainer: isDarkMode ? 'text-light' : ''
+                    }
+                });
+                
                 updateTableInfo();
             }, 1000);
         }
@@ -243,7 +312,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (addSuggestionBtn) {
-            addSuggestionBtn.addEventListener('click', addSuggestion);
+            addSuggestionBtn.addEventListener('click', function() {
+                addSuggestion();
+                updatePreview(); // Force update preview after adding
+            });
         }
         
         if (browseFileBtn && fileUpload) {
@@ -271,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialize character counter
         updateCharacterCounter();
         
-        // Update preview
+        // Initial preview update
         updatePreview();
     }
     
@@ -300,13 +372,17 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('agentCategory').value = templateData.category;
         document.getElementById('cardTitle').value = templateData.title;
         
+        // Reset counter
+        suggestionCounter = 0;
+        
         // Populate suggestions
         const suggestionsContainer = document.getElementById('suggestionsContainer');
         if (suggestionsContainer) {
             suggestionsContainer.innerHTML = '';
             
             templateData.suggestions.forEach((suggestion, index) => {
-                addSuggestionToForm(suggestion.action, suggestion.text, index + 1);
+                suggestionCounter++;
+                addSuggestionToForm(suggestion.action, suggestion.text, suggestionCounter);
             });
         }
         
@@ -316,24 +392,69 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function addInitialSuggestion() {
-        addSuggestionToForm('Reply', 'Sample Reply', 1);
+        const suggestionsContainer = document.getElementById('suggestionsContainer');
+        if (suggestionsContainer) {
+            suggestionsContainer.innerHTML = '';
+            suggestionCounter = 1;
+            addSuggestionToForm('Reply', 'Sample Reply', suggestionCounter);
+        }
+    }
+    
+    function getActionIcon(action) {
+        switch(action) {
+            case 'Reply': return 'fas fa-reply';
+            case 'URL': return 'fas fa-link';
+            case 'Dial': return 'fas fa-phone';
+            case 'Postback': return 'fas fa-arrow-right';
+            default: return 'fas fa-reply';
+        }
+    }
+    
+    function getActionIconClass(action) {
+        switch(action) {
+            case 'Reply': return 'suggestion-type-reply';
+            case 'URL': return 'suggestion-type-url';
+            case 'Dial': return 'suggestion-type-dial';
+            case 'Postback': return 'suggestion-type-postback';
+            default: return 'suggestion-type-reply';
+        }
+    }
+    
+    function getPreviewIconClass(action) {
+        switch(action) {
+            case 'Reply': return 'quick-reply-reply fas fa-reply';
+            case 'URL': return 'quick-reply-url fas fa-link';
+            case 'Dial': return 'quick-reply-dial fas fa-phone';
+            case 'Postback': return 'quick-reply-postback fas fa-arrow-right';
+            default: return 'quick-reply-reply fas fa-reply';
+        }
     }
     
     function addSuggestionToForm(action, text, index) {
         const container = document.getElementById('suggestionsContainer');
         if (!container) return;
         
+        const icon = getActionIcon(action);
+        const iconClass = getActionIconClass(action);
+        
         const suggestionHTML = `
-            <div class="suggestion-item">
+            <div class="suggestion-item" data-suggestion-index="${index}">
                 <div class="suggestion-header">
-                    <span class="suggestion-label">Suggestion ${index}</span>
-                    <button type="button" class="btn btn-sm btn-outline-danger remove-suggestion-btn">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <span class="suggestion-label">
+                        <div class="suggestion-type-icon ${iconClass}">
+                            <i class="${icon}"></i>
+                        </div>
+                        Suggestion ${index} - ${action}
+                    </span>
+                    <div class="suggestion-actions">
+                        <button type="button" class="btn btn-sm btn-outline-danger remove-suggestion-btn" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="row g-2">
                     <div class="col-md-4">
-                        <select class="form-select form-select-sm suggestion-action">
+                        <select class="form-select form-select-sm suggestion-action" data-index="${index}">
                             <option value="Reply" ${action === 'Reply' ? 'selected' : ''}>Reply</option>
                             <option value="URL" ${action === 'URL' ? 'selected' : ''}>URL</option>
                             <option value="Dial" ${action === 'Dial' ? 'selected' : ''}>Dial</option>
@@ -341,7 +462,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </select>
                     </div>
                     <div class="col-md-8">
-                        <input type="text" class="form-control form-control-sm suggestion-text" 
+                        <input type="text" class="form-control form-control-sm suggestion-text" data-index="${index}"
                                placeholder="Enter Text or URL" value="${text || ''}">
                     </div>
                 </div>
@@ -350,8 +471,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         container.insertAdjacentHTML('beforeend', suggestionHTML);
         
-        // Add event listener to new remove button
+        // Get the newly added suggestion
         const newSuggestion = container.lastElementChild;
+        
+        // Add event listener to remove button
         const removeBtn = newSuggestion.querySelector('.remove-suggestion-btn');
         if (removeBtn) {
             removeBtn.addEventListener('click', function() {
@@ -359,44 +482,154 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Add event listeners to new inputs
+        // Add event listeners to inputs
         const suggestionText = newSuggestion.querySelector('.suggestion-text');
         const suggestionAction = newSuggestion.querySelector('.suggestion-action');
         
         if (suggestionText) {
-            suggestionText.addEventListener('input', updatePreview);
+            suggestionText.addEventListener('input', function() {
+                updateSuggestionLabel(newSuggestion);
+                updatePreview(); // Update preview when text changes
+            });
         }
         
         if (suggestionAction) {
-            suggestionAction.addEventListener('change', updatePreview);
+            suggestionAction.addEventListener('change', function() {
+                updateSuggestionIcon(newSuggestion, this.value);
+                updatePreview(); // Update preview when action changes
+            });
+        }
+        
+        // Update the suggestion label immediately
+        updateSuggestionLabel(newSuggestion);
+        
+        // Update preview after adding
+        setTimeout(updatePreview, 10);
+    }
+    
+    function updateSuggestionLabel(suggestionElement) {
+        const index = suggestionElement.getAttribute('data-suggestion-index');
+        const actionSelect = suggestionElement.querySelector('.suggestion-action');
+        const action = actionSelect ? actionSelect.value : 'Reply';
+        
+        const label = suggestionElement.querySelector('.suggestion-label');
+        const icon = getActionIcon(action);
+        const iconClass = getActionIconClass(action);
+        
+        if (label) {
+            label.innerHTML = `
+                <div class="suggestion-type-icon ${iconClass}">
+                    <i class="${icon}"></i>
+                </div>
+                Suggestion ${index} - ${action}
+            `;
+        }
+    }
+    
+    function updateSuggestionIcon(suggestionElement, action) {
+        const iconElement = suggestionElement.querySelector('.suggestion-type-icon i');
+        const iconContainer = suggestionElement.querySelector('.suggestion-type-icon');
+        
+        if (iconElement && iconContainer) {
+            const newIcon = getActionIcon(action);
+            const newIconClass = getActionIconClass(action);
+            
+            iconElement.className = newIcon;
+            iconContainer.className = `suggestion-type-icon ${newIconClass}`;
+            
+            // Update the label text
+            const label = suggestionElement.querySelector('.suggestion-label');
+            const index = suggestionElement.getAttribute('data-suggestion-index');
+            
+            if (label) {
+                label.innerHTML = `
+                    <div class="suggestion-type-icon ${newIconClass}">
+                        <i class="${newIcon}"></i>
+                    </div>
+                    Suggestion ${index} - ${action}
+                `;
+            }
         }
     }
     
     function addSuggestion() {
-        const container = document.getElementById('suggestionsContainer');
-        if (!container) return;
-        
-        const suggestionCount = container.children.length + 1;
-        addSuggestionToForm('Reply', '', suggestionCount);
+        suggestionCounter++;
+        addSuggestionToForm('Reply', '', suggestionCounter);
     }
     
-    function removeSuggestion(button) {
+    async function removeSuggestion(button) {
         const suggestionItem = button.closest('.suggestion-item');
-        if (suggestionItem) {
+        if (!suggestionItem) return;
+        
+        const index = suggestionItem.getAttribute('data-suggestion-index');
+        const action = suggestionItem.querySelector('.suggestion-action').value;
+        
+        // Get current theme for SweetAlert2 styling
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        
+        const result = await Swal.fire({
+            title: 'Remove Suggestion',
+            html: `Are you sure you want to remove <strong>Suggestion ${index} - ${action}</strong>?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, remove it',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            customClass: {
+                popup: isDarkMode ? 'dark-swal' : '',
+                title: isDarkMode ? 'text-light' : '',
+                htmlContainer: isDarkMode ? 'text-light' : ''
+            },
+            buttonsStyling: true
+        });
+        
+        if (result.isConfirmed) {
             suggestionItem.remove();
-            updatePreview();
             renumberSuggestions();
+            updatePreview(); // Update preview after removal
+            
+            // Show success message
+            Swal.fire({
+                title: 'Removed!',
+                text: 'Suggestion has been removed.',
+                icon: 'success',
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                customClass: {
+                    popup: isDarkMode ? 'dark-swal' : '',
+                    title: isDarkMode ? 'text-light' : '',
+                    htmlContainer: isDarkMode ? 'text-light' : ''
+                }
+            });
         }
     }
     
     function renumberSuggestions() {
         const suggestions = document.querySelectorAll('.suggestion-item');
-        suggestions.forEach((item, index) => {
-            const label = item.querySelector('.suggestion-label');
-            if (label) {
-                label.textContent = `Suggestion ${index + 1}`;
-            }
+        let newIndex = 1;
+        
+        suggestions.forEach((item) => {
+            item.setAttribute('data-suggestion-index', newIndex);
+            
+            // Update the index attribute in child elements
+            const actionSelect = item.querySelector('.suggestion-action');
+            const textInput = item.querySelector('.suggestion-text');
+            const removeBtn = item.querySelector('.remove-suggestion-btn');
+            
+            if (actionSelect) actionSelect.setAttribute('data-index', newIndex);
+            if (textInput) textInput.setAttribute('data-index', newIndex);
+            if (removeBtn) removeBtn.setAttribute('data-index', newIndex);
+            
+            // Update the label
+            updateSuggestionLabel(item);
+            newIndex++;
         });
+        
+        // Update the global counter
+        suggestionCounter = newIndex - 1;
     }
     
     function handleFileSelect(event) {
@@ -489,8 +722,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function updatePreview() {
         const previewMessage = document.getElementById('previewMessage');
+        const previewCardTitle = document.getElementById('previewCardTitle');
         const quickReplies = document.getElementById('quickReplies');
         const cardDescription = document.getElementById('cardDescription');
+        const cardTitle = document.getElementById('cardTitle');
+        
+        // Update card title preview
+        if (cardTitle && previewCardTitle) {
+            previewCardTitle.textContent = cardTitle.value || 'Card Title';
+        }
         
         // Update message preview
         if (cardDescription && previewMessage) {
@@ -503,41 +743,52 @@ document.addEventListener('DOMContentLoaded', function() {
             previewMessage.innerHTML = highlightedMessage;
         }
         
-        // Update quick replies
+        // Update quick replies with icons - FIXED THIS PART
         if (quickReplies) {
             quickReplies.innerHTML = '';
-            const suggestionTexts = document.querySelectorAll('.suggestion-text');
-            const suggestionActions = document.querySelectorAll('.suggestion-action');
+            const suggestionItems = document.querySelectorAll('.suggestion-item');
             
-            suggestionTexts.forEach((input, index) => {
-                if (input.value.trim()) {
-                    const action = suggestionActions[index] ? suggestionActions[index].value : 'Reply';
-                    let icon = '';
+            if (suggestionItems.length > 0) {
+                suggestionItems.forEach((item) => {
+                    const textInput = item.querySelector('.suggestion-text');
+                    const actionSelect = item.querySelector('.suggestion-action');
                     
-                    switch(action) {
-                        case 'Reply':
-                            icon = '<i class="fas fa-reply"></i>';
-                            break;
-                        case 'URL':
-                            icon = '<i class="fas fa-link"></i>';
-                            break;
-                        case 'Dial':
-                            icon = '<i class="fas fa-phone"></i>';
-                            break;
-                        default:
-                            icon = '<i class="fas fa-arrow-right"></i>';
+                    if (textInput && textInput.value.trim() && actionSelect) {
+                        const action = actionSelect.value;
+                        const text = textInput.value;
+                        const iconClass = getPreviewIconClass(action);
+                        
+                        const button = document.createElement('div');
+                        button.className = 'quick-reply-btn';
+                        button.innerHTML = `<i class="${iconClass} quick-reply-icon"></i><span>${text}</span>`;
+                        quickReplies.appendChild(button);
                     }
-                    
-                    const button = document.createElement('div');
-                    button.className = 'quick-reply-btn';
-                    button.innerHTML = `${icon}<span>${input.value}</span>`;
-                    quickReplies.appendChild(button);
-                }
-            });
+                });
+            }
+            
+            // Only show sample if there are no suggestions at all
+            if (quickReplies.children.length === 0) {
+                const button = document.createElement('div');
+                button.className = 'quick-reply-btn';
+                button.innerHTML = '<i class="fas fa-reply quick-reply-icon quick-reply-reply"></i><span>Sample Reply</span>';
+                quickReplies.appendChild(button);
+            }
+            
+            // Add scroll if too many suggestions
+            if (quickReplies.children.length > 3) {
+                quickReplies.style.maxHeight = '200px';
+                quickReplies.style.overflowY = 'auto';
+            } else {
+                quickReplies.style.maxHeight = 'none';
+                quickReplies.style.overflowY = 'visible';
+            }
         }
+        
+        // Log for debugging
+        console.log(`Preview updated. Suggestions found: ${document.querySelectorAll('.suggestion-item').length}`);
     }
     
-    function handleSaveTemplate() {
+    async function handleSaveTemplate() {
         const saveTemplateBtn = document.getElementById('saveTemplateBtn');
         const templateName = document.getElementById('templateName').value.trim();
         
@@ -577,54 +828,102 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Collect template data
-        const templateData = {
-            name: templateName,
-            agent: document.getElementById('agentName').value.trim(),
-            description: document.getElementById('cardDescription').value.trim(),
-            type: document.getElementById('templateType').value,
-            category: document.getElementById('agentCategory').value,
-            title: document.getElementById('cardTitle').value.trim(),
-            suggestions: []
-        };
+        // Get current theme for SweetAlert2 styling
+        const isDarkMode = document.body.classList.contains('dark-mode');
         
-        // Collect suggestions
-        document.querySelectorAll('.suggestion-item').forEach(item => {
-            const action = item.querySelector('.suggestion-action').value;
-            const text = item.querySelector('.suggestion-text').value.trim();
-            if (text) {
-                templateData.suggestions.push({ action, text });
+        // Check if we're in edit mode
+        const urlParams = new URLSearchParams(window.location.search);
+        const templateId = urlParams.get('id');
+        const isEditMode = templateId !== null;
+        
+        const result = await Swal.fire({
+            title: isEditMode ? 'Update Template' : 'Save Template',
+            html: isEditMode 
+                ? `Are you sure you want to update template <strong>"${templateName}"</strong>?`
+                : `Are you sure you want to save template <strong>"${templateName}"</strong>?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: isEditMode ? 'Yes, update it!' : 'Yes, save it!',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            customClass: {
+                popup: isDarkMode ? 'dark-swal' : '',
+                title: isDarkMode ? 'text-light' : '',
+                htmlContainer: isDarkMode ? 'text-light' : ''
+            },
+            buttonsStyling: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve) => {
+                    // Simulate form data collection
+                    setTimeout(() => {
+                        const templateData = {
+                            name: templateName,
+                            agent: document.getElementById('agentName').value.trim(),
+                            description: document.getElementById('cardDescription').value.trim(),
+                            type: document.getElementById('templateType').value,
+                            category: document.getElementById('agentCategory').value,
+                            title: document.getElementById('cardTitle').value.trim(),
+                            suggestions: []
+                        };
+                        
+                        // Collect suggestions
+                        document.querySelectorAll('.suggestion-item').forEach(item => {
+                            const action = item.querySelector('.suggestion-action').value;
+                            const text = item.querySelector('.suggestion-text').value.trim();
+                            if (text) {
+                                templateData.suggestions.push({ 
+                                    action, 
+                                    text,
+                                    icon: getActionIcon(action),
+                                    iconClass: getActionIconClass(action)
+                                });
+                            }
+                        });
+                        
+                        resolve(templateData);
+                    }, 1000);
+                });
             }
         });
         
-        // Show loading
-        const originalText = saveTemplateBtn.innerHTML;
-        saveTemplateBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Saving...';
-        saveTemplateBtn.disabled = true;
-        
-        // Simulate API call
-        setTimeout(() => {
-            // Reset button
-            saveTemplateBtn.innerHTML = originalText;
-            saveTemplateBtn.disabled = false;
+        if (result.isConfirmed) {
+            // Show loading
+            const originalText = saveTemplateBtn.innerHTML;
+            saveTemplateBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Saving...';
+            saveTemplateBtn.disabled = true;
             
-            // Check if we're in edit mode
-            const urlParams = new URLSearchParams(window.location.search);
-            const templateId = urlParams.get('id');
-            const isEditMode = templateId !== null;
-            
-            if (isEditMode) {
-                showNotification(`Template "${templateName}" updated successfully!`, 'success');
-            } else {
-                showNotification(`Template "${templateName}" added successfully!`, 'success');
-            }
-            
-            // Redirect back to template list after 1.5 seconds
+            // Simulate API call
             setTimeout(() => {
-                window.location.href = 'template.html';
-            }, 1500);
-            
-        }, 1500);
+                // Reset button
+                saveTemplateBtn.innerHTML = originalText;
+                saveTemplateBtn.disabled = false;
+                
+                // Show success message
+                Swal.fire({
+                    title: isEditMode ? 'Updated!' : 'Saved!',
+                    html: isEditMode
+                        ? `Template <strong>"${templateName}"</strong> has been updated successfully!`
+                        : `Template <strong>"${templateName}"</strong> has been added successfully!`,
+                    icon: 'success',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    customClass: {
+                        popup: isDarkMode ? 'dark-swal' : '',
+                        title: isDarkMode ? 'text-light' : '',
+                        htmlContainer: isDarkMode ? 'text-light' : ''
+                    }
+                });
+                
+                // Redirect back to template list after 1.5 seconds
+                setTimeout(() => {
+                    window.location.href = 'template.html';
+                }, 1500);
+            }, 1000);
+        }
     }
     
     // ============================================
@@ -643,10 +942,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
             // Create toast element
             const toastId = 'notification-toast-' + Date.now();
+            
+            // Determine toast class based on type
+            let toastClass = 'text-bg-info';
+            let icon = 'info-circle';
+            
+            switch(type) {
+                case 'success':
+                    toastClass = 'text-bg-success';
+                    icon = 'check-circle';
+                    break;
+                case 'warning':
+                    toastClass = 'text-bg-warning';
+                    icon = 'exclamation-triangle';
+                    break;
+                case 'error':
+                case 'danger':
+                    toastClass = 'text-bg-danger';
+                    icon = 'times-circle';
+                    break;
+            }
+            
             const toastHtml = `
-                <div class="toast align-items-center text-bg-${type} border-0" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast align-items-center ${toastClass} border-0" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
-                        <div class="toast-body">
+                        <div class="toast-body d-flex align-items-center">
+                            <i class="fas fa-${icon} me-2"></i>
                             ${message}
                         </div>
                         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -671,6 +992,23 @@ document.addEventListener('DOMContentLoaded', function() {
             // Remove after hidden
             toastElement.addEventListener('hidden.bs.toast', function() {
                 toastContainer.remove();
+            });
+        } else if (typeof Swal !== 'undefined') {
+            // Use SweetAlert2 as fallback
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            
+            Swal.fire({
+                title: type.charAt(0).toUpperCase() + type.slice(1),
+                text: message,
+                icon: type,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                customClass: {
+                    popup: isDarkMode ? 'dark-swal' : '',
+                    title: isDarkMode ? 'text-light' : '',
+                    htmlContainer: isDarkMode ? 'text-light' : ''
+                }
             });
         } else {
             // Fallback to alert

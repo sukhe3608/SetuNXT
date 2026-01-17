@@ -589,4 +589,7 @@
         width: 36px;
         height: 36px;
     }
+    .sidebar-close{
+        display: block;
+    }
 }

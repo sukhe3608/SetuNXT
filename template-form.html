@@ -50,9 +50,9 @@
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body">
                     <a href="template.html" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>
-                            Back
-                        </a>
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Back
+                    </a>
                     <form id="templateForm">
                         <div class="container-fluid p-4">
                             <div class="row">
@@ -142,35 +142,73 @@
 
                                 <!-- Right Column - Mobile Preview -->
                                 <div class="col-lg-4 mobile-container">
-                                    <div class="mobile-preview-container">
-                                        <div class="mobile-notch"></div>
+                                    <h6 class="preview-title mb-3">Mobile Preview</h6>
+                                    <div class="mobile-frame">
+                                        <div class="phone-notch"></div>
                                         <div class="phone-screen">
-                                            <div class="whatsapp-chat">
-                                                <!-- Chat Header -->
-                                                <div class="chat-header">
-                                                    <div class="chat-info">
-                                                        <h6>Mobile Preview</h6>
-                                                        <div></div>
+                                            <!-- Phone Status Bar -->
+                                            <div class="phone-status-bar">
+                                                <span class="time">9:41</span>
+                                                <div class="status-icons">
+                                                    <i class="fas fa-signal"></i>
+                                                    <i class="fas fa-wifi"></i>
+                                                    <i class="fas fa-battery-full"></i>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Phone Header -->
+                                            <div class="phone-header">
+                                                <div class="header-content">
+                                                    <div class="back-btn">
+                                                        <i class="fas fa-chevron-left"></i>
+                                                    </div>
+                                                    <div class="header-title">
+                                                        <h6>Business Chat</h6>
+                                                        <small>Online</small>
+                                                    </div>
+                                                    <div class="header-actions">
+                                                        <i class="fas fa-phone"></i>
+                                                        <i class="fas fa-ellipsis-v"></i>
                                                     </div>
                                                 </div>
-
-                                                <!-- Chat Body -->
-                                                <div class="chat-body">
-                                                    <!-- Template Message -->
-                                                    <div class="template-message">
-                                                        <div id="previewMessage">Template message preview will appear here...</div>
+                                            </div>
+                                            
+                                            <!-- Phone Content -->
+                                            <div class="phone-content">
+                                                <!-- Template Message -->
+                                                <div class="template-message-preview">
+                                                    <div class="template-header">
+                                                        <span class="template-badge">Template</span>
+                                                        <small class="template-time">Now</small>
+                                                    </div>
+                                                    <div class="template-content">
+                                                        <div class="message-title" id="previewCardTitle">Card Title</div>
+                                                        <div class="message-body" id="previewMessage">
+                                                            Template message preview will appear here...
+                                                        </div>
                                                         
                                                         <!-- Quick Reply Buttons -->
                                                         <div class="quick-replies" id="quickReplies">
                                                             <div class="quick-reply-btn">
-                                                                <i class="fas fa-reply"></i>
                                                                 <span>Sample Reply</span>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="template-footer">
+                                                        <small>This is a template message</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Phone Footer -->
+                                            <div class="phone-footer">
+                                                <div class="message-input">
+                                                    <i class="fas fa-plus-circle"></i>
+                                                    <input type="text" placeholder="Type a message..." readonly>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="phone-home-indicator"></div>
                                     </div>
                                 </div>
                             </div>
@@ -191,11 +229,6 @@
             </div>
         </div>
     </main>
-
-    <!-- Footer -->
-    <div class="footer text-center py-3 border-top bg-white">
-        © 2021. PRP-Tech. All Rights Reserved
-    </div>
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

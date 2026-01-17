@@ -549,10 +549,9 @@
     }
     
     .table tbody tr {
-        display: flex;
+        display: block;
         gap: 20px;
         align-items: center;
-        overflow-x: auto;
     }
     
     .file-upload {
@@ -566,6 +565,9 @@
     
     .suggestion-label {
         font-size: 0.8rem;
+    }
+    .template-content{
+        width:158px;
     }
 }
 @media (max-width: 768px) {

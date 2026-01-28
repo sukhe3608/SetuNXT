@@ -5,15 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Global variable to track suggestion count
     let suggestionCounter = 0;
     
-    // Load SweetAlert2 if not already loaded
-    if (typeof Swal === 'undefined') {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
-        script.onload = initializeTemplates;
-        document.head.appendChild(script);
-    } else {
-        initializeTemplates();
-    }
+    // Initialize templates functionality
+    initializeTemplates();
     
     function initializeTemplates() {
         // Determine which page we're on based on URL or elements present
@@ -343,8 +336,27 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialize character counter
         updateCharacterCounter();
         
+        // Initialize time in preview
+        updatePreviewTime();
+        
         // Initial preview update
         updatePreview();
+        
+        // Update time every minute
+        setInterval(updatePreviewTime, 60000);
+    }
+    
+    function updatePreviewTime() {
+        const previewTime = document.getElementById('previewTime');
+        if (previewTime) {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            previewTime.textContent = `${hours}:${minutes} ${ampm}`;
+        }
     }
     
     function loadTemplateData(templateId) {
@@ -420,13 +432,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function getPreviewIconClass(action) {
+    function getButtonClass(action) {
         switch(action) {
-            case 'Reply': return 'quick-reply-reply fas fa-reply';
-            case 'URL': return 'quick-reply-url fas fa-link';
-            case 'Dial': return 'quick-reply-dial fas fa-phone';
-            case 'Postback': return 'quick-reply-postback fas fa-arrow-right';
-            default: return 'quick-reply-reply fas fa-reply';
+            case 'Reply': return 'btn-outline-primary';
+            case 'URL': return 'btn-outline-info';
+            case 'Dial': return 'btn-outline-success';
+            case 'Postback': return 'btn-outline-warning';
+            default: return 'btn-outline-primary';
+        }
+    }
+    
+    function getButtonIcon(action) {
+        switch(action) {
+            case 'Reply': return 'fas fa-reply';
+            case 'URL': return 'fas fa-external-link-alt';
+            case 'Dial': return 'fas fa-phone';
+            case 'Postback': return 'fas fa-arrow-right';
+            default: return 'fas fa-reply';
         }
     }
     
@@ -723,7 +745,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updatePreview() {
         const previewMessage = document.getElementById('previewMessage');
         const previewCardTitle = document.getElementById('previewCardTitle');
-        const quickReplies = document.getElementById('quickReplies');
+        const previewButtons = document.getElementById('previewButtons');
         const cardDescription = document.getElementById('cardDescription');
         const cardTitle = document.getElementById('cardTitle');
         
@@ -743,9 +765,9 @@ document.addEventListener('DOMContentLoaded', function() {
             previewMessage.innerHTML = highlightedMessage;
         }
         
-        // Update quick replies with icons - FIXED THIS PART
-        if (quickReplies) {
-            quickReplies.innerHTML = '';
+        // Update buttons with icons
+        if (previewButtons) {
+            previewButtons.innerHTML = '';
             const suggestionItems = document.querySelectorAll('.suggestion-item');
             
             if (suggestionItems.length > 0) {
@@ -756,31 +778,38 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (textInput && textInput.value.trim() && actionSelect) {
                         const action = actionSelect.value;
                         const text = textInput.value;
-                        const iconClass = getPreviewIconClass(action);
+                        const buttonClass = getButtonClass(action);
+                        const buttonIcon = getButtonIcon(action);
                         
-                        const button = document.createElement('div');
-                        button.className = 'quick-reply-btn';
-                        button.innerHTML = `<i class="${iconClass} quick-reply-icon"></i><span>${text}</span>`;
-                        quickReplies.appendChild(button);
+                        const button = document.createElement('button');
+                        button.className = `btn btn-sm ${buttonClass}`;
+                        button.type = 'button';
+                        button.innerHTML = `<i class="${buttonIcon} me-1"></i>${text}`;
+                        previewButtons.appendChild(button);
                     }
                 });
             }
             
             // Only show sample if there are no suggestions at all
-            if (quickReplies.children.length === 0) {
-                const button = document.createElement('div');
-                button.className = 'quick-reply-btn';
-                button.innerHTML = '<i class="fas fa-reply quick-reply-icon quick-reply-reply"></i><span>Sample Reply</span>';
-                quickReplies.appendChild(button);
+            if (previewButtons.children.length === 0) {
+                const button1 = document.createElement('button');
+                button1.className = 'btn btn-sm btn-outline-primary';
+                button1.type = 'button';
+                button1.innerHTML = '<i class="fas fa-external-link-alt me-1"></i>Visit Store';
+                previewButtons.appendChild(button1);
+                
+                const button2 = document.createElement('button');
+                button2.className = 'btn btn-sm btn-outline-success';
+                button2.type = 'button';
+                button2.innerHTML = '<i class="fas fa-phone me-1"></i>Call Support';
+                previewButtons.appendChild(button2);
             }
             
-            // Add scroll if too many suggestions
-            if (quickReplies.children.length > 3) {
-                quickReplies.style.maxHeight = '200px';
-                quickReplies.style.overflowY = 'auto';
+            // Update button grid layout
+            if (previewButtons.children.length === 1) {
+                previewButtons.className = 'd-flex justify-content-center';
             } else {
-                quickReplies.style.maxHeight = 'none';
-                quickReplies.style.overflowY = 'visible';
+                previewButtons.className = 'd-grid gap-2';
             }
         }
         
@@ -878,7 +907,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                     action, 
                                     text,
                                     icon: getActionIcon(action),
-                                    iconClass: getActionIconClass(action)
+                                    iconClass: getActionIconClass(action),
+                                    buttonClass: getButtonClass(action),
+                                    buttonIcon: getButtonIcon(action)
                                 });
                             }
                         });

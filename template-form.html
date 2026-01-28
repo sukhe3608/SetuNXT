@@ -13,6 +13,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap-custom.css">
     <link rel="stylesheet" href="assets/css/custom.css">
@@ -45,9 +48,9 @@
                     </div>
                 </div>
                 <a href="template.html" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left me-2"></i>
-                        Back
-                    </a>
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Back
+                </a>
             </div>
 
             <!-- Template Form Card -->
@@ -143,72 +146,70 @@
                                 <!-- Right Column - Mobile Preview -->
                                 <div class="col-lg-4 mobile-container">
                                     <h6 class="preview-title mb-3">Mobile Preview</h6>
-                                    <div class="mobile-frame">
-                                        <div class="phone-notch"></div>
-                                        <div class="phone-screen">
-                                            <!-- Phone Status Bar -->
-                                            <div class="phone-status-bar">
-                                                <span class="time">9:41</span>
-                                                <div class="status-icons">
-                                                    <i class="fas fa-signal"></i>
-                                                    <i class="fas fa-wifi"></i>
-                                                    <i class="fas fa-battery-full"></i>
-                                                </div>
+                                    <div class="phone-preview mx-auto">
+                                        <div class="phone-frame">
+                                            <div class="phone-notch">
+                                                <div class="notch-camera"></div>
+                                                <div class="notch-speaker"></div>
                                             </div>
-                                            
-                                            <!-- Phone Header -->
-                                            <div class="phone-header">
-                                                <div class="header-content">
-                                                    <div class="back-btn">
-                                                        <i class="fas fa-chevron-left"></i>
-                                                    </div>
-                                                    <div class="header-title">
-                                                        <h6>Business Chat</h6>
-                                                        <small>Online</small>
-                                                    </div>
-                                                    <div class="header-actions">
-                                                        <i class="fas fa-phone"></i>
-                                                        <i class="fas fa-ellipsis-v"></i>
+                                            <div class="phone-screen">
+                                                <div class="phone-status-bar">
+                                                    <span class="phone-time" id="previewTime">11:32 AM</span>
+                                                    <div class="phone-status-icons">
+                                                        <i class="fas fa-signal me-1"></i>
+                                                        <i class="fas fa-wifi me-1"></i>
+                                                        <i class="fas fa-battery-three-quarters"></i>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            
-                                            <!-- Phone Content -->
-                                            <div class="phone-content">
-                                                <!-- Template Message -->
-                                                <div class="template-message-preview">
-                                                    <div class="template-header">
-                                                        <span class="template-badge">Template</span>
-                                                        <small class="template-time">Now</small>
+                                                <div class="phone-header">
+                                                    <div class="phone-avatar">
+                                                        <i class="fas fa-user"></i>
                                                     </div>
-                                                    <div class="template-content">
-                                                        <div class="message-title" id="previewCardTitle">Card Title</div>
-                                                        <div class="message-body" id="previewMessage">
-                                                            Template message preview will appear here...
+                                                    <div class="phone-contact-info">
+                                                        <span class="phone-brand fw-semibold">SetuNXT</span>
+                                                        <span class="phone-contact-status">Online • RCS</span>
+                                                    </div>
+                                                </div>
+                                                <div class="phone-content">
+                                                    <div class="message-card">
+                                                        <div class="card-image">
+                                                            <div class="gift-boxes">
+                                                                <div class="gift-box red"></div>
+                                                                <div class="gift-box green"></div>
+                                                            </div>
+                                                            <div class="sparkle">✦</div>
+                                                            <div class="sparkle sparkle-2">✦</div>
+                                                            <div class="sparkle sparkle-3">✦</div>
                                                         </div>
-                                                        
-                                                        <!-- Quick Reply Buttons -->
-                                                        <div class="quick-replies" id="quickReplies">
-                                                            <div class="quick-reply-btn">
-                                                                <span>Sample Reply</span>
+                                                        <div class="card-body">
+                                                            <h6 class="card-title" id="previewCardTitle">Card Title</h6>
+                                                            <p class="card-text small" id="previewMessage">
+                                                                Template message preview will appear here...
+                                                            </p>
+                                                            <div class="message-time">
+                                                                <i class="fas fa-clock me-1"></i>
+                                                                <small id="previewTimestamp">Now</small>
+                                                                <i class="fas fa-check-double ms-2 text-primary"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer bg-white border-0">
+                                                            <div class="d-grid gap-2" id="previewButtons">
+                                                                <button class="btn btn-sm btn-outline-primary">
+                                                                    <i class="fas fa-external-link-alt me-1"></i>
+                                                                    Visit Store
+                                                                </button>
+                                                                <button class="btn btn-sm btn-outline-success">
+                                                                    <i class="fas fa-phone me-1"></i>
+                                                                    Call Support
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="template-footer">
-                                                        <small>This is a template message</small>
-                                                    </div>
                                                 </div>
+                                                <div class="phone-home-indicator"></div>
                                             </div>
-                                            
-                                            <!-- Phone Footer -->
-                                            <div class="phone-footer">
-                                                <div class="message-input">
-                                                    <i class="fas fa-plus-circle"></i>
-                                                    <input type="text" placeholder="Type a message..." readonly>
-                                                </div>
-                                            </div>
+                                            <div class="phone-frame-shadow"></div>
                                         </div>
-                                        <div class="phone-home-indicator"></div>
                                     </div>
                                 </div>
                             </div>
@@ -232,6 +233,9 @@
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Custom JavaScript -->
     <script src="assets/js/theme.js"></script>

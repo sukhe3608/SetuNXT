@@ -6,6 +6,9 @@
     --phone-frame-color: #1a1a1a;
     --phone-screen-bg: #f8f9fa;
     --phone-status-bar: #000;
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success-gradient: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+    --danger-gradient: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
 }
 
 /* Form Grid */
@@ -32,11 +35,18 @@
     width: 100%;
 }
 
-/* Mobile Frame */
-.mobile-frame {
-    position: relative;
+/* New Mobile Frame */
+.phone-preview {
     width: 280px;
     height: 560px;
+    margin: 0 auto;
+    perspective: 1000px;
+}
+
+.phone-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
     background: var(--phone-frame-color);
     border-radius: 2.85rem;
     padding: 14px;
@@ -48,12 +58,11 @@
         0 0 0 4px rgba(20, 20, 20, 0.9),
         0 0 0 5px rgba(40, 40, 40, 0.4),
         0 0 0 6px rgba(20, 20, 20, 0.9);
-    margin: 0 auto;
+    overflow: hidden;
 }
 
-.mobile-frame:hover {
-    
-    transform: translateY(-2px) translateZ(10px);
+.phone-frame:hover {
+    transform: translateY(-2px);
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.5),
         0 15px 30px rgba(0, 0, 0, 0.4),
@@ -62,21 +71,6 @@
         0 0 0 4px rgba(30, 30, 30, 0.9),
         0 0 0 5px rgba(70, 70, 70, 0.4),
         0 0 0 6px rgba(30, 30, 30, 0.9);
-}
-
-.mobile-frame-shadow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: calc(100% + 20px);
-    height: calc(100% + 20px);
-    background: radial-gradient(ellipse at center, 
-        rgba(0, 0, 0, 0.3) 0%, 
-        rgba(0, 0, 0, 0) 70%);
-    border-radius: 3.2rem;
-    z-index: -1;
-    pointer-events: none;
 }
 
 .phone-notch {
@@ -89,13 +83,32 @@
     background: var(--phone-frame-color);
     border-radius: 0 0 20px 20px;
     z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.notch-camera {
+    width: 12px;
+    height: 12px;
+    background: #000;
+    border-radius: 50%;
+    border: 2px solid #333;
+}
+
+.notch-speaker {
+    width: 60px;
+    height: 6px;
+    background: #222;
+    border-radius: 3px;
 }
 
 .phone-screen {
     width: 100%;
     height: 100%;
-    background: var(--phone-screen-bg);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
     border-radius: 30px;
     overflow: hidden;
     display: flex;
@@ -105,214 +118,252 @@
 
 /* Phone Status Bar */
 .phone-status-bar {
-    background: rgba(0, 0, 0, 0.9);
+    background: linear-gradient(to bottom, #000 0%, #222 100%);
     color: white;
-    padding: 6px 16px;
+    padding: 8px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
     font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.status-icons {
+.phone-time {
+    font-weight: 700;
+}
+
+.phone-status-icons {
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 4px;
+}
+
+.phone-status-icons i {
+    font-size: 10px;
 }
 
 /* Phone Header */
 .phone-header {
-    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
-    color: white;
+    background: white;
     padding: 12px 16px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.header-content {
+.phone-avatar {
+    width: 36px;
+    height: 36px;
+    background: var(--primary-gradient);
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.back-btn {
-    font-size: 18px;
-    padding: 4px;
-}
-
-.header-title {
-    flex: 1;
-    text-align: center;
-}
-
-.header-title h6 {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.header-title small {
-    font-size: 11px;
-    opacity: 0.9;
-}
-
-.header-actions {
-    display: flex;
-    gap: 16px;
+    justify-content: center;
+    color: white;
     font-size: 16px;
+}
+
+.phone-contact-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.phone-brand {
+    font-size: 14px;
+    color: #1a1a1a;
+    line-height: 1.2;
+}
+
+.phone-contact-status {
+    font-size: 11px;
+    color: #4CAF50;
+    font-weight: 500;
 }
 
 /* Phone Content */
 .phone-content {
     flex: 1;
     padding: 16px;
-    overflow: hidden;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    overflow-y: auto;
+    background: linear-gradient(to bottom, #e8f5e8 0%, #f0f8ff 100%);
 }
 
-/* Template Message Preview */
-.template-message-preview {
+/* Message Card */
+.message-card {
     background: white;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-bottom: 16px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    animation: slideIn 0.5s ease;
 }
 
-.template-header {
-    background: linear-gradient(135deg, #f0f4ff 0%, #e6ebff 100%);
-    padding: 10px 16px;
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-image {
+    position: relative;
+    height: 120px;
+    background: var(--primary-gradient);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    justify-content: center;
+    overflow: hidden;
 }
 
-.template-badge {
-    background: #4f46e5;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: 600;
+.gift-boxes {
+    display: flex;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
 }
 
-.template-time {
-    color: #6c757d;
-    font-size: 11px;
+.gift-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    position: relative;
+    animation: float 3s ease-in-out infinite;
 }
 
-.template-content {
-    padding: 16px;
-    width:219px;
+.gift-box.red {
+    background: var(--danger-gradient);
+    box-shadow: 0 4px 8px rgba(255, 71, 87, 0.3);
+    animation-delay: 0s;
 }
 
-.message-title {
+.gift-box.green {
+    background: var(--success-gradient);
+    box-shadow: 0 4px 8px rgba(64, 192, 87, 0.3);
+    animation-delay: 0.5s;
+}
+
+.gift-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px 8px 0 0;
+}
+
+.gift-box::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.sparkle {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 20px;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+.sparkle-2 {
+    top: 20px;
+    right: 30px;
+    animation-delay: 0.3s;
+}
+
+.sparkle-3 {
+    bottom: 20px;
+    left: 30px;
+    animation-delay: 0.7s;
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
     font-size: 16px;
-    font-weight: 600;
-    color: #1e293b;
+    font-weight: 700;
+    color: #1a1a1a;
     margin-bottom: 8px;
 }
 
-.message-body {
-    font-size: 14px;
-    color: #475569;
-    line-height: 1.5;
-    margin-bottom: 16px;
-    max-height: 50px;
-    overflow-y: auto;
-}
-
-/* Quick Replies */
-.quick-replies {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.quick-reply-btn {
-    background: white;
-    border: 2px solid #4f46e5;
-    border-radius: 20px;
-    padding: 10px 16px;
-    text-align: center;
+.card-text {
+    color: #666;
     font-size: 13px;
-    color: #4f46e5;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    min-height: 60px;
+    max-height: 80px;
+    /* overflow-y: auto; */
+}
+
+.message-time {
     display: flex;
     align-items: center;
-    gap: 8px;
-    justify-content: flex-start;
-}
-
-.quick-reply-btn:hover {
-    background: #f0f4ff;
-}
-
-.quick-reply-btn i {
-    font-size: 12px;
-}
-
-.template-footer {
-    background: #f8f9fa;
-    padding: 10px 16px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    text-align: center;
-}
-
-.template-footer small {
-    color: #6c757d;
     font-size: 11px;
+    color: #888;
+    margin-top: 8px;
 }
 
-/* Phone Footer */
-.phone-footer {
-    padding: 12px 16px;
-    background: white;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.message-input {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #f8f9fa;
-    border-radius: 24px;
-    padding: 8px 16px;
-}
-
-.message-input i {
-    color: #6c757d;
-    font-size: 18px;
-}
-
-.message-input input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: 14px;
-    color: #1e293b;
+.card-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .phone-home-indicator {
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
     width: 120px;
     height: 4px;
     background: rgba(0, 0, 0, 0.6);
     border-radius: 2px;
+    margin: 0 auto;
+    margin-bottom: 8px;
+}
+
+.phone-frame-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 2.85rem;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 1;
 }
 
 /* Suggestions Section */
@@ -445,22 +496,6 @@
     border: 1px solid rgba(79, 70, 229, 0.2);
 }
 
-/* Animation for quick replies */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.quick-reply-btn {
-    animation: slideIn 0.3s ease;
-}
-
 /* Suggestion Icons */
 .suggestion-type-icon {
     width: 32px;
@@ -503,10 +538,46 @@
     opacity: 0.8;
 }
 
-.quick-reply-reply { color: #4f46e5; }
-.quick-reply-url { color: #10b981; }
-.quick-reply-dial { color: #ef4444; }
-.quick-reply-postback { color: #f59e0b; }
+/* Button styles for preview */
+.btn-outline-primary {
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.btn-outline-primary:hover {
+    background: #667eea;
+    color: white;
+}
+
+.btn-outline-success {
+    border-color: #51cf66;
+    color: #51cf66;
+}
+
+.btn-outline-success:hover {
+    background: #51cf66;
+    color: white;
+}
+
+.btn-outline-info {
+    border-color: #17a2b8;
+    color: #17a2b8;
+}
+
+.btn-outline-info:hover {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-outline-warning {
+    border-color: #ffc107;
+    color: #ffc107;
+}
+
+.btn-outline-warning:hover {
+    background: #ffc107;
+    color: #212529;
+}
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
@@ -516,29 +587,33 @@
     
     .mobile-container {
         margin-top: 2rem;
+        padding-left: 0;
     }
     
-    .mobile-frame {
+    .phone-preview {
         width: 260px;
         height: 520px;
     }
 }
 
 @media (max-width: 768px) {
-    .mobile-frame {
+    .phone-preview {
         width: 240px;
         height: 480px;
-        border-radius: 30px;
     }
     
     .phone-notch {
         width: 120px;
         height: 20px;
     }
+    
+    .card-image {
+        height: 100px;
+    }
 }
 
 @media (max-width: 576px) {
-    .mobile-frame {
+    .phone-preview {
         width: 220px;
         height: 440px;
     }
@@ -566,13 +641,19 @@
     .suggestion-label {
         font-size: 0.8rem;
     }
-    .template-content{
-        width:158px;
+    
+    .card-image {
+        height: 80px;
+    }
+    
+    .gift-box {
+        width: 32px;
+        height: 32px;
     }
 }
+
 @media (max-width: 768px) {
     .page-header .btn {
         width: 20%;
-        /* min-width: 20px; */
     }
 }

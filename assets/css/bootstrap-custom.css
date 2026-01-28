@@ -465,6 +465,10 @@
     transition: all 0.2s ease;
 }
 
+.page-header a :hover {
+    cursor: pointer;
+}
+
 .btn-primary {
     background-color: var(--bs-primary);
     border-color: var(--bs-primary);

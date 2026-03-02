@@ -3,10 +3,13 @@ class Dashboard {
         this.charts = {};
         this.filters = {
             dateRange: '30',
-            campaignStatus: 'all'
+            campaignStatus: 'all',
+            client: 'all'   // new
         };
         this.activeTab = 'overview';
         this.modal = null;
+        // Custom date range properties
+        this.customDates = { from: null, to: null };
     }
 
     init() {
@@ -108,7 +111,63 @@ class Dashboard {
         const dateRangeSelect = document.getElementById('dateRange');
         if (dateRangeSelect) {
             dateRangeSelect.addEventListener('change', (e) => {
-                this.filters.dateRange = e.target.value;
+                const value = e.target.value;
+                this.filters.dateRange = value;
+
+                if (value === 'custom') {
+                    // Show the modal
+                    const modalEl = document.getElementById('customDateModal');
+                    if (modalEl) {
+                        const modal = new bootstrap.Modal(modalEl);
+                        modal.show();
+                    }
+                } else {
+                    this.updateDashboardData();
+                }
+            });
+        }
+
+        // Client selection
+        const clientSelect = document.getElementById('clientSelect');
+        if (clientSelect) {
+            clientSelect.addEventListener('change', (e) => {
+                this.filters.client = e.target.value;
+                this.updateDashboardData();
+            });
+        }
+
+        // Apply button for modal date range
+        const applyModalBtn = document.getElementById('applyCustomRangeModal');
+        if (applyModalBtn) {
+            applyModalBtn.addEventListener('click', () => {
+                const fromInput = document.getElementById('dateFromModal');
+                const toInput = document.getElementById('dateToModal');
+
+                if (!fromInput.value || !toInput.value) {
+                    if (typeof window.showNotification === 'function') {
+                        window.showNotification('Please select both start and end dates', 'warning');
+                    }
+                    return;
+                }
+
+                const fromDate = new Date(fromInput.value);
+                const toDate = new Date(toInput.value);
+
+                if (fromDate > toDate) {
+                    if (typeof window.showNotification === 'function') {
+                        window.showNotification('Start date must be before end date', 'warning');
+                    }
+                    return;
+                }
+
+                this.customDates.from = fromInput.value;
+                this.customDates.to = toInput.value;
+
+                // Hide modal
+                const modalEl = document.getElementById('customDateModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+
                 this.updateDashboardData();
             });
         }
@@ -1086,18 +1145,49 @@ Full report functionality can be implemented as needed.`;
         
         setTimeout(() => {
             this.hideLoading();
-            this.updateMetrics();
-            
-            if (typeof window.showNotification === 'function') {
-                window.showNotification('Dashboard data updated', 'success');
+
+            let multiplier = 1;
+
+            // Determine multiplier based on date range
+            if (this.filters.dateRange === 'custom' && this.customDates.from && this.customDates.to) {
+                const from = new Date(this.customDates.from);
+                const to = new Date(this.customDates.to);
+                const diffDays = Math.round((to - from) / (1000 * 60 * 60 * 24));
+                multiplier = diffDays / 30; // scale relative to 30 days
+                
+                if (typeof window.showNotification === 'function') {
+                    window.showNotification(`Custom range applied: ${diffDays} days`, 'success');
+                }
+            } else {
+                // Preset ranges
+                const range = this.filters.dateRange;
+                multiplier = range === '7' ? 0.25 : range === '90' ? 3 : 1;
+
             }
-        }, 500);
+            // Client multiplier (simulate different client volumes)
+                const clientMultiplier = {
+                    'all': 1,
+                    'client1': 1.2,
+                    'client2': 0.8,
+                    'client3': 1.5,
+                    'client4': 0.6
+                }[this.filters.client] || 1;
+
+                multiplier *= clientMultiplier;
+
+        // Notify user
+        if (typeof window.showNotification === 'function') {
+            const clientName = clientSelect.options[clientSelect.selectedIndex].text;
+            window.showNotification(`Data updated for ${clientName}`, 'success');
+        }
+
+        this.updateMetrics(multiplier);
+    }, 500);
+
     }
 
-    updateMetrics() {
-        const dateRange = this.filters.dateRange;
-        const multiplier = dateRange === '7' ? 0.25 : dateRange === '90' ? 3 : 1;
-        
+    updateMetrics(multiplier = 1) {
+        // Scale the metric values based on the multiplier
         const metrics = {
             'Total Sent': `${(2.4 * multiplier).toFixed(1)}M`,
             'Delivered': `${(2.28 * multiplier).toFixed(2)}M`,

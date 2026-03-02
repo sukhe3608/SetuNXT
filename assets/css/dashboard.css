@@ -1435,3 +1435,24 @@ body.dark-mode .campaign-actions .btn-close-modal:hover {
         align-items: flex-start;
     }
 }
+
+/* Custom date modal */
+#customDateModal .modal-sm {
+    max-width: 320px;
+}
+
+#customDateModal .form-control[type="date"] {
+    font-size: 0.875rem;
+}
+
+@media (max-width: 767px) {
+    .dashboard-header .d-flex.flex-wrap {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .dashboard-header .input-group,
+    .dashboard-header .btn {
+        width: 100%;
+        min-width: unset !important;
+    }
+}

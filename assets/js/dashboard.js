@@ -8,6 +8,8 @@ class Dashboard {
         };
         this.activeTab = 'overview';
         this.modal = null;
+        this.creditModal = null;          // will hold the modal instance
+        this.creditDebitSetup = false; 
         // Custom date range properties
         this.customDates = { from: null, to: null };
     }
@@ -34,6 +36,10 @@ class Dashboard {
             modalElement.addEventListener('hidden.bs.modal', () => {
                 this.cleanupModalEventListeners();
             });
+        }
+        const creditModalElement = document.getElementById('creditDebitModal');
+        if (creditModalElement) {
+            this.creditModal = new bootstrap.Modal(creditModalElement);
         }
     }
 
@@ -66,13 +72,17 @@ class Dashboard {
                 this.activeTab = targetId.replace('#', '').replace('-tab', '');
                 this.initializeTabCharts(this.activeTab);
                 
+                if (this.activeTab === 'credit-debit' && !this.creditDebitSetup) {
+                    this.setupCreditDebitRowClickHandlers();
+                    this.creditDebitSetup = true;
+                }
                 window.location.hash = `tab=${this.activeTab}`;
             });
         });
 
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const tabFromHash = hashParams.get('tab');
-        if (tabFromHash && ['overview', 'campaigns', 'analytics'].includes(tabFromHash)) {
+        if (tabFromHash && ['overview', 'campaigns', 'analytics', 'credit-debit'].includes(tabFromHash)) {
             const tabButton = document.querySelector(`#dashboardTabs button[data-bs-target="#${tabFromHash}-tab"]`);
             if (tabButton) {
                 const tab = new bootstrap.Tab(tabButton);
@@ -205,6 +215,7 @@ class Dashboard {
         }, 250));
 
         this.setupCampaignTableClickHandlers();
+        this.setupCreditDebitSearch(); // Initialize search for credit/debit tab
     }
 
     setupCampaignTableClickHandlers() {
@@ -232,6 +243,96 @@ class Dashboard {
         });
     }
 
+    setupCreditDebitRowClickHandlers() {
+        const tbody = document.querySelector('#credit-debit-tab table tbody');
+        if (!tbody) return;
+
+        const rows = tbody.querySelectorAll('tr');
+        rows.forEach(row => {
+            row.style.cursor = 'pointer';
+            row.addEventListener('click', () => {
+                // Read data attributes
+                const loan = row.dataset.loan;
+                const date = row.dataset.date;
+                const amount = row.dataset.amount;
+                const type = row.dataset.type;
+                const description = row.dataset.description;
+
+                // Populate modal fields
+                document.getElementById('modalLoanName').textContent = loan;
+                document.getElementById('modalDate').textContent = date;
+                document.getElementById('modalAmount').textContent = amount ? `$${amount}` : 'N/A';
+                document.getElementById('modalType').textContent = type || 'N/A';
+                document.getElementById('modalDescription').textContent = description || 'N/A';
+
+                // Show the modal
+                if (this.creditModal) {
+                    this.creditModal.show();
+                }
+            });
+
+            // Optional hover effect
+            row.addEventListener('mouseenter', () => {
+                row.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.backgroundColor = '';
+            });
+        });
+    }
+
+    // New method: Set up search button for credit/debit tab
+    setupCreditDebitSearch() {
+        const searchBtn = document.getElementById('creditSearchBtn');
+        if (searchBtn) {
+            searchBtn.addEventListener('click', () => this.filterCreditDebitTable());
+        }
+    }
+
+    // New method: Filter credit/debit table by username and date range
+    filterCreditDebitTable() {
+        const usernameFilter = document.getElementById('creditUsername')?.value.toLowerCase().trim() || '';
+        const fromDate = document.getElementById('creditFromDate')?.value; // yyyy-mm-dd
+        const toDate = document.getElementById('creditToDate')?.value;     // yyyy-mm-dd
+
+        const table = document.getElementById('creditTable');
+        if (!table) return;
+
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const usernameCell = row.cells[0]?.textContent.toLowerCase().trim() || '';
+            const rowDateStr = row.dataset.date; // format dd-mm-yyyy
+
+            let dateMatch = true;
+            if (fromDate || toDate) {
+                // Convert row date (dd-mm-yyyy) to yyyy-mm-dd for comparison
+                if (rowDateStr) {
+                    const [day, month, year] = rowDateStr.split('-');
+                    const rowDate = new Date(`${year}-${month}-${day}`);
+                    rowDate.setHours(0,0,0,0); // normalise
+
+                    if (fromDate) {
+                        const from = new Date(fromDate);
+                        from.setHours(0,0,0,0);
+                        if (rowDate < from) dateMatch = false;
+                    }
+                    if (toDate && dateMatch) {
+                        const to = new Date(toDate);
+                        to.setHours(0,0,0,0);
+                        if (rowDate > to) dateMatch = false;
+                    }
+                } else {
+                    // If row has no date but filter is active, hide it
+                    dateMatch = false;
+                }
+            }
+
+            const usernameMatch = usernameCell.includes(usernameFilter);
+
+            row.style.display = (usernameMatch && dateMatch) ? '' : 'none';
+        });
+    }
+
     showCampaignDetails(row) {
         const cells = row.querySelectorAll('td');
         const campaignData = {
@@ -253,6 +354,8 @@ class Dashboard {
             this.modal.show();
         }
     }
+
+
 
     populateModal(data) {
         // Parse numbers for calculations
@@ -1162,28 +1265,32 @@ Full report functionality can be implemented as needed.`;
                 // Preset ranges
                 const range = this.filters.dateRange;
                 multiplier = range === '7' ? 0.25 : range === '90' ? 3 : 1;
-
             }
+
             // Client multiplier (simulate different client volumes)
-                const clientMultiplier = {
-                    'all': 1,
-                    'client1': 1.2,
-                    'client2': 0.8,
-                    'client3': 1.5,
-                    'client4': 0.6
-                }[this.filters.client] || 1;
+            const clientMultiplier = {
+                'all': 1,
+                'client1': 1.2,
+                'client2': 0.8,
+                'client3': 1.5,
+                'client4': 0.6
+            }[this.filters.client] || 1;
 
-                multiplier *= clientMultiplier;
+            multiplier *= clientMultiplier;
 
-        // Notify user
-        if (typeof window.showNotification === 'function') {
-            const clientName = clientSelect.options[clientSelect.selectedIndex].text;
-            window.showNotification(`Data updated for ${clientName}`, 'success');
-        }
+            // Notify user
+            if (typeof window.showNotification === 'function') {
+                const clientSelect = document.getElementById('clientSelect');
+                if (clientSelect) {
+                    const clientName = clientSelect.options[clientSelect.selectedIndex].text;
+                    window.showNotification(`Data updated for ${clientName}`, 'success');
+                } else {
+                    window.showNotification('Dashboard data updated', 'success');
+                }
+            }
 
-        this.updateMetrics(multiplier);
-    }, 500);
-
+            this.updateMetrics(multiplier);
+        }, 500);
     }
 
     updateMetrics(multiplier = 1) {

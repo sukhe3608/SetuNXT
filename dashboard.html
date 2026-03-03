@@ -118,6 +118,13 @@
                                 Analytics
                             </button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#credit-debit-tab"
+                                type="button" role="tab">
+                                <i class="fas fa-credit-card me-1 d-none d-md-inline"></i>
+                                Credit/Debit
+                            </button>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -822,6 +829,81 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Credit/Debit Tab -->
+                <div class="tab-pane fade" id="credit-debit-tab" role="tabpanel">
+                    <div class="chart-container">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="chart-title mb-0">PROVOCAL (CREDIT & DEBIT) REPORT</h5>
+                        </div>
+
+                        <!-- Filters -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" id="creditUsername"
+                                    placeholder="Enter username">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">From Date</label>
+                                <input type="date" class="form-control" id="creditFromDate">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">To Date</label>
+                                <input type="date" class="form-control" id="creditToDate">
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button class="btn btn-primary w-100" id="creditSearchBtn">
+                                    <i class="fas fa-search me-1"></i>Search
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="creditTable">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Name</th>
+                                        <th>Company Name</th>
+                                        <th>Total Credits</th>
+                                        <th>Total Debits</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-date="01-01-2025">
+                                        <td>john_doe</td>
+                                        <td>John Doe</td>
+                                        <td>Acme Corp</td>
+                                        <td>$1,500</td>
+                                        <td>$500</td>
+                                        <td><button class="btn btn-sm btn-outline-primary">Show</button></td>
+                                    </tr>
+                                    <tr data-date="15-02-2025">
+                                        <td>jane_smith</td>
+                                        <td>Jane Smith</td>
+                                        <td>Globex</td>
+                                        <td>$2,500</td>
+                                        <td>$1,200</td>
+                                        <td><button class="btn btn-sm btn-outline-primary">Show</button></td>
+                                    </tr>
+                                    <tr data-date="10-03-2025">
+                                        <td>bob_johnson</td>
+                                        <td>Bob Johnson</td>
+                                        <td>Initech</td>
+                                        <td>$5,000</td>
+                                        <td>$2,000</td>
+                                        <td><button class="btn btn-sm btn-outline-primary">Show</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -998,6 +1080,43 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="applyCustomRangeModal">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Credit/Debit Details Modal -->
+    <div class="modal fade" id="creditDebitModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Loan Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="fw-bold">Loan Name</label>
+                        <p id="modalLoanName">Sample Loan</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Date</label>
+                        <p id="modalDate">01-01-2025</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Amount</label>
+                        <p id="modalAmount">$1,500</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Type</label>
+                        <p id="modalType">Credit</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Description</label>
+                        <p id="modalDescription">Loan for business expansion</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

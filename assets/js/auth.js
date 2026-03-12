@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Simulate redirect
                 setTimeout(() => {
-                    window.location.href = 'index.html';
+                    window.location.href = 'main.html';
                 }, 1000);
             }, 1500);
         });

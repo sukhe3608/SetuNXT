@@ -15,12 +15,6 @@
                             <img src="assets/images/Logo.png" alt="SetuNXT Logo" class="logo-img">
                         </div>
                     </div>
-                    
-                    <!-- <div class="breadcrumb d-none d-md-flex align-items-center text-muted">
-                        <span class="breadcrumb-item">Dashboard</span>
-                        <i class="fas fa-chevron-right mx-2"></i>
-                        <span class="breadcrumb-item active fw-semibold">Broadcast</span>
-                    </div> -->
                 </div>
             </div>
 
@@ -41,6 +35,14 @@
 
             <!-- Right Section: Tools & User -->
             <div class="d-flex align-items-center gap-3">
+                <!-- Dark/Light Mode Toggle -->
+                <div class="theme-toggle-container">
+                    <button class="btn btn-outline-secondary theme-toggle" id="themeToggle" 
+                            title="Toggle dark/light mode" aria-label="Toggle theme">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                </div>
+
                 <!-- Country Selector -->
                 <div class="country-selector d-none d-lg-flex align-items-center gap-2">
                     <img src="https://flagcdn.com/w40/in.png" alt="India Flag" class="country-flag">
@@ -120,12 +122,15 @@
 </header>
 
 <script>
-    // Header-specific JavaScript
+    // Header-specific JavaScript with dark mode integration
     (function() {
         'use strict';
         
         // Initialize header when component loads
         function initHeader() {
+            // Theme toggle functionality
+            initThemeToggle();
+            
             // Country selector functionality
             const countrySelector = document.querySelector('.country-selector');
             if (countrySelector) {
@@ -143,23 +148,172 @@
                 });
             }
             
-            // Mark all as read button
+            // Notifications functionality
+            initNotifications();
+            
+            // User dropdown functionality
+            initUserDropdown();
+            
+            // Load notifications
+            loadNotifications();
+            
+            // Menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    const sidebar = document.getElementById('simpleSidebar');
+                    const overlay = document.getElementById('overlay');
+                    if (sidebar && overlay) {
+                        sidebar.classList.toggle('active');
+                        overlay.classList.toggle('active');
+                    }
+                });
+            }
+            
+            // Overlay click to close sidebar
+            const overlay = document.getElementById('overlay');
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    const sidebar = document.getElementById('simpleSidebar');
+                    if (sidebar) {
+                        sidebar.classList.remove('active');
+                        overlay.classList.remove('active');
+                    }
+                });
+            }
+        }
+        
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (themeToggle) {
+                // Remove any existing listeners
+                themeToggle.removeEventListener('click', handleThemeToggle);
+                themeToggle.addEventListener('click', handleThemeToggle);
+                
+                // Update icon based on current theme
+                updateThemeIcon();
+                
+                // Listen for theme changes
+                document.addEventListener('themeChanged', function(e) {
+                    updateThemeIcon();
+                });
+            }
+            
+            function handleThemeToggle(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (window.themeManager) {
+                    window.themeManager.toggleTheme();
+                } else if (window.ThemeManager) {
+                    window.themeManager = new window.ThemeManager();
+                    window.themeManager.toggleTheme();
+                } else {
+                    // Fallback toggle
+                    toggleThemeFallback();
+                }
+            }
+            
+            function updateThemeIcon() {
+                if (!themeIcon) return;
+                
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                if (isDarkMode) {
+                    themeIcon.className = 'fas fa-sun';
+                    themeIcon.setAttribute('title', 'Switch to light mode');
+                    themeToggle.setAttribute('aria-label', 'Switch to light mode');
+                    themeToggle.setAttribute('title', 'Switch to light mode');
+                } else {
+                    themeIcon.className = 'fas fa-moon';
+                    themeIcon.setAttribute('title', 'Switch to dark mode');
+                    themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+                    themeToggle.setAttribute('title', 'Switch to dark mode');
+                }
+            }
+            
+            function toggleThemeFallback() {
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                const newTheme = isDarkMode ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                document.body.classList.toggle('dark-mode', !isDarkMode);
+                document.body.classList.toggle('light-mode', isDarkMode);
+                
+                // Update Bootstrap theme
+                document.documentElement.setAttribute('data-bs-theme', newTheme);
+                
+                // Save preference
+                localStorage.setItem('setunxt-theme', newTheme);
+                
+                // Update icon
+                updateThemeIcon();
+                
+                // Show notification
+                if (typeof window.showNotification === 'function') {
+                    window.showNotification(`Switched to ${newTheme} mode`, 'info');
+                }
+            }
+        }
+        
+        function initNotifications() {
+            const notificationsBtn = document.getElementById('notificationsBtn');
+            const notificationsDropdown = document.getElementById('notificationsDropdown');
             const markAllReadBtn = document.querySelector('.btn-mark-all-read');
+            
+            if (notificationsBtn && notificationsDropdown) {
+                notificationsBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    notificationsDropdown.classList.toggle('show');
+                    
+                    // Close other dropdowns
+                    const userDropdown = document.getElementById('userDropdown');
+                    if (userDropdown) userDropdown.classList.remove('show');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!notificationsBtn.contains(e.target) && !notificationsDropdown.contains(e.target)) {
+                        notificationsDropdown.classList.remove('show');
+                    }
+                });
+            }
+            
             if (markAllReadBtn) {
                 markAllReadBtn.addEventListener('click', markAllNotificationsAsRead);
             }
-            
-            // Logout button
+        }
+        
+        function initUserDropdown() {
+            const userProfile = document.getElementById('userProfile');
+            const userDropdown = document.getElementById('userDropdown');
             const logoutBtn = document.querySelector('.btn-logout');
+            
+            if (userProfile && userDropdown) {
+                userProfile.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('show');
+                    
+                    // Close notifications dropdown
+                    const notificationsDropdown = document.getElementById('notificationsDropdown');
+                    if (notificationsDropdown) notificationsDropdown.classList.remove('show');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!userProfile.contains(e.target) && !userDropdown.contains(e.target)) {
+                        userDropdown.classList.remove('show');
+                    }
+                });
+            }
+            
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     showLogoutConfirmation();
                 });
             }
-            
-            // Load notifications
-            loadNotifications();
         }
         
         function showCountrySelector() {
@@ -215,6 +369,14 @@
             
             // Update badge
             updateNotificationBadge();
+            
+            // Add click events to notification items
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    markNotificationAsRead(id);
+                });
+            });
         }
         
         function getNotificationIcon(type) {
@@ -224,6 +386,14 @@
                 info: 'info-circle'
             };
             return icons[type] || 'info-circle';
+        }
+        
+        function markNotificationAsRead(id) {
+            const notificationItem = document.querySelector(`.notification-item[data-id="${id}"]`);
+            if (notificationItem) {
+                notificationItem.classList.remove('unread');
+                updateNotificationBadge();
+            }
         }
         
         function markAllNotificationsAsRead() {
@@ -264,11 +434,29 @@
             }
         }
         
-        // Initialize header
+        // Initialize header when loaded
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initHeader);
         } else {
             initHeader();
         }
+        
+        // Also check for theme toggle on DOM mutations (for dynamically loaded content)
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    const themeToggle = document.getElementById('themeToggle');
+                    if (themeToggle && !themeToggle.hasAttribute('data-listener-attached')) {
+                        initThemeToggle();
+                        themeToggle.setAttribute('data-listener-attached', 'true');
+                    }
+                }
+            });
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
     })();
 </script>

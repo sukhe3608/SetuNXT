@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SetuNXT RCS - Sign Up</title>
+    <meta name="description" content="Create your SetuNXT RCS Messaging account">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/auth.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <style>
+        body {
+            background: linear-gradient(135deg, #F7F9FC 0%, #E4E9F2 100%);
+        }
+        
+        /* Additional styles for better form layout */
+        .country-code {
+            pointer-events: none;
+            background: transparent;
+        }
+        
+        .phone-input-group select {
+            background: transparent;
+            border: none;
+            color: var(--gray);
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
+</head>
+<body class="auth-page">
+    <div class="auth-container signup-container">
+        <!-- Left Panel - RCS Theme -->
+        <div class="auth-left-panel">
+            <!-- Message Bubbles -->
+            <div class="message-bubbles">
+                <div class="bubble bubble-1"></div>
+                <div class="bubble bubble-2"></div>
+                <div class="bubble bubble-3"></div>
+                <div class="bubble bubble-4"></div>
+            </div>
+            
+            <!-- RCS Logo -->
+            <div class="rcs-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>SetuNXT</h1>
+                    <p class="tagline">Join the RCS Revolution</p>
+                </div>
+            </div>
+            
+            <!-- Features -->
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-rocket"></i>
+                    <span>Launch Campaigns in Minutes</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-image"></i>
+                    <span>Rich Media Support</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Advanced Analytics</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-headset"></i>
+                    <span>24/7 Support</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Panel with Form -->
+        <div class="auth-right-panel">
+            <!-- Form Container -->
+            <div class="form-container signup-form-container">
+                <div class="form-header">
+                    <h2 class="form-title">Create Account</h2>
+                    <p class="form-subtitle">Start your RCS messaging journey</p>
+                </div>
+                
+                <form id="signupForm" class="auth-form">
+                    <!-- Name Fields -->
+                    <div class="form-row">
+                        <div class="form-group floating-input">
+                            <input type="text" id="firstName" placeholder=" " required>
+                            <label for="firstName">First Name</label>
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="form-group floating-input">
+                            <input type="text" id="lastName" placeholder=" " required>
+                            <label for="lastName">Last Name</label>
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Email Field -->
+                    <div class="form-group floating-input">
+                        <input type="email" id="email" placeholder=" " required>
+                        <label for="email">Email Address</label>
+                        <div class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="input-line"></div>
+                    </div>
+                    
+                    <!-- Phone Field - Fixed -->
+                    <div class="form-group floating-input phone-input-group">
+                        <div class="input-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <select class="country-code" id="countryCode" disabled>
+                            <option value="+91">+91 IN</option>
+                            <option value="+1">+1 US</option>
+                            <option value="+44">+44 UK</option>
+                            <option value="+81">+81 JP</option>
+                        </select>
+                        <input type="tel" id="phone" placeholder=" " required>
+                        <label for="phone">Phone Number</label>
+                        <div class="input-line"></div>
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="form-group floating-input">
+                        <input type="password" id="password" placeholder=" " required>
+                        <label for="password">Password</label>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="input-line"></div>
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        
+                        <!-- Password Strength Indicator -->
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <span class="strength-text" id="strengthText">Weak</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Confirm Password -->
+                    <div class="form-group floating-input">
+                        <input type="password" id="confirmPassword" placeholder=" " required>
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="input-line"></div>
+                        <div class="match-indicator" id="matchIndicator">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Terms -->
+                    <div class="form-options terms">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" required>
+                            <span class="checkmark"></span>
+                            <span style="font-size: 13px;">
+                                I agree to the <a href="#" style="color: var(--primary);">Terms of Service</a> and <a href="#" style="color: var(--primary);">Privacy Policy</a>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-content">
+                            <span class="btn-text">Create RCS Account</span>
+                            <span class="btn-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </span>
+                        </span>
+                        <span class="btn-loader">
+                            <div class="spinner"></div>
+                        </span>
+                    </button>
+                    
+                    <!-- Login Link -->
+                    <div class="auth-link">
+                        Already have an account? 
+                        <a href="login.html" class="link-animated">
+                            <span>Sign in</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </form>
+                
+                <!-- Footer -->
+                <!-- <div class="form-footer">
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="assets/js/auth.js"></script>
+    
+    <script>
+        // Additional JS for phone input
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fix phone input label positioning
+            const phoneInput = document.getElementById('phone');
+            const phoneLabel = document.querySelector('.phone-input-group label');
+            
+            if (phoneInput && phoneLabel) {
+                phoneInput.addEventListener('focus', function() {
+                    phoneLabel.style.transform = 'translateY(-22px) translateX(-10px) scale(0.85)';
+                });
+                
+                phoneInput.addEventListener('blur', function() {
+                    if (!this.value) {
+                        phoneLabel.style.transform = 'translateY(0) scale(1)';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 data-target="agentDetails${agent.id}">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-secondary border-0 agent-action-btn delete-btn">
+                        <button class="btn btn-sm btn-outline-secondary border-0 agent-action-btn delete-btn" data-agent-id="${agent.id}">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
@@ -224,9 +224,12 @@ document.addEventListener('DOMContentLoaded', function() {
         deleteBtns.forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
+                
+                const agentId = this.getAttribute('data-agent-id');
                 const row = this.closest('tr');
                 if (row) {
-                    deleteAgent(row);
+                    showDeleteConfirmation(row, agentId);
                 }
             });
         });
@@ -246,6 +249,78 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+    }
+    
+    function showDeleteConfirmation(row, agentId) {
+        const userName = row.cells[2]?.textContent.trim() || '';
+        const agentName = row.cells[3]?.textContent.trim() || '';
+        
+        // Check if dark mode is active
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            html: `You are about to delete agent <strong>"${agentName}"</strong> (${userName}).<br>This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+            background: isDarkMode ? '#1e293b' : '#fff',
+            color: isDarkMode ? '#e2e8f0' : '#333',
+            customClass: {
+                popup: isDarkMode ? 'dark-swal' : '',
+                title: isDarkMode ? 'text-light' : '',
+                htmlContainer: isDarkMode ? 'text-light' : '',
+                confirmButton: 'btn btn-danger',
+                cancelButton: 'btn btn-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteAgent(row, agentId, userName, agentName);
+            }
+        });
+    }
+    
+    function deleteAgent(row, agentId, userName, agentName) {
+        // Show loading
+        row.style.opacity = '0.5';
+        row.style.pointerEvents = 'none';
+        
+        // Simulate API call delay
+        setTimeout(() => {
+            // In a real app, this would make API call to delete
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            
+            // Show success message
+            Swal.fire({
+                title: 'Deleted!',
+                text: `Agent "${agentName}" has been deleted successfully.`,
+                icon: 'success',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: isDarkMode ? '#1e293b' : '#fff',
+                color: isDarkMode ? '#e2e8f0' : '#333',
+                customClass: {
+                    popup: isDarkMode ? 'dark-swal' : '',
+                    title: isDarkMode ? 'text-light' : ''
+                }
+            });
+            
+            // Remove row from table
+            const detailsRow = document.getElementById(`agentDetails${agentId}-row`);
+            if (detailsRow) {
+                detailsRow.remove();
+            }
+            row.remove();
+            
+            updateTableInfo();
+            
+            // Also show a notification toast
+            showNotification(`Agent "${agentName}" deleted successfully`, 'success');
+        }, 1000);
     }
     
     function showAddAgentModal() {
@@ -416,31 +491,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function deleteAgent(row) {
-        const userName = row.cells[2]?.textContent.trim() || '';
-        const agentName = row.cells[3]?.textContent.trim() || '';
-        
-        if (confirm(`Are you sure you want to delete agent "${agentName}" (${userName})?`)) {
-            // Show loading
-            row.style.opacity = '0.5';
-            row.style.pointerEvents = 'none';
-            
-            setTimeout(() => {
-                // In a real app, this would make API call to delete
-                showNotification(`Agent "${agentName}" deleted successfully`, 'success');
-                
-                // Remove row from table
-                const detailsRow = row.nextElementSibling;
-                if (detailsRow && detailsRow.classList.contains('details-row')) {
-                    detailsRow.remove();
-                }
-                row.remove();
-                
-                updateTableInfo();
-            }, 1000);
-        }
-    }
-    
     function saveAgent() {
         const saveAgentBtn = document.getElementById('saveAgentBtn');
         const form = document.querySelector('#agentModal form');
@@ -581,7 +631,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Show notification function
+    // Show notification function - Updated for dark mode compatibility
     function showNotification(message, type = 'info') {
         // Use existing notification system if available
         if (typeof window.showNotification === 'function') {
@@ -591,15 +641,54 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Check if Bootstrap toast is available
         if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
-            // Create toast element
+            // Check if we're in dark mode
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            
+            // Create toast element with dark mode compatible colors
             const toastId = 'notification-toast-' + Date.now();
+            
+            // Define toast styles based on type and theme
+            let toastClass = `toast align-items-center border-0`;
+            
+            if (isDarkMode) {
+                // Dark mode styles
+                switch(type) {
+                    case 'success':
+                        toastClass += ' text-bg-success';
+                        break;
+                    case 'warning':
+                        toastClass += ' text-bg-warning';
+                        break;
+                    case 'danger':
+                        toastClass += ' text-bg-danger';
+                        break;
+                    default:
+                        toastClass += ' text-bg-info';
+                }
+            } else {
+                // Light mode styles
+                switch(type) {
+                    case 'success':
+                        toastClass += ' bg-success text-white';
+                        break;
+                    case 'warning':
+                        toastClass += ' bg-warning text-dark';
+                        break;
+                    case 'danger':
+                        toastClass += ' bg-danger text-white';
+                        break;
+                    default:
+                        toastClass += ' bg-info text-white';
+                }
+            }
+            
             const toastHtml = `
-                <div class="toast align-items-center text-bg-${type} border-0" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="${toastClass}" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
                         <div class="toast-body">
                             ${message}
                         </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        <button type="button" class="btn-close ${isDarkMode ? 'btn-close-white' : ''} me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                 </div>
             `;

@@ -1,0 +1,659 @@
+:root {
+    --whatsapp-green: #075e54;
+    --whatsapp-light-green: #25d366;
+    --chat-bg: #e1e4d8;
+    --whatsapp-header-bg: #075e54;
+    --phone-frame-color: #1a1a1a;
+    --phone-screen-bg: #f8f9fa;
+    --phone-status-bar: #000;
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success-gradient: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+    --danger-gradient: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;  
+}
+
+/* Mobile Preview Container */
+.mobile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 90px;
+}
+
+.preview-title {
+    font-weight: 600;
+    color: var(--bs-body-color);
+    text-align: center;
+    font-size: 1rem;
+    width: 100%;
+}
+
+/* New Mobile Frame */
+.phone-preview {
+    width: 280px;
+    height: 560px;
+    margin: 0 auto;
+    perspective: 1000px;
+}
+
+.phone-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--phone-frame-color);
+    border-radius: 2.85rem;
+    padding: 14px;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 10px 20px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+        0 0 0 4px rgba(20, 20, 20, 0.9),
+        0 0 0 5px rgba(40, 40, 40, 0.4),
+        0 0 0 6px rgba(20, 20, 20, 0.9);
+    overflow: hidden;
+}
+
+.phone-frame:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 15px 30px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.6),
+        0 0 0 4px rgba(30, 30, 30, 0.9),
+        0 0 0 5px rgba(70, 70, 70, 0.4),
+        0 0 0 6px rgba(30, 30, 30, 0.9);
+}
+
+.phone-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 24px;
+    background: var(--phone-frame-color);
+    border-radius: 0 0 20px 20px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.notch-camera {
+    width: 12px;
+    height: 12px;
+    background: #000;
+    border-radius: 50%;
+    border: 2px solid #333;
+}
+
+.notch-speaker {
+    width: 60px;
+    height: 6px;
+    background: #222;
+    border-radius: 3px;
+}
+
+.phone-screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+    border-radius: 30px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Phone Status Bar */
+.phone-status-bar {
+    background: linear-gradient(to bottom, #000 0%, #222 100%);
+    color: white;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.phone-time {
+    font-weight: 700;
+}
+
+.phone-status-icons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.phone-status-icons i {
+    font-size: 10px;
+}
+
+/* Phone Header */
+.phone-header {
+    background: white;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.phone-avatar {
+    width: 36px;
+    height: 36px;
+    background: var(--primary-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+}
+
+.phone-contact-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.phone-brand {
+    font-size: 14px;
+    color: #1a1a1a;
+    line-height: 1.2;
+}
+
+.phone-contact-status {
+    font-size: 11px;
+    color: #4CAF50;
+    font-weight: 500;
+}
+
+/* Phone Content */
+.phone-content {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background: linear-gradient(to bottom, #e8f5e8 0%, #f0f8ff 100%);
+}
+
+/* Message Card */
+.message-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-image {
+    position: relative;
+    height: 120px;
+    background: var(--primary-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.gift-boxes {
+    display: flex;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.gift-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+}
+
+.gift-box.red {
+    background: var(--danger-gradient);
+    box-shadow: 0 4px 8px rgba(255, 71, 87, 0.3);
+    animation-delay: 0s;
+}
+
+.gift-box.green {
+    background: var(--success-gradient);
+    box-shadow: 0 4px 8px rgba(64, 192, 87, 0.3);
+    animation-delay: 0.5s;
+}
+
+.gift-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px 8px 0 0;
+}
+
+.gift-box::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.sparkle {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 20px;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+.sparkle-2 {
+    top: 20px;
+    right: 30px;
+    animation-delay: 0.3s;
+}
+
+.sparkle-3 {
+    bottom: 20px;
+    left: 30px;
+    animation-delay: 0.7s;
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.card-text {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    min-height: 60px;
+    max-height: 80px;
+    /* overflow-y: auto; */
+}
+
+.message-time {
+    display: flex;
+    align-items: center;
+    font-size: 11px;
+    color: #888;
+    margin-top: 8px;
+}
+
+.card-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.phone-home-indicator {
+    width: 120px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 2px;
+    margin: 0 auto;
+    margin-bottom: 8px;
+}
+
+.phone-frame-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 2.85rem;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Suggestions Section */
+.suggestion-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--bs-border-color);
+}
+
+.suggestion-item {
+    background: white;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s;
+}
+
+.suggestion-item:hover {
+    border-color: var(--bs-primary);
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.1);
+}
+
+.suggestion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.suggestion-label {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.suggestion-label i {
+    font-size: 14px;
+}
+
+.suggestion-actions {
+    display: flex;
+    gap: 4px;
+}
+
+/* Character Counter */
+.char-counter {
+    text-align: right;
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 0.375rem;
+}
+
+.char-counter.warning {
+    color: #f59e0b;
+}
+
+.char-counter.danger {
+    color: #ef4444;
+}
+
+/* File Upload */
+.file-upload {
+    display: flex;
+    gap: 0.625rem;
+    align-items: center;
+}
+
+.file-upload input[type="file"] {
+    display: none;
+}
+
+.file-name {
+    flex: 1;
+    background: #f8fafc;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.375rem;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    color: #64748b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-name.has-file {
+    color: #1e293b;
+    font-weight: 500;
+}
+
+/* Badge styles */
+.badge-active {
+    background-color: var(--bs-success) !important;
+    color: white !important;
+}
+
+.badge-pending {
+    background-color: var(--bs-warning) !important;
+    color: white !important;
+}
+
+.badge-inactive {
+    background-color: #6c757d !important;
+    color: white !important;
+}
+
+/* Template Table Actions */
+.template-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+/* Footer */
+.footer {
+    position: relative;
+    z-index: 1;
+    background: white;
+}
+
+/* Variable highlighting in preview */
+.variable-highlight {
+    background-color: rgba(79, 70, 229, 0.1);
+    color: var(--bs-primary);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+/* Suggestion Icons */
+.suggestion-type-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.suggestion-type-reply {
+    background-color: rgba(79, 70, 229, 0.1);
+    color: #4f46e5;
+    border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+.suggestion-type-url {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.suggestion-type-dial {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.suggestion-type-postback {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* Quick Reply Icons in Preview */
+.quick-reply-icon {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* Button styles for preview */
+.btn-outline-primary {
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.btn-outline-primary:hover {
+    background: #667eea;
+    color: white;
+}
+
+.btn-outline-success {
+    border-color: #51cf66;
+    color: #51cf66;
+}
+
+.btn-outline-success:hover {
+    background: #51cf66;
+    color: white;
+}
+
+.btn-outline-info {
+    border-color: #17a2b8;
+    color: #17a2b8;
+}
+
+.btn-outline-info:hover {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-outline-warning {
+    border-color: #ffc107;
+    color: #ffc107;
+}
+
+.btn-outline-warning:hover {
+    background: #ffc107;
+    color: #212529;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .mobile-container {
+        margin-top: 2rem;
+        padding-left: 0;
+    }
+    
+    .phone-preview {
+        width: 260px;
+        height: 520px;
+    }
+}
+
+@media (max-width: 768px) {
+    .phone-preview {
+        width: 240px;
+        height: 480px;
+    }
+    
+    .phone-notch {
+        width: 120px;
+        height: 20px;
+    }
+    
+    .card-image {
+        height: 100px;
+    }
+}
+
+@media (max-width: 576px) {
+    .phone-preview {
+        width: 220px;
+        height: 440px;
+    }
+    
+    .phone-notch {
+        width: 100px;
+        height: 16px;
+    }
+    
+    .table tbody tr {
+        display: block;
+        gap: 20px;
+        align-items: center;
+    }
+    
+    .file-upload {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .file-upload .btn {
+        width: 100%;
+    }
+    
+    .suggestion-label {
+        font-size: 0.8rem;
+    }
+    
+    .card-image {
+        height: 80px;
+    }
+    
+    .gift-box {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header .btn {
+        width: 20%;
+    }
+}

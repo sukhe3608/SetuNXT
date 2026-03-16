@@ -1,60 +1,90 @@
-// script for mobile menu & theme toggle (default dark)
 
-    (function() {
-      // ----- mobile drawer -----
-      const toggleBtn = document.getElementById('menuToggle');
-      const drawer = document.getElementById('mobileDrawer');
-      if (toggleBtn && drawer) {
-        toggleBtn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          if (drawer.style.display === 'none' || getComputedStyle(drawer).display === 'none') {
-            drawer.style.display = 'flex';
-          } else {
-            drawer.style.display = 'none';
-          }
-        });
-        window.addEventListener('click', function(event) {
-          if (!drawer.contains(event.target) && !toggleBtn.contains(event.target)) {
-            drawer.style.display = 'none';
-          }
-        });
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+ 
+    const cards = document.querySelectorAll('.usecase-card');
+    cards.forEach(card => {
+      const titleEl = card.querySelector('h4');
+      if (!titleEl) return;
+      const title = titleEl.innerText.trim().toLowerCase();
+
+      let category = 'all'; 
+      if (title.includes('order') || title.includes('delivery') || title.includes('cart')) {
+        category = 'e-commerce';
+      } else if (title.includes('banking') || title.includes('otp') || title.includes('account')) {
+        category = 'banking-finance';
+      } else if (title.includes('appointment') || title.includes('clinic') || title.includes('hospital')) {
+        category = 'healthcare';
+      } else if (title.includes('travel') || title.includes('itineraries') || title.includes('flight')) {
+        category = 'travel';
+      } else if (title.includes('student') || title.includes('course') || title.includes('education')) {
+        category = 'education';
+      } else if (title.includes('promotional') || title.includes('campaigns') || title.includes('catalogs')) {
+        category = 'e-commerce';
       }
+      card.dataset.category = category;
+    });
 
-      // ----- theme toggle (default dark, no class on body) -----
-      const body = document.body;
-      const themeToggle = document.getElementById('themeToggle');
-      const mobileThemeToggle = document.getElementById('mobileThemeToggle');
-      
-      // icons: sun for light mode, moon for dark mode
-      function setThemeIcon(isLight) {
-        const iconElements = [
-          themeToggle?.querySelector('i'),
-          mobileThemeToggle?.querySelector('i')
-        ];
-        iconElements.forEach(icon => {
-          if (icon) {
-            if (isLight) {
-              icon.className = 'fas fa-moon';   // light theme active -> show moon to switch to dark
-            } else {
-              icon.className = 'fas fa-sun';     // dark theme active -> show sun to switch to light
-            }
-          }
-        });
-      }
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const useCaseGrid = document.querySelector('.usecase-grid');
+    if (!tabButtons.length || !useCaseGrid) return;
 
-      function toggleTheme() {
-        if (body.classList.contains('light-theme')) {
-          body.classList.remove('light-theme');
-          setThemeIcon(false); // now dark, show sun
+    const categoryMap = {
+      'All Industries': 'all',
+      'E-Commerce': 'e-commerce',
+      'Banking & Finance': 'banking-finance',
+      'Healthcare': 'healthcare',
+      'Travel': 'travel',
+      'Education': 'education'
+    };
+
+    // Filter function
+    function filterCards(category) {
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = '';
         } else {
-          body.classList.add('light-theme');
-          setThemeIcon(true); // now light, show moon
+          card.style.display = 'none';
         }
-      }
+      });
+    }
 
-      // initial: dark (no class), so icon should be sun
-      setThemeIcon(false);
+    
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
 
-      if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
-      if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
-    })();
+        const btnText = this.innerText.trim();
+        const category = categoryMap[btnText] || 'all';
+        filterCards(category);
+      });
+    });
+
+   
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const targetId = a.getAttribute('href');
+        if (targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.bar-fill').forEach(bar => {
+            const w = bar.style.width;
+            bar.style.width = '0';
+            setTimeout(() => { bar.style.width = w; }, 100);
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.why-visual').forEach(el => observer.observe(el));
+  });
+})();

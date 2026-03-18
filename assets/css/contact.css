@@ -1,0 +1,326 @@
+
+        body:not(.dark-mode):not(.light-mode) { background-color: #f8f9fa; }
+        body.theme-transition *:not(.fa-solid, .fa-regular, .fa-light, .fa-thin, .fa-duotone, .fa-brands) {
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        fill 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        stroke 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* Adjust for fixed header */
+        body {
+            padding-top: 68px; /* height of the fixed nav */
+        }
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+        }
+
+        /* Main content – remove any leftover dashboard margins */
+        .main-content {
+            margin-left: 0 !important;
+            margin-top: 0 !important;
+            min-height: calc(100vh - 68px);
+            display: flex;
+            align-items: center;
+            background: transparent;
+        }
+
+        /* Enhanced contact card */
+        .contact-card {
+            max-width: 800px;
+            margin: 2rem auto;
+            border: none;
+            border-radius: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .dark-mode .contact-card {
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Decorative gradient line on top */
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #1a6fd4, #f07c1a, #10b981);
+            z-index: 1;
+        }
+
+        /* Card inner padding */
+        .contact-card .card-body {
+            padding: 3rem 2.5rem;
+        }
+
+        /* Header styling */
+        .contact-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .contact-header h2 {
+            font-weight: 800;
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #1a6fd4, #f07c1a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-header p {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .dark-mode .contact-header p {
+            color: #94a3b8;
+        }
+
+        /* Floating label groups (inspired by auth.css) */
+        .floating-group {
+            position: relative;
+            margin-bottom: 1.2rem;
+        }
+
+        .floating-group .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            z-index: 4;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+            pointer-events: none;
+        }
+
+        .floating-group.floating-textarea .input-icon {
+            top: 24px;
+            transform: none;
+        }
+
+        .floating-group input,
+        .floating-group select,
+        .floating-group textarea {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            font-size: 0.95rem;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            color: #1e293b;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .dark-mode .floating-group input,
+        .dark-mode .floating-group select,
+        .dark-mode .floating-group textarea {
+            background: #1e293b;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+
+        .floating-group textarea {
+            padding-top: 20px;
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .floating-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+        }
+
+        .dark-mode .floating-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cbd5e1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+
+        .floating-group label {
+            position: absolute;
+            left: 48px;
+            top: 16px;
+            color: #64748b;
+            font-size: 0.95rem;
+            font-weight: 500;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            background: transparent;
+            padding: 0 4px;
+            z-index: 3;
+        }
+
+        .dark-mode .floating-group label {
+            color: #94a3b8;
+        }
+
+        /* Floating state */
+        .floating-group input:focus,
+        .floating-group select:focus,
+        .floating-group textarea:focus,
+        .floating-group input:not(:placeholder-shown),
+        .floating-group select:not([value=""]):valid,
+        .floating-group textarea:not(:placeholder-shown) {
+            border-color: #1a6fd4;
+            box-shadow: 0 4px 12px rgba(26,111,212,0.15);
+            outline: none;
+        }
+
+        .floating-group input:focus ~ label,
+        .floating-group select:focus ~ label,
+        .floating-group textarea:focus ~ label,
+        .floating-group input:not(:placeholder-shown) ~ label,
+        .floating-group select:not([value=""]):valid ~ label,
+        .floating-group textarea:not(:placeholder-shown) ~ label {
+            transform: translateY(-24px) translateX(-10px) scale(0.85);
+            color: #1a6fd4;
+            background: linear-gradient(135deg, #1a6fd4, #f07c1a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        .dark-mode .floating-group input:focus ~ label,
+        .dark-mode .floating-group select:focus ~ label,
+        .dark-mode .floating-group textarea:focus ~ label,
+        .dark-mode .floating-group input:not(:placeholder-shown) ~ label,
+        .dark-mode .floating-group select:not([value=""]):valid ~ label,
+        .dark-mode .floating-group textarea:not(:placeholder-shown) ~ label {
+            background: linear-gradient(135deg, #2d88f0, #f07c1a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .floating-group input:focus ~ .input-icon,
+        .floating-group select:focus ~ .input-icon,
+        .floating-group textarea:focus ~ .input-icon,
+        .floating-group input:not(:placeholder-shown) ~ .input-icon,
+        .floating-group select:not([value=""]):valid ~ .input-icon,
+        .floating-group textarea:not(:placeholder-shown) ~ .input-icon {
+            color: #1a6fd4;
+        }
+
+        /* Submit button */
+        .btn-submit {
+            background: linear-gradient(135deg, #1a6fd4, #f07c1a);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: 50px;
+            width: 30%;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 20px rgba(26,111,212,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(26,111,212,0.4);
+        }
+
+        .btn-submit i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-submit:hover i {
+            transform: translateX(4px);
+        }
+
+        /* Row spacing */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .contact-card .card-body {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* Placeholder styling */
+        ::placeholder {
+            color: transparent;
+        }
+
+        /* Remove spinner from number inputs */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Ensure the hidden option works with :valid */
+        .floating-group select option[value=""] {
+            display: none;
+        }
+
+        .swal2-popup.custom-swal .swal2-confirm {
+            background: linear-gradient(135deg, #1a6fd4, #f07c1a) !important;
+            border: none !important;
+            border-radius: 50px !important;
+            padding: 12px 28px !important;
+            font-weight: 600 !important;
+            font-size: 1rem !important;
+            box-shadow: 0 8px 20px rgba(26,111,212,0.3) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .swal2-popup.custom-swal .swal2-confirm:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 12px 28px rgba(26,111,212,0.4) !important;
+        }
+
+        .swal2-popup.custom-swal .swal2-icon {
+            transform: scale(1.2) !important;
+            margin: 1rem auto !important;
+            cursor: pointer !important;
+        }
+
+        .swal2-popup.custom-swal .swal2-icon-success {
+            color: #10b981 !important;
+            border-color: #10b981 !important;
+        }
+
+        .swal2-popup.custom-swal .swal2-icon-success [class^=swal2-success-line] {
+            background-color: #10b981 !important;
+        }
+
+        .swal2-popup.custom-swal .swal2-icon-success .swal2-success-ring {
+            border-color: rgba(16, 185, 129, 0.3) !important;
+        }

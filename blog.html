@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SetuNxt Blog — RCS Business Messaging Insights</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Same dependencies as index.html -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="assets/css/landing.css"/>
+    <link rel="stylesheet" href="assets/css/blog.css"/>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ====== NAVBAR (same as index.html) ====== -->
+<nav>
+  <div class="nav-logo" style="cursor: pointer;" onclick="window.location.href='index.html'">
+    <img src="assets/images/Logo.png" alt="SetuNxt logo">
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#how">How It Works</a></li>
+    <li><a href="index.html#why">Why SetuNxt</a></li>
+    <li><a href="index.html#usecases">Use Cases</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="index.html#contact">Contact Us</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="login.html" class="btn-outline">Log In</a>
+    <a href="index.html#cta" class="btn-solid">Get Started</a>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+    <div class="hero-particles" id="particles"></div>
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="hero-wave">
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" style="height:52px">
+            <path d="M0,40 C360,90 720,0 1080,50 C1260,70 1380,60 1440,40 L1440,100 L0,100 Z" fill="var(--bg)" opacity=".55"/>
+            <path d="M0,60 C300,20 600,80 900,40 C1100,15 1300,55 1440,30 L1440,100 L0,100 Z" fill="var(--bg)" opacity=".75"/>
+            <path d="M0,70 C240,95 480,50 720,75 C960,95 1200,60 1440,80 L1440,100 L0,100 Z" fill="var(--bg)"/>
+        </svg>
+    </div>
+    <div class="hero-inner">
+        <h1>The Future of <span class="grad">RCS Messaging</span> Starts Here</h1>
+        <p class="hero-desc">Expert insights, practical guides, and industry analysis on Rich Communication Services — the next evolution of business messaging.</p>
+        <div class="hero-search">
+            <span class="s-icon ico">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input type="text" placeholder="Search articles, topics, authors..." id="searchInput">
+            <button class="s-btn" id="searchBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Search
+            </button>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat"><div class="val">200<span>+</span></div><div class="lbl">Articles</div></div>
+            <div class="hero-stat"><div class="val">75K<span>+</span></div><div class="lbl">Readers</div></div>
+            <div class="hero-stat"><div class="val">30<span>+</span></div><div class="lbl">Authors</div></div>
+            <div class="hero-stat"><div class="val">4.9<span>/5</span></div><div class="lbl">Rating</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== FILTERS ====== -->
+<div class="filters-wrap">
+    <div class="filters">
+        <span class="f-label">
+            <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>
+            Filter
+        </span>
+        <button class="f-btn on" data-cat="all">All</button>
+        <button class="f-btn" data-cat="rcs">RCS</button>
+        <button class="f-btn" data-cat="strategy">Strategy</button>
+        <button class="f-btn" data-cat="tutorials">Tutorials</button>
+        <button class="f-btn" data-cat="case-study">Case Studies</button>
+        <button class="f-btn" data-cat="news">Industry News</button>
+        <button class="f-btn" data-cat="marketing">Marketing</button>
+        <button class="f-btn" data-cat="dev">API & Dev</button>
+    </div>
+</div>
+
+<!-- ====== CONTENT ====== -->
+<div class="layout">
+    <main>
+        <!-- Featured -->
+        <article class="featured reveal" data-cat="rcs" id="featured">
+            <div class="feat-img">
+                <img src="https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=800&h=500&fit=crop" alt="RCS Guide 2025">
+                <span class="feat-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Featured
+                </span>
+            </div>
+            <div class="feat-body">
+                <span class="cat-chip">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    RCS Messaging
+                </span>
+                <h2>The Ultimate Guide to RCS Business Messaging in 2025</h2>
+                <p class="excerpt">Discover how Rich Communication Services is revolutionizing customer engagement with verified senders, rich media, interactive elements, and analytics that drive 3x higher conversion rates compared to traditional SMS.</p>
+                <div class="author-row">
+                    <div class="avatar av-blue">AK</div>
+                    <div class="author-info">
+                        <div class="name">Arun Kumar</div>
+                        <div class="meta">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Jan 15, 2025
+                            <span class="sep"></span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            8 min read
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Grid -->
+        <div class="grid" id="grid">
+
+            <article class="card reveal" data-cat="strategy">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=500&h=300&fit=crop" alt="Strategy">
+                    <div class="img-overlay"></div>
+                    <span class="c-tag">Strategy</span>
+                    <button class="bm-btn" title="Bookmark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div class="card-body">
+                    <h3>5 RCS Strategies That Boosted Conversion Rates by 300%</h3>
+                    <p class="c-desc">Learn how top brands leveraged rich cards, carousels, and suggested actions to dramatically improve customer engagement.</p>
+                    <div class="card-foot">
+                        <div class="cf-author">
+                            <div class="av-xs av-orange">PS</div>
+                            <span class="av-n">Priya Sharma</span>
+                        </div>
+                        <span class="cf-date">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Jan 12, 2025
+                        </span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card reveal rd1" data-cat="tutorials">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500&h=300&fit=crop" alt="Tutorial">
+                    <div class="img-overlay"></div>
+                    <span class="c-tag">Tutorial</span>
+                    <button class="bm-btn" title="Bookmark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div class="card-body">
+                    <h3>Getting Started with SetuNxt RCS API: Developer Handbook</h3>
+                    <p class="c-desc">Step-by-step integration guide for sending rich RCS messages using our RESTful API with practical code examples.</p>
+                    <div class="card-foot">
+                        <div class="cf-author">
+                            <div class="av-xs av-purple">RV</div>
+                            <span class="av-n">Rahul Verma</span>
+                        </div>
+                        <span class="cf-date"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Jan 10, 2025</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card reveal rd2" data-cat="case-study">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop" alt="Case Study">
+                    <div class="img-overlay"></div>
+                    <span class="c-tag">Case Study</span>
+                    <button class="bm-btn" title="Bookmark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div class="card-body">
+                    <h3>How HDFC Bank Achieved 85% Read Rates with RCS Messaging</h3>
+                    <p class="c-desc">An in-depth look at how India's banking leader used RCS to transform customer communication and support workflows.</p>
+                    <div class="card-foot">
+                        <div class="cf-author">
+                            <div class="av-xs av-teal">MJ</div>
+                            <span class="av-n">Meera Joshi</span>
+                        </div>
+                        <span class="cf-date"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Jan 8, 2025</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card reveal rd3" data-cat="news">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop" alt="News">
+                    <div class="img-overlay"></div>
+                    <span class="c-tag">News</span>
+                    <button class="bm-btn" title="Bookmark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div class="card-body">
+                    <h3>Apple Adopts RCS: What This Means for Business Messaging</h3>
+                    <p class="c-desc">With Apple joining the RCS ecosystem, we explore the massive new opportunities for cross-platform customer engagement.</p>
+                    <div class="card-foot">
+                        <div class="cf-author">
+                            <div class="av-xs av-blue">AK</div>
+                            <span class="av-n">Arun Kumar</span>
+                        </div>
+                        <span class="cf-date"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Jan 5, 2025</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card reveal" data-cat="marketing">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=500&h=300&fit=crop" alt="Marketing">
+                    <div class="img-overlay"></div>
+                    <span class="c-tag">Marketing</span>
+                    <button class="bm-btn" title="Bookmark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div class="card-body">
+                    <h3>RCS vs SMS vs WhatsApp: The Ultimate Business Messaging Showdown</h3>
+                    <p class="c-desc">A comprehensive comparison of messaging channels to help you choose the right platform for your campaigns.</p>
+                    <div class="card-foot">
+                        <div class="cf-author">
+                            <div class="av-xs av-pink">NK</div>
+                            <span class="av-n">Neha Kapoor</span>
+                        </div>
+                        <span class="cf-date"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Jan 3, 2025</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card reveal rd1" data-cat="rcs">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=500&h=300&fit=crop" alt="Rich Media">
+                    <div class="img-overlay"></div>
+                    <span class="c-tag">RCS</span>
+                    <button class="bm-btn" title="Bookmark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div class="card-body">
+                    <h3>Designing Interactive Rich Cards & Carousels for Maximum Impact</h3>
+                    <p class="c-desc">Master the art of creating rich media experiences that captivate users and drive meaningful conversions.</p>
+                    <div class="card-foot">
+                        <div class="cf-author">
+                            <div class="av-xs av-indigo">VR</div>
+                            <span class="av-n">Vikram Rao</span>
+                        </div>
+                        <span class="cf-date"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Dec 28, 2024</span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <div class="lm-wrap">
+            <button class="lm-btn" id="loadMore">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                Load More Articles
+            </button>
+        </div>
+    </main>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <!-- Newsletter -->
+        <div class="s-card nl-card reveal">
+            <h3 class="s-title"><span class="bar"></span> Stay in the Loop</h3>
+            <p class="nl-desc">Get weekly RCS insights, tips, and industry news delivered straight to your inbox. Join 12,000+ subscribers.</p>
+            <form class="nl-form" id="nlForm">
+                <input type="email" placeholder="you@company.com" required id="nlEmail">
+                <button type="submit">
+                    Subscribe
+                    <span class="ico arrow-r"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Trending -->
+        <div class="s-card reveal">
+            <h3 class="s-title">
+                <span class="bar"></span>
+                Trending Now
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </h3>
+            <div class="trend">
+                <span class="rank">01</span>
+                <div class="t-body">
+                    <h4>Google's RCS Surpasses 1 Billion Monthly Active Users Globally</h4>
+                    <span class="t-meta">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Dec 20, 2024 &middot; 6 min
+                    </span>
+                </div>
+            </div>
+            <div class="trend">
+                <span class="rank">02</span>
+                <div class="t-body">
+                    <h4>Building AI Chatbots for RCS: The Complete Framework</h4>
+                    <span class="t-meta"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dec 16, 2024 &middot; 10 min</span>
+                </div>
+            </div>
+            <div class="trend">
+                <span class="rank">03</span>
+                <div class="t-body">
+                    <h4>RCS Analytics Dashboard: Every Metric You Should Track</h4>
+                    <span class="t-meta"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dec 12, 2024 &middot; 5 min</span>
+                </div>
+            </div>
+            <div class="trend">
+                <span class="rank">04</span>
+                <div class="t-body">
+                    <h4>Brand Verification on RCS: Step-by-Step Process</h4>
+                    <span class="t-meta"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dec 8, 2024 &middot; 7 min</span>
+                </div>
+            </div>
+            <div class="trend">
+                <span class="rank">05</span>
+                <div class="t-body">
+                    <h4>RCS in Healthcare: Appointment Reminders That Actually Work</h4>
+                    <span class="t-meta"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dec 4, 2024 &middot; 4 min</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tags -->
+        <div class="s-card reveal">
+            <h3 class="s-title">
+                <span class="bar"></span>
+                Topics
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+            </h3>
+            <div class="tags-grid">
+                <button class="tag-p">RCS</button>
+                <button class="tag-p">Business Messaging</button>
+                <button class="tag-p">Rich Cards</button>
+                <button class="tag-p">API</button>
+                <button class="tag-p">Chatbots</button>
+                <button class="tag-p">Marketing</button>
+                <button class="tag-p">Analytics</button>
+                <button class="tag-p">E-commerce</button>
+                <button class="tag-p">Verification</button>
+                <button class="tag-p">BFSI</button>
+                <button class="tag-p">Healthcare</button>
+                <button class="tag-p">Omnichannel</button>
+                <button class="tag-p">Conversational AI</button>
+            </div>
+        </div>
+
+        <!-- RCS Card -->
+        <div class="s-card rcs-c reveal">
+            <h3 class="s-title"><span class="bar"></span> Why RCS?</h3>
+            <div class="rcs-list">
+                <div class="rcs-item">
+                    <span class="ri-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+                    <span>Verified brand identity builds instant trust</span>
+                </div>
+                <div class="rcs-item">
+                    <span class="ri-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></span>
+                    <span>Rich media — images, video, carousels, maps</span>
+                </div>
+                <div class="rcs-item">
+                    <span class="ri-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                    <span>Interactive buttons & suggested quick replies</span>
+                </div>
+                <div class="rcs-item">
+                    <span class="ri-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                    <span>Real-time read receipts & delivery analytics</span>
+                </div>
+                <div class="rcs-item">
+                    <span class="ri-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></span>
+                    <span>Works natively — no app download required</span>
+                </div>
+                <div class="rcs-item">
+                    <span class="ri-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>
+                    <span>3x higher engagement than traditional SMS</span>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+</div>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+    <div class="foot-grid">
+        <div class="foot-brand">
+            <div class="fl">
+                <img src="assets/images/Logo.png" alt="SetuNxt" style="height:8rem;width:auto;">
+            </div>
+            <p>Empowering businesses with next-generation RCS messaging solutions. Connect, engage, and convert through rich communication services.</p>
+        </div>
+        <div class="foot-col">
+            <h4>Product</h4>
+            <ul>
+                <li><a href="index.html#rcs-platform">RCS Platform</a></li>
+                <li><a href="index.html#api-docs">API Documentation</a></li>
+                <li><a href="index.html#rich-card-builder">Rich Card Builder</a></li>
+                <li><a href="index.html#analytics">Analytics Dashboard</a></li>
+                <li><a href="index.html#pricing">Pricing Plans</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="index.html#case-studies">Case Studies</a></li>
+                <li><a href="index.html#dev-docs">Developer Docs</a></li>
+                <li><a href="index.html#help">Help Center</a></li>
+                <li><a href="index.html#webinars">Webinars</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#careers">Careers</a></li>
+                <li><a href="index.html#partners">Partners</a></li>
+                <li><a href="index.html#privacy">Privacy Policy</a></li>
+                <li><a href="index.html#terms">Terms of Service</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-bar">
+        <span>&copy; 2025 <a href="index.html">SetuNxt</a>. All rights reserved.</span>
+        <span>Crafted for the future of messaging</span>
+    </div>
+</footer>
+
+<!-- Back to Top -->
+<button class="btt" id="btt" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- Toast -->
+<div class="toast-box"><div class="toast" id="toast"><span class="ico" id="toastIco"></span><span id="toastMsg"></span></div></div>
+
+<script src="assets/js/landing.js"></script>
+<script src="assets/js/blog.js"></script>
+</body>
+</html>

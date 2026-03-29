@@ -36,6 +36,7 @@
             <li><a href="index.html#how">How It Works</a></li>
             <li><a href="index.html#why">Why SetuNxt</a></li>
             <li><a href="index.html#usecases">Use Cases</a></li>
+            <li><a href="blog.html">Blog</a></li>
         </ul>
         <div class="nav-cta">
             <a href="login.html" class="btn-outline">Log In</a>
@@ -143,6 +144,22 @@
                     window.location.href = 'index.html';
                 });
             }
+
+            // ── Auto-fill email from URL ?email= param (passed from CTA) ──
+            (function() {
+                const params = new URLSearchParams(window.location.search);
+                const emailParam = params.get('email');
+                if (emailParam) {
+                    const emailField = document.getElementById('email');
+                    if (emailField) {
+                        emailField.value = decodeURIComponent(emailParam);
+                        // Remove placeholder so floating label activates
+                        emailField.placeholder = '';
+                        emailField.focus();
+                        emailField.blur();
+                    }
+                }
+            })();
 
             const form = document.getElementById('contactForm');
             form.addEventListener('submit', function(e) {

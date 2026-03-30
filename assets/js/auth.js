@@ -115,16 +115,18 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Show success notification
             showNotification('Login successful! Redirecting...', 'success');
-            
-            // Reset button
+
+            // Reset button, then show full-page overlay before redirect
             setTimeout(() => {
                 submitBtn.classList.remove('loading');
                 submitBtn.disabled = false;
-                
-                // Simulate redirect
+
+                // Show full-page redirect overlay
+                showPageOverlay('Redirecting to Dashboard');
+
                 setTimeout(() => {
                     window.location.href = 'main.html';
-                }, 1000);
+                }, 1800);
             }, 1500);
         });
         
@@ -326,20 +328,48 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show success notification
             showNotification('Account created successfully!', 'success');
             
-            // Reset button
+            // Reset button, then show full-page overlay before redirect
             setTimeout(() => {
                 submitBtn.classList.remove('loading');
                 submitBtn.disabled = false;
-                
-                // Redirect to login
+
+                // Show full-page redirect overlay
+                showPageOverlay('Taking you to Sign In');
+
                 setTimeout(() => {
                     window.location.href = 'login.html';
-                }, 1000);
+                }, 1800);
             }, 1500);
         });
     }
     
     
+    // ── Full-page redirect overlay ──
+    function createOverlay() {
+        if (document.getElementById('pageOverlay')) return;
+
+        const overlay = document.createElement('div');
+        overlay.id = 'pageOverlay';
+        overlay.className = 'page-overlay';
+        overlay.innerHTML = `
+            <div class="overlay-logo">
+                <i class="fas fa-comments"></i>
+            </div>
+            <div class="overlay-spinner"></div>
+            <p class="overlay-text" id="overlayText">Redirecting</p>
+        `;
+        document.body.appendChild(overlay);
+    }
+
+    function showPageOverlay(message = 'Redirecting') {
+        createOverlay();
+        const overlay = document.getElementById('pageOverlay');
+        const text    = document.getElementById('overlayText');
+        if (text) text.textContent = message;
+        overlay.offsetHeight; // force reflow so CSS transition fires
+        overlay.classList.add('active');
+    }
+
     // Simulate API request
     function simulateAPIRequest() {
         return new Promise(resolve => {

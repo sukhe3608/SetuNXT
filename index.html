@@ -206,16 +206,55 @@
         <div class="chip-icon"><svg class="icon" width="24" height="24"><use href="#icon-mail"/></svg></div>
         98% Delivery Rate
       </div>
-      <div class="hero-phone-mockup">
-        <div class="phone-header">
-          <div class="phone-header-top">
-            <div class="phone-avatar"><img src="assets/images/logo.png" alt="SetuNXT"></div>
-            <div><h4>SetuNXT</h4><p>Business Account</p></div>
+      <!-- Realistic Phone Frame -->
+      <div class="phone-realistic-frame">
+        <!-- Left side buttons -->
+        <div class="prf-btn prf-vol-up"></div>
+        <div class="prf-btn prf-vol-down"></div>
+        <!-- Right side button -->
+        <div class="prf-btn prf-power"></div>
+
+        <!-- Screen -->
+        <div class="prf-screen">
+          <!-- Status Bar -->
+          <div class="prf-status-bar">
+            <span class="prf-time">9:41</span>
+            <div class="prf-status-icons">
+              <svg width="17" height="12" viewBox="0 0 17 12" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.4"/>
+                <rect x="4.5" y="4.5" width="3" height="7.5" rx="0.6" opacity="0.6"/>
+                <rect x="9" y="2" width="3" height="10" rx="0.6" opacity="0.8"/>
+                <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+              </svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="10.5" r="1" fill="white"/>
+                <path d="M5.5 7.8C6.2 7.1 7.1 6.6 8 6.6s1.8.5 2.5 1.2" stroke="white" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+                <path d="M3 5.2C4.3 3.8 6 3 8 3s3.7.8 5 2.2" stroke="white" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.7"/>
+              </svg>
+              <svg width="27" height="12" viewBox="0 0 27 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0.5" y="0.5" width="22" height="11" rx="3.5" stroke="white" stroke-opacity="0.5"/>
+                <rect x="2" y="2" width="17" height="8" rx="2" fill="white"/>
+                <path d="M24.5 4v4a2 2 0 000-4z" fill="white" fill-opacity="0.55"/>
+              </svg>
+            </div>
           </div>
-          <div class="verified-badge"><span class="inline-icon"><svg class="icon" width="12" height="12"><use href="#icon-check"/></svg></span> Verified Business</div>
-        </div>
-        <div class="phone-body">
-          <div class="ad-carousel" id="adCarousel">
+
+          <!-- Dynamic Island -->
+          <div class="prf-island">
+            <div class="prf-island-cam"></div>
+          </div>
+
+          <!-- Original phone content -->
+          <div class="hero-phone-mockup">
+            <div class="phone-header">
+              <div class="phone-header-top">
+                <div class="phone-avatar"><img src="assets/images/logo.png" alt="SetuNXT"></div>
+                <div><h4>SetuNXT</h4><p>Business Account</p></div>
+              </div>
+              <div class="verified-badge"><span class="inline-icon"><svg class="icon" width="12" height="12"><use href="#icon-check"/></svg></span> Verified Business</div>
+            </div>
+            <div class="phone-body">
+              <div class="ad-carousel" id="adCarousel">
 
             <!-- Ad 1: E-Commerce Sale -->
             <div class="ad-slide active">
@@ -293,6 +332,10 @@
           </div>
         </div>
       </div>
+          <!-- Home indicator -->
+          <div class="prf-home-bar"></div>
+        </div><!-- end prf-screen -->
+      </div><!-- end phone-realistic-frame -->
       <div class="hero-chip chip-2">
         <div class="chip-icon"><svg class="icon" width="24" height="24"><use href="#icon-zap"/></svg></div>
         3x Higher Engagement

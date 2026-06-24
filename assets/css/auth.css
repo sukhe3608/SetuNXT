@@ -1,9 +1,8 @@
-
 :root {
-    --primary: #2D5BFF;
-    --primary-light: #5A85FF;
-    --primary-dark: #1A3DCC;
-    --secondary: #00C2FF;
+    --primary: #1a6fd4;
+    --primary-light: #2d88f0;
+    --primary-dark: #1158b0;
+    --secondary: #f07c1a;
     --success: #00D68F;
     --danger: #FF3D71;
     --warning: #FFAA00;
@@ -12,17 +11,17 @@
     --gray: #8F9BB3;
     --gray-light: #EDF1F7;
     --light: #FFFFFF;
-    --gradient: linear-gradient(135deg, #2D5BFF 0%, #00C2FF 100%);
-    --gradient-dark: linear-gradient(135deg, #1A3DCC 0%, #0099CC 100%);
-    --shadow: 0 8px 30px rgba(45, 91, 255, 0.15);
-    --shadow-lg: 0 15px 50px rgba(45, 91, 255, 0.2);
+    --gradient: linear-gradient(135deg, #1a6fd4 0%, #f07c1a 100%);
+    --gradient-dark: linear-gradient(135deg, #1158b0 0%, #d96a0a 100%);
+    --shadow: 0 8px 30px rgba(26, 111, 212, 0.15);
+    --shadow-lg: 0 15px 50px rgba(26, 111, 212, 0.2);
     --border: #E4E9F2;
 }
 
 /* Base Styles */
 .auth-page {
     min-height: 100vh;
-    background: linear-gradient(135deg, #F7F9FC 0%, #E4E9F2 100%);
+    background: linear-gradient(135deg, #e8f0fb 0%, #f4f6fa 50%, #fff5eb 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,7 +41,7 @@
     border-radius: 24px;
     overflow: hidden;
     box-shadow: 
-        0 20px 60px rgba(45, 91, 255, 0.15),
+        0 20px 60px rgba(26, 111, 212, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
     animation: 
         containerAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -97,7 +96,7 @@
     top: 20%;
     left: 15%;
     animation-delay: 0s;
-    background: linear-gradient(135deg, rgba(45, 91, 255, 0.2), rgba(0, 194, 255, 0.2));
+    background: linear-gradient(135deg, rgba(26, 111, 212, 0.2), rgba(240, 124, 26, 0.2));
 }
 
 .bubble-2 {
@@ -106,7 +105,7 @@
     top: 40%;
     right: 20%;
     animation-delay: 2s;
-    background: linear-gradient(135deg, rgba(0, 194, 255, 0.2), rgba(0, 214, 143, 0.2));
+    background: linear-gradient(135deg, rgba(240, 124, 26, 0.2), rgba(0, 214, 143, 0.2));
     border-radius: 50%;
 }
 
@@ -125,7 +124,7 @@
     bottom: 20%;
     right: 15%;
     animation-delay: 6s;
-    background: linear-gradient(135deg, rgba(255, 61, 113, 0.2), rgba(45, 91, 255, 0.2));
+    background: linear-gradient(135deg, rgba(255, 61, 113, 0.2), rgba(26, 111, 212, 0.2));
     border-radius: 50%;
 }
 
@@ -177,7 +176,7 @@
     animation: 
         logoPulse 3s ease-in-out infinite;
     box-shadow: 
-        0 10px 30px rgba(45, 91, 255, 0.3),
+        0 10px 30px rgba(26, 111, 212, 0.3),
         0 0 0 1px rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
@@ -187,13 +186,13 @@
     0%, 100% {
         transform: scale(1);
         box-shadow: 
-            0 10px 30px rgba(45, 91, 255, 0.3),
+            0 10px 30px rgba(26, 111, 212, 0.3),
             0 0 0 1px rgba(255, 255, 255, 0.1);
     }
     50% {
         transform: scale(1.05);
         box-shadow: 
-            0 15px 40px rgba(45, 91, 255, 0.4),
+            0 15px 40px rgba(26, 111, 212, 0.4),
             0 0 0 2px rgba(255, 255, 255, 0.2);
     }
 }
@@ -374,7 +373,7 @@
     border-color: var(--primary);
     background: var(--light);
     box-shadow: 
-        0 5px 15px rgba(45, 91, 255, 0.1);
+        0 5px 15px rgba(26, 111, 212, 0.1);
 }
 
 .floating-input input:focus + label,
@@ -519,7 +518,7 @@
 .submit-btn {
     width: 100%;
     padding: 14px;
-    background: var(--gradient);
+    background: var(--primary);
     color: white;
     border: none;
     border-radius: 8px;
@@ -533,9 +532,9 @@
 }
 
 .submit-btn:hover {
-    background: var(--gradient-dark);
+    background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(45, 91, 255, 0.3);
+    box-shadow: 0 8px 20px rgba(26, 111, 212, 0.3);
 }
 
 .btn-content {
@@ -668,7 +667,6 @@
     text-align: center;
     color: var(--gray);
     font-size: 14px;
-    /* margin-top: 20px; */
 }
 
 .link-animated {
@@ -909,4 +907,92 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* ── Full-page redirect overlay ── */
+.page-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    /* frosted-glass backdrop */
+    background: rgba(245, 248, 255, 0.55);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.page-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Ring spinner */
+.overlay-spinner {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 4px solid rgba(26, 111, 212, 0.18);
+    border-top-color: var(--primary);
+    border-right-color: var(--secondary);
+    animation: overlaySpin 0.9s linear infinite;
+    box-shadow: 0 0 24px rgba(26, 111, 212, 0.25);
+}
+
+@keyframes overlaySpin {
+    to { transform: rotate(360deg); }
+}
+
+/* Logo badge inside / above spinner */
+.overlay-logo {
+    width: 64px;
+    height: 64px;
+    background: var(--gradient);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(26, 111, 212, 0.35);
+    animation: overlayPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes overlayPulse {
+    0%, 100% { transform: scale(1);    box-shadow: 0 8px 24px rgba(26, 111, 212, 0.35); }
+    50%       { transform: scale(1.08); box-shadow: 0 12px 32px rgba(26, 111, 212, 0.5); }
+}
+
+.overlay-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    letter-spacing: 0.3px;
+    animation: overlayDots 1.4s steps(4, end) infinite;
+}
+
+@keyframes overlayDots {
+    0%   { content: ''; }
+}
+
+/* animated ellipsis via pseudo-element trick using a wrapper */
+.overlay-text::after {
+    content: '';
+    animation: ellipsis 1.4s steps(4, end) infinite;
+}
+
+@keyframes ellipsis {
+    0%   { content: '';    }
+    25%  { content: '.';   }
+    50%  { content: '..';  }
+    75%  { content: '...'; }
+    100% { content: '';    }
 }

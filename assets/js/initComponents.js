@@ -188,6 +188,18 @@ function initComponents() {
         });
     });
     
+    // Set active item based on current URL
+    const currentPath = window.location.pathname.split('/').pop() || 'main.html';
+    if (navItems.length > 0) {
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            const href = item.getAttribute('href');
+            if (href && (href === currentPath || (currentPath === '' && href === 'main.html'))) {
+                item.classList.add('active');
+            }
+        });
+    }
+    
     // Initialize country selector
     const countrySelector = document.querySelector('.country-selector');
     if (countrySelector) {

@@ -63,11 +63,16 @@
     animation: fadeIn 0.3s ease;
 }
 
+.nav-item:hover {
+    background-color: white !important;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -137,14 +142,37 @@
     flex-shrink: 0;
 }
 
-.metric-icon.bg-primary { background-color: var(--bs-primary); }
-.metric-icon.bg-success { background-color: var(--bs-success); }
-.metric-icon.bg-info { background-color: var(--bs-info); }
-.metric-icon.bg-warning { background-color: var(--bs-warning); }
-.metric-icon.bg-danger { background-color: var(--bs-danger); }
-.metric-icon.bg-purple { background-color: #8b5cf6; }
-.metric-icon.bg-teal { background-color: #14b8a6; }
-.metric-icon.bg-indigo { background-color: #6366f1; }
+.metric-icon.bg-primary {
+    background-color: var(--bs-primary);
+}
+
+.metric-icon.bg-success {
+    background-color: var(--bs-success);
+}
+
+.metric-icon.bg-info {
+    background-color: var(--bs-info);
+}
+
+.metric-icon.bg-warning {
+    background-color: var(--bs-warning);
+}
+
+.metric-icon.bg-danger {
+    background-color: var(--bs-danger);
+}
+
+.metric-icon.bg-purple {
+    background-color: #8b5cf6;
+}
+
+.metric-icon.bg-teal {
+    background-color: #14b8a6;
+}
+
+.metric-icon.bg-indigo {
+    background-color: #6366f1;
+}
 
 /* Credits Left */
 .credits-left {
@@ -607,7 +635,7 @@ body.dark-mode .campaign-filters .btn:hover:not(.active) {
     .chart-wrapper {
         height: 320px;
     }
-    
+
     .metric-value {
         font-size: 1.875rem;
     }
@@ -618,11 +646,11 @@ body.dark-mode .campaign-filters .btn:hover:not(.active) {
     .chart-wrapper {
         height: 280px;
     }
-    
+
     .metric-value {
         font-size: 1.625rem;
     }
-    
+
     .engagement-metrics {
         grid-template-columns: 1fr;
     }
@@ -633,25 +661,25 @@ body.dark-mode .campaign-filters .btn:hover:not(.active) {
     .chart-wrapper {
         height: 260px;
     }
-    
+
     .metric-value {
         font-size: 1.5rem;
     }
-    
+
     .metric-icon {
         width: 42px;
         height: 42px;
         font-size: 1.125rem;
     }
-    
+
     .engagement-metrics {
         grid-template-columns: 1fr;
     }
-    
+
     .donut-chart-container {
         flex-direction: column;
     }
-    
+
     .donut-chart-wrapper {
         width: 100%;
         height: 180px;
@@ -663,42 +691,42 @@ body.dark-mode .campaign-filters .btn:hover:not(.active) {
     .dashboard-header {
         padding: 1rem;
     }
-    
+
     .metric-card {
         padding: 1rem;
     }
-    
+
     .metric-value {
         font-size: 1.375rem;
     }
-    
+
     .metric-icon {
         width: 40px;
         height: 40px;
         font-size: 1rem;
     }
-    
+
     .chart-wrapper {
         height: 240px;
     }
-    
+
     .chart-container {
         padding: 1rem;
     }
-    
+
     .engagement-metrics {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .donut-chart-container {
         flex-direction: column;
     }
-    
+
     .donut-chart-wrapper {
         width: 100%;
         height: 160px;
     }
-    
+
     .dashboard-tabs .nav-link {
         padding: 0.625rem 1rem;
         font-size: 0.875rem;
@@ -710,81 +738,81 @@ body.dark-mode .campaign-filters .btn:hover:not(.active) {
     .dashboard-header {
         padding: 0.875rem;
     }
-    
+
     .metric-card {
         padding: 0.875rem;
     }
-    
+
     .metric-value {
         font-size: 1.25rem;
     }
-    
+
     .metric-title {
         font-size: 0.75rem;
     }
-    
+
     .metric-icon {
         width: 36px;
         height: 36px;
         font-size: 0.875rem;
     }
-    
+
     .chart-wrapper {
         height: 220px;
     }
-    
+
     .chart-container {
         padding: 0.875rem;
     }
-    
+
     .chart-title {
         font-size: 0.9375rem;
     }
-    
+
     .engagement-metrics {
         grid-template-columns: 1fr;
         gap: 0.75rem;
     }
-    
+
     .engagement-card {
         padding: 0.75rem;
     }
-    
+
     .engagement-icon {
         width: 36px;
         height: 36px;
         font-size: 0.875rem;
     }
-    
+
     .engagement-value {
         font-size: 1.125rem;
     }
-    
+
     .dashboard-tabs .nav-link {
         padding: 0.5rem 0.75rem;
         font-size: 0.8125rem;
     }
-    
+
     .dashboard-tabs .nav-link i {
         display: none !important;
     }
-    
+
     .funnel-step {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.25rem;
     }
-    
+
     .step-value,
     .step-percentage {
         text-align: left;
         margin-left: 0;
     }
-    
+
     .credits-left {
         padding: 1rem;
     }
-    
+
     .credits-value {
         font-size: 1.75rem;
     }
@@ -796,103 +824,103 @@ body.dark-mode .campaign-filters .btn:hover:not(.active) {
         padding: 0.75rem;
         margin-bottom: 1rem;
     }
-    
+
     .metric-card {
         padding: 0.75rem;
         margin-bottom: 0.5rem;
     }
-    
+
     .metric-value {
         font-size: 1.125rem;
     }
-    
+
     .metric-title {
         font-size: 0.6875rem;
     }
-    
+
     .metric-change {
         font-size: 0.75rem;
     }
-    
+
     .metric-icon {
         width: 32px;
         height: 32px;
         font-size: 0.75rem;
     }
-    
+
     .chart-wrapper {
         height: 200px;
     }
-    
+
     .chart-container {
         padding: 0.75rem;
         margin-bottom: 0.75rem;
     }
-    
+
     .chart-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
         margin-bottom: 1rem;
     }
-    
+
     .chart-title {
         font-size: 0.875rem;
     }
-    
+
     .chart-actions {
         width: 100%;
         display: flex;
         justify-content: flex-end;
     }
-    
+
     .engagement-metrics {
         grid-template-columns: 1fr;
         gap: 0.5rem;
         margin-bottom: 1rem;
     }
-    
+
     .engagement-card {
         padding: 0.625rem;
     }
-    
+
     .engagement-icon {
         width: 32px;
         height: 32px;
         font-size: 0.75rem;
     }
-    
+
     .engagement-value {
         font-size: 1rem;
     }
-    
+
     .engagement-title {
         font-size: 0.75rem;
     }
-    
+
     .dashboard-tabs {
         flex-wrap: nowrap;
         overflow-x: auto;
         padding-bottom: 0;
     }
-    
+
     .dashboard-tabs .nav-link {
         padding: 0.5rem 0.75rem;
         font-size: 0.8125rem;
         flex-shrink: 0;
     }
-    
+
     .dashboard-tabs .nav-link i {
         display: none !important;
     }
-    
+
     .funnel-step {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.25rem;
         padding: 0.625rem;
     }
-    
+
     .step-name,
     .step-value,
     .step-percentage {
@@ -901,53 +929,53 @@ body.dark-mode .campaign-filters .btn:hover:not(.active) {
         margin: 0;
         width: 100%;
     }
-    
+
     .donut-chart-container {
         flex-direction: column;
         gap: 1rem;
     }
-    
+
     .donut-chart-wrapper {
         width: 100%;
         height: 150px;
     }
-    
+
     .region-list {
         width: 100%;
     }
-    
+
     .credits-left {
         padding: 0.75rem;
     }
-    
+
     .credits-value {
         font-size: 1.5rem;
     }
-    
+
     .credits-label {
         font-size: 0.8125rem;
     }
-    
+
     .interaction-item {
         padding: 0.5rem;
         font-size: 0.8125rem;
     }
-    
+
     .campaign-filters .btn {
         padding: 0.25rem 0.75rem;
         font-size: 0.8125rem;
     }
-    
+
     .stat-icon {
         width: 36px;
         height: 36px;
         font-size: 0.875rem;
     }
-    
+
     .stat-value {
         font-size: 1.25rem;
     }
-    
+
     .stat-title {
         font-size: 0.75rem;
     }
@@ -958,36 +986,36 @@ body.dark-mode .campaign-filters .btn:hover:not(.active) {
     .metric-value {
         font-size: 1rem;
     }
-    
+
     .metric-icon {
         width: 28px;
         height: 28px;
         font-size: 0.6875rem;
     }
-    
+
     .chart-wrapper {
         height: 180px;
     }
-    
+
     .engagement-value {
         font-size: 0.9375rem;
     }
-    
+
     .engagement-icon {
         width: 28px;
         height: 28px;
         font-size: 0.6875rem;
     }
-    
+
     .dashboard-tabs .nav-link {
         padding: 0.375rem 0.625rem;
         font-size: 0.75rem;
     }
-    
+
     .credits-value {
         font-size: 1.25rem;
     }
-    
+
     .step-name,
     .step-value,
     .step-percentage {
@@ -997,25 +1025,26 @@ body.dark-mode .campaign-filters .btn:hover:not(.active) {
 
 /* Print Styles */
 @media print {
+
     .dashboard-tabs-container,
     .chart-actions,
     .campaign-filters,
     .btn {
         display: none !important;
     }
-    
+
     .dashboard-tabs .nav-link {
         border: none !important;
         background: none !important;
         color: black !important;
     }
-    
+
     .chart-container {
         break-inside: avoid;
         border: 1px solid #000 !important;
         box-shadow: none !important;
     }
-    
+
     .metric-card {
         break-inside: avoid;
         border: 1px solid #000 !important;
@@ -1420,19 +1449,19 @@ body.dark-mode .campaign-actions .btn-close-modal:hover {
     .campaign-modal .modal-dialog {
         margin: 1rem;
     }
-    
+
     .campaign-stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .metrics-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .campaign-actions {
         flex-direction: column;
     }
-    
+
     .campaign-actions .btn {
         width: 100%;
         justify-content: center;
@@ -1443,7 +1472,7 @@ body.dark-mode .campaign-actions .btn-close-modal:hover {
     .campaign-stats-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .campaign-meta {
         flex-direction: column;
         align-items: flex-start;
@@ -1464,9 +1493,6 @@ body.dark-mode .campaign-actions .btn-close-modal:hover {
         flex-direction: column;
         align-items: stretch;
     }
-    .dashboard-header .input-group,
-    .dashboard-header .btn {
-        width: 100%;
-        min-width: unset !important;
-    }
 }
+
+/* Chat styles removed to chat.css */

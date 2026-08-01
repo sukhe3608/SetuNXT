@@ -197,7 +197,7 @@ nav {
 .hero-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 80px 40px;
+  padding: 0 40px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;

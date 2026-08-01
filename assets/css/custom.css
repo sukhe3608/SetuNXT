@@ -62,7 +62,7 @@
 
 /* Logo */
 .logo-img {
-    height: 8rem; 
+    height: 8rem;
     width: auto;
 }
 
@@ -173,6 +173,7 @@
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -310,12 +311,12 @@
 }
 
 .nav-item:hover {
-    background-color: var(--bs-light);
-    color: var(--bs-dark);
+    background-color: white;
+    color: var(--bs-primary);
 }
 
 .nav-item.active {
-    background-color: var(--bs-primary);
+    background-color: var(--bs-primary) !important;
     color: white;
 }
 
@@ -421,6 +422,7 @@
     from {
         background-color: rgba(79, 70, 229, 0.05);
     }
+
     to {
         background-color: rgba(79, 70, 229, 0.1);
     }
@@ -484,23 +486,23 @@
     .header-center {
         display: none;
     }
-    
+
     .country-selector {
         display: none;
     }
-    
+
     .user-info {
         display: none;
     }
-    
+
     .balance-card .balance-info {
         display: none;
     }
-    
+
     .phone-frame {
         max-width: 260px;
     }
-    
+
     .phone-screen {
         min-height: 440px;
     }
@@ -510,11 +512,11 @@
     .phone-frame {
         max-width: 240px;
     }
-    
+
     .phone-screen {
         min-height: 400px;
     }
-    
+
     .sidebar {
         width: 260px;
     }
@@ -526,6 +528,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -538,6 +541,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -584,12 +588,13 @@
     .theme-toggle-container {
         margin-right: 0.25rem;
     }
-    
+
     .theme-toggle {
         width: 36px;
         height: 36px;
     }
-    .sidebar-close{
+
+    .sidebar-close {
         display: block;
     }
 }

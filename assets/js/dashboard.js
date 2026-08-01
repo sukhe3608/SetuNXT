@@ -9,7 +9,7 @@ class Dashboard {
         this.activeTab = 'overview';
         this.modal = null;
         this.creditModal = null;          // will hold the modal instance
-        this.creditDebitSetup = false; 
+        this.creditDebitSetup = false;
         // Custom date range properties
         this.customDates = { from: null, to: null };
     }
@@ -28,10 +28,10 @@ class Dashboard {
         const modalElement = document.getElementById('campaignDetailsModal');
         if (modalElement) {
             this.modal = new bootstrap.Modal(modalElement);
-            
+
             // Setup close button
             this.setupCloseButton();
-            
+
             // Clean up event listeners on modal hide
             modalElement.addEventListener('hidden.bs.modal', () => {
                 this.cleanupModalEventListeners();
@@ -52,7 +52,7 @@ class Dashboard {
                 }
             };
         }
-        
+
         // Also handle the X icon in modal header
         const modalCloseIcon = document.querySelector('#campaignDetailsModal .modal-header .btn-close');
         if (modalCloseIcon) {
@@ -71,7 +71,7 @@ class Dashboard {
                 const targetId = event.target.getAttribute('data-bs-target');
                 this.activeTab = targetId.replace('#', '').replace('-tab', '');
                 this.initializeTabCharts(this.activeTab);
-                
+
                 if (this.activeTab === 'credit-debit' && !this.creditDebitSetup) {
                     this.setupCreditDebitRowClickHandlers();
                     this.creditDebitSetup = true;
@@ -100,7 +100,7 @@ class Dashboard {
     }
 
     initializeTabCharts(tabId) {
-        switch(tabId) {
+        switch (tabId) {
             case 'campaigns':
                 if (!this.charts.campaignRoi) {
                     this.charts.campaignRoi = this.createCampaignRoiChart();
@@ -186,7 +186,7 @@ class Dashboard {
             button.addEventListener('click', (e) => {
                 const filter = e.target.dataset.filter;
                 this.filterCampaigns(filter);
-                
+
                 document.querySelectorAll('.campaign-filters [data-filter]').forEach(btn => {
                     btn.classList.remove('active');
                 });
@@ -209,13 +209,15 @@ class Dashboard {
         }
 
         setInterval(() => this.updateTime(), 60000);
-        
+
         window.addEventListener('resize', this.debounce(() => {
             this.resizeCharts();
         }, 250));
 
         this.setupCampaignTableClickHandlers();
         this.setupCreditDebitSearch(); // Initialize search for credit/debit tab
+
+        // Chat functionality moved to chat.js
     }
 
     setupCampaignTableClickHandlers() {
@@ -225,7 +227,7 @@ class Dashboard {
         const rows = table.querySelectorAll('tbody tr');
         rows.forEach(row => {
             row.style.cursor = 'pointer';
-            
+
             row.addEventListener('click', (e) => {
                 if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
                     return;
@@ -309,16 +311,16 @@ class Dashboard {
                 if (rowDateStr) {
                     const [day, month, year] = rowDateStr.split('-');
                     const rowDate = new Date(`${year}-${month}-${day}`);
-                    rowDate.setHours(0,0,0,0); // normalise
+                    rowDate.setHours(0, 0, 0, 0); // normalise
 
                     if (fromDate) {
                         const from = new Date(fromDate);
-                        from.setHours(0,0,0,0);
+                        from.setHours(0, 0, 0, 0);
                         if (rowDate < from) dateMatch = false;
                     }
                     if (toDate && dateMatch) {
                         const to = new Date(toDate);
-                        to.setHours(0,0,0,0);
+                        to.setHours(0, 0, 0, 0);
                         if (rowDate > to) dateMatch = false;
                     }
                 } else {
@@ -349,7 +351,7 @@ class Dashboard {
         };
 
         this.populateModal(campaignData);
-        
+
         if (this.modal) {
             this.modal.show();
         }
@@ -369,12 +371,12 @@ class Dashboard {
         const readRate = readNum > 0 ? (readNum / deliveredNum * 100).toFixed(1) : '0';
         const replyRate = clickedNum > 0 ? (clickedNum / readNum * 100).toFixed(1) : '0';
         const ctr = parseFloat(data.ctr) || 0;
-        
+
         // Engagement score calculation
-        const engagementScore = Math.min(100, 
-            (parseFloat(deliveryRate) * 0.25 + 
-             parseFloat(readRate) * 0.35 + 
-             ctr * 0.4)
+        const engagementScore = Math.min(100,
+            (parseFloat(deliveryRate) * 0.25 +
+                parseFloat(readRate) * 0.35 +
+                ctr * 0.4)
         ).toFixed(0);
 
         // ROI based on campaign
@@ -397,36 +399,36 @@ class Dashboard {
         document.getElementById('campaignModalStatus').className = `campaign-status-badge badge ${data.statusClass}`;
         document.getElementById('campaignModalRegion').textContent = data.region;
         document.getElementById('campaignModalTimeline').textContent = data.timeline;
-        
+
         // Update stats
         document.getElementById('campaignModalSent').textContent = data.sent;
         document.getElementById('campaignModalDelivered').textContent = data.delivered;
         document.getElementById('campaignModalRead').textContent = data.read;
         document.getElementById('campaignModalClicked').textContent = data.clicked;
-        
+
         // Update metrics
         document.getElementById('campaignModalCTR').textContent = data.ctr;
         document.getElementById('campaignModalDeliveryRate').textContent = deliveryRate + '%';
         document.getElementById('campaignModalReadRate').textContent = readRate + '%';
         document.getElementById('campaignModalReplyRate').textContent = replyRate + '%';
-        
+
         // Update progress bars
         document.getElementById('campaignModalEngagementScore').textContent = engagementScore + '%';
         document.getElementById('campaignModalROI').textContent = roi + '%';
         document.getElementById('campaignModalBudgetUtilization').textContent = budgetUtilization + '%';
-        
+
         // Animate progress bars
         this.animateProgressBar('engagementProgress', engagementScore);
         this.animateProgressBar('roiProgress', Math.min(100, roi / 4));
         this.animateProgressBar('budgetProgress', budgetUtilization);
-        
+
         // Update additional info
         document.getElementById('campaignModalAudience').textContent = additionalInfo.audience;
         document.getElementById('campaignModalMessageType').textContent = additionalInfo.messageType;
         document.getElementById('campaignModalType').textContent = additionalInfo.type;
         document.getElementById('campaignModalCreatedBy').textContent = additionalInfo.createdBy;
         document.getElementById('campaignModalDescription').textContent = additionalInfo.description;
-        
+
         // Setup action buttons
         this.setupModalActions(data.name);
     }
@@ -436,10 +438,10 @@ class Dashboard {
         if (progressBar) {
             // Reset width to 0
             progressBar.style.width = '0%';
-            
+
             // Trigger reflow
             progressBar.offsetHeight;
-            
+
             // Animate to target percentage
             setTimeout(() => {
                 progressBar.style.width = percentage + '%';
@@ -454,7 +456,7 @@ class Dashboard {
         // Remove existing listeners
         const newReportBtn = reportBtn.cloneNode(true);
         const newCloseBtn = closeBtn.cloneNode(true);
-        
+
         reportBtn.parentNode.replaceChild(newReportBtn, reportBtn);
         closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
 
@@ -480,7 +482,7 @@ class Dashboard {
         // Clean up any remaining event listeners
         const reportBtn = document.getElementById('campaignModalReportBtn');
         const closeBtn = document.querySelector('#campaignDetailsModal .btn-close-modal');
-        
+
         if (reportBtn) reportBtn.onclick = null;
         if (closeBtn) closeBtn.onclick = null;
     }
@@ -564,7 +566,7 @@ Full report functionality can be implemented as needed.`;
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
-        
+
         if (typeof window.showNotification === 'function') {
             window.showNotification('Campaign report downloaded', 'success');
         }
@@ -628,7 +630,7 @@ Full report functionality can be implemented as needed.`;
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
                                 if (value >= 1000) return (value / 1000).toFixed(0) + 'K';
                                 return value;
@@ -710,7 +712,7 @@ Full report functionality can be implemented as needed.`;
                         beginAtZero: true,
                         position: 'left',
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
                                 if (value >= 1000) return (value / 1000).toFixed(0) + 'K';
                                 return value;
@@ -728,7 +730,7 @@ Full report functionality can be implemented as needed.`;
                         beginAtZero: true,
                         position: 'right',
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 return value + '%';
                             },
                             maxTicksLimit: 6,
@@ -785,7 +787,7 @@ Full report functionality can be implemented as needed.`;
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 return '+' + value + '%';
                             },
                             maxTicksLimit: 6,
@@ -880,7 +882,7 @@ Full report functionality can be implemented as needed.`;
                     x: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 return value + '%';
                             },
                             maxTicksLimit: 5,
@@ -937,7 +939,7 @@ Full report functionality can be implemented as needed.`;
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 return '+' + value + '%';
                             },
                             maxTicksLimit: 6,
@@ -995,7 +997,7 @@ Full report functionality can be implemented as needed.`;
                         beginAtZero: true,
                         max: 25,
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 return value + '%';
                             },
                             maxTicksLimit: 6,
@@ -1090,7 +1092,7 @@ Full report functionality can be implemented as needed.`;
                     x: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 return value + '%';
                             },
                             maxTicksLimit: 5,
@@ -1174,7 +1176,7 @@ Full report functionality can be implemented as needed.`;
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                                 return value + '%';
                             },
                             maxTicksLimit: 6,
@@ -1245,7 +1247,7 @@ Full report functionality can be implemented as needed.`;
 
     updateDashboardData() {
         this.showLoading();
-        
+
         setTimeout(() => {
             this.hideLoading();
 
@@ -1257,7 +1259,7 @@ Full report functionality can be implemented as needed.`;
                 const to = new Date(this.customDates.to);
                 const diffDays = Math.round((to - from) / (1000 * 60 * 60 * 24));
                 multiplier = diffDays / 30; // scale relative to 30 days
-                
+
                 if (typeof window.showNotification === 'function') {
                     window.showNotification(`Custom range applied: ${diffDays} days`, 'success');
                 }
@@ -1305,11 +1307,11 @@ Full report functionality can be implemented as needed.`;
             'Total Spend': `$${(48.2 * multiplier).toFixed(1)}K`,
             'Delivery Rate': '95.2%'
         };
-        
+
         Object.entries(metrics).forEach(([title, value]) => {
             const metricCard = Array.from(document.querySelectorAll('.metric-card'))
                 .find(card => card.querySelector('.metric-title').textContent === title);
-            
+
             if (metricCard) {
                 metricCard.querySelector('.metric-value').textContent = value;
             }
@@ -1319,7 +1321,7 @@ Full report functionality can be implemented as needed.`;
     updateTime() {
         const now = new Date();
         const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        
+
         const timeElements = document.querySelectorAll('[data-time-update]');
         timeElements.forEach(element => {
             element.textContent = timeString;
@@ -1362,8 +1364,8 @@ Full report functionality can be implemented as needed.`;
     exportDashboardData() {
         let csvContent = '';
         let filename = '';
-        
-        switch(this.activeTab) {
+
+        switch (this.activeTab) {
             case 'campaigns':
                 csvContent = this.exportCampaignsData();
                 filename = `campaigns-${new Date().toISOString().split('T')[0]}.csv`;
@@ -1378,7 +1380,7 @@ Full report functionality can be implemented as needed.`;
                 filename = `dashboard-${new Date().toISOString().split('T')[0]}.csv`;
                 break;
         }
-        
+
         const blob = new Blob([csvContent], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -1388,7 +1390,7 @@ Full report functionality can be implemented as needed.`;
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
-        
+
         if (typeof window.showNotification === 'function') {
             window.showNotification('Dashboard data exported successfully', 'success');
         }
@@ -1396,7 +1398,7 @@ Full report functionality can be implemented as needed.`;
 
     exportCampaignsData() {
         let csvContent = "Campaign,Status,Sent,Delivered,Read,Clicked,CTR,Region,Timeline\n";
-        
+
         document.querySelectorAll('#campaignTable tbody tr').forEach(row => {
             if (row.style.display !== 'none') {
                 const cells = row.querySelectorAll('td');
@@ -1409,39 +1411,39 @@ Full report functionality can be implemented as needed.`;
                 csvContent += rowData + "\n";
             }
         });
-        
+
         return csvContent;
     }
 
     exportOverviewData() {
         let csvContent = "Metric,Value,Change\n";
-        
+
         document.querySelectorAll('.metric-card').forEach(card => {
             const title = card.querySelector('.metric-title').textContent;
             const value = card.querySelector('.metric-value').textContent;
             const change = card.querySelector('.metric-change').textContent;
             csvContent += `"${title}","${value}","${change}"\n`;
         });
-        
+
         return csvContent;
     }
 
     exportAnalyticsData() {
         let csvContent = "Metric,Value\n";
-        
+
         document.querySelectorAll('.engagement-card').forEach(card => {
             const title = card.querySelector('.engagement-title').textContent;
             const value = card.querySelector('.engagement-value').textContent;
             csvContent += `"${title}","${value}"\n`;
         });
-        
+
         document.querySelectorAll('.interaction-item').forEach(item => {
             const spans = item.querySelectorAll('span');
             if (spans.length === 2) {
                 csvContent += `"${spans[0].textContent}","${spans[1].textContent}"\n`;
             }
         });
-        
+
         return csvContent;
     }
 }

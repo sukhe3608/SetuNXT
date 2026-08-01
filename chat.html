@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SetuNXT - Chat</title>
+    <meta name="description" content="Campaign Chat for SetuNXT">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap-custom.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/chat.css">
+    <!-- Dark Mode CSS -->
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+
+    <style>
+        /* Initial theme loading to prevent flash */
+        body:not(.dark-mode):not(.light-mode) {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        /* Smooth transitions */
+        body,
+        body *:not(.fa-solid, .fa-regular, .fa-light, .fa-thin, .fa-duotone, .fa-brands) {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Sidebar Component -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="container-fluid px-3 py-4 h-100 d-flex flex-column" style="min-height: calc(100vh - 70px);">
+
+            <div class="chat-container-wrapper flex-grow-1 d-flex bg-white rounded shadow-sm border overflow-hidden">
+                <div class="chat-sidebar">
+                    <div class="chat-sidebar-header">
+                        <h5 class="mb-0 me-auto fw-bold">Chats</h5>
+                        <button class="btn btn-icon" id="chatContactSearchToggleBtn" title="Search Contacts">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-icon ms-1" id="chatContactSortBtn" title="Sort by Date">
+                            <i class="fas fa-sort-amount-down"></i>
+                        </button>
+                    </div>
+                    <!-- Contact Search Bar -->
+                    <div class="chat-sidebar-search d-none" id="chatContactSearchBar">
+                        <input type="text" class="form-control form-control-sm" id="chatContactSearchInput"
+                            placeholder="Search contacts...">
+                    </div>
+                    <!-- Chat Tabs -->
+                    <div class="chat-sidebar-tabs">
+                        <ul class="nav nav-pills nav-fill" id="chatSidebarTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-chat-tab="all" type="button">All</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-chat-tab="unread" type="button">Unread</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-chat-tab="me" type="button">Me</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Contact List -->
+                    <div class="chat-contact-list" id="chatContactList">
+                        <!-- Dynamically populated by JS -->
+                    </div>
+                </div>
+                <div class="chat-main">
+                    <div class="chat-main-header">
+                        <!-- Header info populated by JS -->
+                        <div class="contact-avatar bg-primary text-white d-none" id="currentContactAvatar">JS</div>
+                        <div class="header-info ms-3 d-none" id="currentContactInfo">
+                            <h5 class="mb-0 fw-bold" id="currentContactName">John Smith</h5>
+                            <small class="text-success" id="currentContactStatus">Online</small>
+                        </div>
+                        <div class="header-placeholder-text" id="chatHeaderPlaceholder">
+                            <span class="text-muted">Select a chat to start messaging</span>
+                        </div>
+                        <div class="header-actions ms-auto d-flex" id="currentContactActions">
+                            <button class="btn btn-icon" id="chatSearchBtn"><i class="fas fa-search"></i></button>
+                            <button class="btn btn-icon"><i class="fas fa-ellipsis-v"></i></button>
+                        </div>
+                    </div>
+                    <!-- Search bar (hidden by default) -->
+                    <div class="chat-search-bar d-none" id="chatSearchBar">
+                        <input type="text" class="form-control form-control-sm" id="chatSearchInput"
+                            placeholder="Search messages...">
+                        <button class="btn btn-icon btn-sm ms-2" id="chatSearchCloseBtn"><i
+                                class="fas fa-times"></i></button>
+                    </div>
+                    <div class="chat-messages bg-light" id="chatMessages">
+                        <div class="d-flex h-100 justify-content-center align-items-center flex-column text-muted"
+                            id="emptyChatState">
+                            <div class="bg-white p-4 rounded-circle shadow-sm mb-3">
+                                <i class="fas fa-comments fa-3x text-primary" style="opacity: 0.5;"></i>
+                            </div>
+                            <p class="fw-medium">Select a contact to view your conversation.</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-area position-relative d-none bg-white" id="chatInputArea">
+                        <!-- Emoji Picker (hidden by default) -->
+                        <emoji-picker class="d-none" id="emojiPicker"
+                            style="position: absolute; bottom: 100%; left: 10px; z-index: 100;"></emoji-picker>
+
+                        <button class="btn btn-icon" id="chatSmileBtn"><i
+                                class="far fa-smile text-secondary fs-5"></i></button>
+
+                        <input type="file" id="chatFileInput" class="d-none">
+                        <button class="btn btn-icon" id="chatAttachBtn"><i
+                                class="fas fa-paperclip text-secondary fs-5"></i></button>
+
+                        <input type="text" id="chatInput" class="form-control chat-input"
+                            placeholder="Type your message here...">
+                        <button id="chatSendBtn"
+                            class="btn btn-primary rounded-circle ms-2 shadow-sm d-flex align-items-center justify-content-center"
+                            style="width: 45px; height: 45px;">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Emoji Picker Element -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/initComponents.js"></script>
+    <script src="assets/js/loadComponents.js"></script>
+    <script src="assets/js/chat.js"></script>
+</body>
+
+</html>
